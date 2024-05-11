@@ -1,0 +1,858 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>hexo博客使用的一些常见问题（一）：外站图片显示，站内链接，嵌入B站视频</title>
+    <url>/Web/hexo%E5%8D%9A%E5%AE%A2%E4%BD%BF%E7%94%A8%E7%9A%84%E4%B8%80%E4%BA%9B%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%A4%96%E7%AB%99%E5%9B%BE%E7%89%87%E6%98%BE%E7%A4%BA%EF%BC%8C%E7%AB%99%E5%86%85%E9%93%BE%E6%8E%A5%EF%BC%8C%E5%B5%8C%E5%85%A5B%E7%AB%99%E8%A7%86%E9%A2%91/</url>
+    <content><![CDATA[<h3 id="1、关于网站使用外网图片无法显示的问题。"><a href="#1、关于网站使用外网图片无法显示的问题。" class="headerlink" title="1、关于网站使用外网图片无法显示的问题。"></a>1、关于网站使用外网图片无法显示的问题。</h3><ol>
+<li>如果只需要文章能够正常显示，只需要在文章前面最前方加上如下语句即可：</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot; /&gt;</span><br></pre></td></tr></table></figure>
+
+<p>​		该方法参考这篇文章的说法：<a href="https://www.cnblogs.com/selier/p/9570650.html%EF%BC%8C">https://www.cnblogs.com/selier/p/9570650.html，</a> 大致的原理是：</p>
+<blockquote>
+<p>​		一般浏览器向服务器请求一个资源（如图片）时，通常会包括一个<code>Referer</code>头部，它包含了发起请求的页面的URL。这有助于服务器理解请求的来源。</p>
+<p>​		而有些图片网站为了防止其它网站盗链其资源（比如我是直接吧图片上传到gitee中，然后再文章中加载）。如果<code>Referer</code>头部显示图片请求来自于非授权的域名，服务器可能拒绝请求。</p>
+<p>​		所以该条语句的意思是：告诉浏览器不要发送<code>Referer</code>头部给服务器。这样，图床服务器就无法判断请求是否来自于非授权的域，因而可能“默认”允许请求。</p>
+</blockquote>
+<p>​		当然如果不想每次创建文章的时候都手动添加该语句，可以尝试把该语句添加到hexo博客更目录下的<code>scaffolds/post.md</code>文件中，该文件是创建文章的模板文件，此时我们通过hexo n “文章题目”的时候会自动添加该语句。</p>
+<ol start="2">
+<li><p>我在实际的建立博客的时候，可能由图床文件，并不仅仅用在文章中，可能还希望应用到各种页面中，比如主页头像，其他网页内容，这个时候通过向文章头部添加这条语句的方法就不行了，这是我们可以采用hexo的<code>注入器（Injector）</code>往所有的博客页面头部注入该条语句，以实现全网的图片访问。具体做法如下:</p>
+<ol>
+<li>在hexo博客根目录下添加<code>scripts</code>文件夹，在文件夹中创建<code>injector.js</code>文件，在该文件中添加如下语句：</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">hexo.<span class="property">extend</span>.<span class="property">injector</span>.<span class="title function_">register</span>(<span class="string">&#x27;head_begin&#x27;</span>, <span class="string">&#x27;&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;&#x27;</span>, <span class="string">&#x27;default&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>允许<code>hexo cl</code>（清除缓冲）, <code>hexo g</code>（重新生成静态文件）, <code>hexo s</code>(本地启动服务查看效果), <code>hexo d</code>（部署到服务器），来实现网站部署，此时就可以正确的显示了。</li>
+</ol>
+</li>
+</ol>
+<h3 id="2、-关于博客内部链接的问题。"><a href="#2、-关于博客内部链接的问题。" class="headerlink" title="2、 关于博客内部链接的问题。"></a>2、 关于博客内部链接的问题。</h3><ol>
+<li>把<code>permalink</code>修改为<code>:title/</code></li>
+</ol>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># URL</span></span><br><span class="line"><span class="comment">## Set your site url here. For example, if you use GitHub Page, set url as &#x27;https://username.github.io/project&#x27;</span></span><br><span class="line"><span class="attr">url:</span> <span class="string">http://senysunny.com</span></span><br><span class="line"><span class="attr">permalink:</span> <span class="string">:title/</span> <span class="comment"># :year/:month/:day/:title/</span></span><br><span class="line"><span class="attr">permalink_defaults:</span></span><br><span class="line"><span class="attr">pretty_urls:</span></span><br><span class="line">  <span class="attr">trailing_index:</span> <span class="literal">true</span> <span class="comment"># Set to false to remove trailing &#x27;index.html&#x27; from permalinks</span></span><br><span class="line">  <span class="attr">trailing_html:</span> <span class="literal">true</span> <span class="comment"># Set to false to remove trailing &#x27;.html&#x27; from permalinks</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>文章直接做链接，按照<code>/目录/文章名称/</code>作为链接内容即可，会自动链接到<code>网址//目录/文章名称/</code>对应的网页中</li>
+</ol>
+<h3 id="3、-在博客中嵌入视频（比如B站视频）"><a href="#3、-在博客中嵌入视频（比如B站视频）" class="headerlink" title="3、 在博客中嵌入视频（比如B站视频）"></a>3、 在博客中嵌入视频（比如B站视频）</h3><ol>
+<li>直接在markdown中使用<code>&lt;iframe&gt;</code>标签，在标签中添加视频的网址，即可嵌入视频，如下图<iframe  width="100%" height="450" src="//player.bilibili.com/player.html?aid=279747615&bvid=BV1cc411m72m&cid=1365009247&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe></li>
+<li>视频的网址，比如B站的视频，可以在视频下方的分享按钮，有一个嵌入代码，直接复制代码即可，如果嵌入到markdown中，视频比较小，可以在<code>iframe</code>中添加<code>width</code>和<code>height</code>属性，设置视频的宽度和高度，如下所示</li>
+</ol>
+<pre><code class="yaml">&lt;iframe  width=&quot;100%&quot; height=&quot;450&quot; src=&quot;//player.bilibili.com/player.html?aid=279747615&amp;bvid=BV1cc411m72m&amp;cid=1365009247&amp;p=1&quot; scrolling=&quot;no&quot; border=&quot;0&quot; frameborder=&quot;no&quot; framespacing=&quot;0&quot; allowfullscreen=&quot;true&quot;&gt; &lt;/iframe&gt;
+</code></pre>
+]]></content>
+      <categories>
+        <category>Web前端</category>
+        <category>hexo博客系统</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>bilibili</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ESP32学习笔记（一）：ESP-IDF配合VSCode的一些方法和技巧</title>
+    <url>/Embedded/ESP32%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9AESP-IDF%E9%85%8D%E5%90%88VSCode%E7%9A%84%E4%B8%80%E4%BA%9B%E6%96%B9%E6%B3%95%E5%92%8C%E6%8A%80%E5%B7%A7/</url>
+    <content><![CDATA[<h3 id="1、idf的常用基本命令"><a href="#1、idf的常用基本命令" class="headerlink" title="1、idf的常用基本命令"></a>1、idf的常用基本命令</h3><h4 id="1-查看芯片信息：esptool-py-p-COM4-flash-id"><a href="#1-查看芯片信息：esptool-py-p-COM4-flash-id" class="headerlink" title="(1). 查看芯片信息：esptool.py -p COM4 flash_id"></a>(1). 查看芯片信息：<code>esptool.py -p COM4 flash_id</code></h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">esptool.py -p COM4 flash_id</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-选择芯片命令：idf-py-set-target-esp32"><a href="#2-选择芯片命令：idf-py-set-target-esp32" class="headerlink" title="(2). 选择芯片命令：idf.py set-target esp32"></a>(2). 选择芯片命令：<code>idf.py set-target esp32</code></h4><p>​		详细的命令格式为：<code>idf.py set-target [OPTIONS] &#123;esp32|esp32s2|esp32c3|esp32s3|esp32c2|esp32c6|esp32h2|linux&#125;</code></p>
+<p>​    	所以我们如果选择ESP32S3，则可以：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">idf.py set-target esp32s3</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-编译命令：idf-py-build"><a href="#3-编译命令：idf-py-build" class="headerlink" title="(3). 编译命令：idf.py build"></a>(3). 编译命令：<code>idf.py build</code></h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">idf.py build</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-配置命令：-idf-py-menuconfig"><a href="#4-配置命令：-idf-py-menuconfig" class="headerlink" title="(4). 配置命令： idf.py menuconfig"></a>(4). 配置命令： <code>idf.py menuconfig</code></h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">idf.py menuconfig</span><br></pre></td></tr></table></figure>
+
+<h4 id="6-下载命令：-idf-py-p-COM3-flash"><a href="#6-下载命令：-idf-py-p-COM3-flash" class="headerlink" title="(6). 下载命令： idf.py -p COM3 flash"></a>(6). 下载命令： <code>idf.py -p COM3 flash</code></h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">idf.py -p COM3 flash</span><br></pre></td></tr></table></figure>
+
+<h4 id="7-console调试命令：-idf-py-p-COM3-monitor"><a href="#7-console调试命令：-idf-py-p-COM3-monitor" class="headerlink" title="(7). console调试命令： idf.py -p COM3 monitor"></a>(7). console调试命令： <code>idf.py -p COM3 monitor</code></h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">idf.py -p COM3 monitor</span><br></pre></td></tr></table></figure>
+
+<h4 id="8-退出调试模式：-ctrl"><a href="#8-退出调试模式：-ctrl" class="headerlink" title="(8). 退出调试模式： ctrl + ]"></a>(8). 退出调试模式： <code>ctrl + ]</code></h4><h4 id="9-更新esptool：-pip-install-upgrade-esptool"><a href="#9-更新esptool：-pip-install-upgrade-esptool" class="headerlink" title="(9).更新esptool： pip install --upgrade esptool"></a>(9).更新esptool： <code>pip install --upgrade esptool</code></h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">pip install --upgrade esptool</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="10-关于idf版本相关内容"><a href="#10-关于idf版本相关内容" class="headerlink" title="(10). 关于idf版本相关内容"></a>(10). 关于idf版本相关内容</h4><p><a href="https://docs.espressif.com/projects/esp-idf/zh_CN/v5.1.3/esp32s3/versions.html">https://docs.espressif.com/projects/esp-idf/zh_CN/v5.1.3/esp32s3/versions.html</a></p>
+<p>可以通过如下代码来下载idf的源码：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd $IDF_PATH</span><br><span class="line">git fetch</span><br><span class="line">git checkout vX.Y.Z</span><br><span class="line">git submodule update --init --recursive</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="2、idf和-vscode的一些说明和细节"><a href="#2、idf和-vscode的一些说明和细节" class="headerlink" title="2、idf和 vscode的一些说明和细节"></a>2、idf和 vscode的一些说明和细节</h3><h4 id="1-ESP-IDF-CMD和-ESP-IDF-PowerShell终端快捷方式"><a href="#1-ESP-IDF-CMD和-ESP-IDF-PowerShell终端快捷方式" class="headerlink" title="(1).  ESP-IDF CMD和 ESP-IDF PowerShell终端快捷方式"></a>(1).  ESP-IDF CMD和 ESP-IDF PowerShell终端快捷方式</h4><h5 id="1-终端快捷方式的解释"><a href="#1-终端快捷方式的解释" class="headerlink" title="1.  终端快捷方式的解释"></a>1.  终端快捷方式的解释</h5><ol>
+<li><p>cmd的目标内容：<code>C:\WINDOWS\system32\cmd.exe /k &quot;&quot;D:\Espressif\idf_cmd_init.bat&quot; esp-idf-cc72132cd64ef413a5557253e3adc170&quot;</code></p>
+</li>
+<li><p>PowerShell的目标内容： <code>C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Bypass -NoExit -File &quot;D:\Espressif/Initialize-Idf.ps1&quot; -IdfId esp-idf-cc72132cd64ef413a5557253e3adc170</code></p>
+</li>
+<li><p>它们的起始位置：<code>D:\Espressif\frameworks\esp-idf-v5.1\</code></p>
+<p>   本质上idf就是创建了一个Python的虚拟环境，并针对该环境配置了环境变量，配置环境变量的内容可以详解idf安装目录下的<code>idf_cmd_init.bat</code>(针对cmd)和<code>Initialize-Idf.ps1</code>(针对powershell)。</p>
+<p> 而&#x2F;k是cmd的参数，表示”保持命令行窗口打开”,表示在执行完idf_cmd_init.bat保持终端窗口打开，这样可以确保创建的虚拟环境在在终端中有效，也就是关闭了终端，虚拟环境就关闭了，环境变量也随之无效。</p>
+<p> <code>esp-idf-cc72132cd64ef413a5557253e3adc170</code>是idf软件的id，用来表示该idf软件，其在软件安装目录下的<code>esp_idf.json</code>中定义，为<code>idfSelectedId</code>的值。<code>esp_idf.json</code>文件内容如下：</p>
+</li>
+</ol>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;$schema&quot;</span><span class="punctuation">:</span> <span class="string">&quot;http://json-schema.org/schema#&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;$id&quot;</span><span class="punctuation">:</span> <span class="string">&quot;http://dl.espressif.com/dl/schemas/esp_idf&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;_comment&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Configuration file for ESP-IDF Eclipse plugin.&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;_warning&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Use / or \\ when specifying path. Single backslash is not allowed by JSON format.&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;gitPath&quot;</span><span class="punctuation">:</span> <span class="string">&quot;D:/Espressif/tools/idf-git/2.39.2/cmd/git.exe&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;idfToolsPath&quot;</span><span class="punctuation">:</span> <span class="string">&quot;D:\\Espressif&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;idfSelectedId&quot;</span><span class="punctuation">:</span> <span class="string">&quot;esp-idf-cc72132cd64ef413a5557253e3adc170&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;idfInstalled&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;esp-idf-cc72132cd64ef413a5557253e3adc170&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;version&quot;</span><span class="punctuation">:</span> <span class="string">&quot;5.1&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;python&quot;</span><span class="punctuation">:</span> <span class="string">&quot;D:/Espressif/python_env/idf5.1_py3.11_env/Scripts/python.exe&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;path&quot;</span><span class="punctuation">:</span> <span class="string">&quot;D:/Espressif/frameworks/esp-idf-v5.1/&quot;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>​    <code>-ExecutionPolicy Bypass</code>目的是关闭powershell的安全策略，这是由于PowerShell有一个安全特性，可以限制未经签名的脚本的执行，所以需要配置Bypass选项，用来允许执行任何脚本，无视这些安全限制，以确保可以运行Initialize-Idf.ps1脚本。</p>
+<p>​    <code>-NoExit</code>与cmd终端中的<code>/k</code>作用一样，指示PowerShell在脚本执行完毕后不要关闭窗口，允许用户在同一窗口继续执行更多命令。</p>
+<p>​    <code>-File &quot;D:\Espressif/Initialize-Idf.ps1&quot; </code>表示运行该脚本，用于设置ESP-IDF开发环境，与cmd终端的<code>idf_cmd_init.bat</code>作用相同，详细可以看批处理和脚本的内容<br>​    <code>-IdfId esp-idf-cc72132cd64ef413a5557253e3adc170</code>则表示在执行<code>Initialize-Idf.ps1</code>脚本时，给脚本中的IdfId变量复制为<code>esp-idf-cc72132cd64ef413a5557253e3adc170</code>这个值。<br>​    通过以上解释，我们大致理解了idf-env工具的作用了。这意味着，实际上，我们可以在任何终端窗口，输入如下内容就可以进行idf的使用：</p>
+<h5 id="2-一种多版本安装方法："><a href="#2-一种多版本安装方法：" class="headerlink" title="2. 一种多版本安装方法："></a>2. 一种多版本安装方法：</h5><p>   根据前面的终端的解释，所以我这边进行一种多版本idf的安装方法，我首先给电脑安装一个默认版本的idf，这里选择了idf v5.1版本（至于原因，后面有讲），我是安装在<code>D:\Espressif</code>目录下，然后再<code>Espressif</code>目录下又创建了几个其他版本的idf，直接取名版本号如下图：</p>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405111823712.png" alt="idf安装"></p>
+<p>   这个时候每安装完成一个版本，可以把该版本的终端快捷方式复制出来，放在桌面的一个文件夹内，这里我取名idf,就可以实现多有版本的终端编译功能。最后所有版本的快捷方式如下：</p>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405111823623.png" alt="idf快捷方式"></p>
+<blockquote>
+<p>   这里需要注意两点：</p>
+<pre><code>  1. 安装其他版本的时候，有可能导致，目录下`esp_idf.json`文件对应的目录内容改变，我记得好像是`&quot;gitPath&quot;`变量的值会修改，可以修改为对应版本的idf的目录，详细json的值可以参考第一节对快捷方式的解释内容。
+  2. 安装可能会再用户环境变量中添加名称为`IDF_TOOLS_PATH`的环境变量，默认是安装最后一个版本的idf的目录，比如`D:\Espressif\v5_1_3`,这里可以直接把该环境变量删除掉。否则可能会导致终端快捷方式运行出错（快捷方式运行的时候会首先读取`IDF_TOOLS_PATH`的值，如果有，则默认定义该值为软件目录，没有则会自动创建批处理文件的目录为`IDF_TOOLS_PATH`）这里给出`idf_cmd_init.bat`这部分的定义如下：
+</code></pre>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="string">&quot;%IDF_TOOLS_PATH%&quot;</span> == <span class="string">&quot;&quot;</span> (</span><br><span class="line">    <span class="built_in">set</span> IDF_TOOLS_PATH=%~dp0</span><br><span class="line">    <span class="built_in">echo</span> IDF_TOOLS_PATH not <span class="built_in">set</span>. Setting to %~dp0</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>   此时VScode中默认绑定默认版本的idf。其他版本的编译有两种思路：</p>
+<p>   一种是直接再vscode中打开终端，然后输入语句来设置对应版本的idf的环境变量和配置，然后用idf的指令进行编译下载和调试；</p>
+<p>   另外一种方式是，针对每种版本的idf创建一个vscode工作区参数设置文件，直接把该文件复制到需要运行的idf工程中，此时，vscode会自动设置idf的工作区目录，并使用特定版本的idf来编译和下载程序。这个方法参考了B站UP主“<a href="https://space.bilibili.com/34165842">第九个下弦月</a>”的一个视频内容提供的 vscode 工作区的概念，详细视频地址为：<a href="https://www.bilibili.com/video/BV1bj421Z7z4/?spm_id_from=333.337.search-card.all.click&vd_source=50e88259c3b06cefc86b0480e57ce888">https://www.bilibili.com/video/BV1bj421Z7z4/?spm_id_from=333.337.search-card.all.click&amp;vd_source=50e88259c3b06cefc86b0480e57ce888</a></p>
+<h5 id="3-终端环境变量配置语句："><a href="#3-终端环境变量配置语句：" class="headerlink" title="3. 终端环境变量配置语句："></a>3. 终端环境变量配置语句：</h5><p>   首先是默认版本，我的是v5.1，直接再vscode终端中输入如下语句（一个采用cmd，一个采用powershell），既可再改终端之后，使用针对该版本的idf命令，实现编译和下载等功能：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cmd /k &quot;&quot;D:\Espressif\idf_cmd_init.bat&quot; esp-idf-cc72132cd64ef413a5557253e3adc170&quot;</span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">powershell <span class="literal">-ExecutionPolicy</span> Bypass <span class="literal">-NoExit</span> <span class="operator">-File</span> <span class="string">&quot;D:\Espressif/Initialize-Idf.ps1&quot;</span> <span class="literal">-IdfId</span> esp<span class="literal">-idf-cc72132cd64ef413a5557253e3adc170</span></span><br></pre></td></tr></table></figure>
+
+<p>   如果是V5.1.3版本，id号不一样，用改语句：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cmd /k &quot;&quot;D:\Espressif\v5_1_3\idf_cmd_init.bat&quot; esp-idf-2f332dae01e5300d41bb5887948c6ac3&quot;</span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">powershell <span class="literal">-ExecutionPolicy</span> Bypass <span class="literal">-NoExit</span> <span class="operator">-File</span> <span class="string">&quot;D:\Espressif\v5_1_3/Initialize-Idf.ps1&quot;</span> <span class="literal">-IdfId</span> esp<span class="literal">-idf-2f332dae01e5300d41bb5887948c6ac3</span></span><br></pre></td></tr></table></figure>
+<p>   如果是V5.2.1版本，id号不一样，用改语句：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cmd /k &quot;&quot;D:\Espressif\v5_2_1\idf_cmd_init.bat&quot; esp-idf-f2854e5176bb04b11fdfe329dc6d2d14&quot;</span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">powershell <span class="literal">-ExecutionPolicy</span> Bypass <span class="literal">-NoExit</span> <span class="operator">-File</span> <span class="string">&quot;D:\Espressif\v5_2_1/Initialize-Idf.ps1&quot;</span> <span class="literal">-IdfId</span> esp<span class="literal">-idf-f2854e5176bb04b11fdfe329dc6d2d14</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>   注意：安装位置不同，这个生成的码也不同，应该是根据版本号，安装位置等信息生成的唯一识别码。</p>
+</blockquote>
+<h5 id="4-vscode-工作区配置文件"><a href="#4-vscode-工作区配置文件" class="headerlink" title="4. vscode 工作区配置文件"></a>4. vscode 工作区配置文件</h5><p>   如果不希望再vscode中用终端来编译和下载文件，而是希望直接用vscode下方的快捷键来操作，而且可以实现在一台电脑上随时切换不同版本的idf工程，可以针对每个版本创建一个 vscode 工作区配置文件，把该文件复制到工程目录下，文件后缀需要为：<code>xxx.code-workspace</code>,比如，下面是我针对v5.2.1版本创建的文件，取名为<code>idf_5.2.1.code-workspace</code>内容如下：</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;folders&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;path&quot;</span><span class="punctuation">:</span> <span class="string">&quot;.&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;settings&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;idf.espIdfPathWin&quot;</span><span class="punctuation">:</span> <span class="string">&quot;D:\\Espressif\\v5_2_1\\frameworks\\esp-idf-v5.2.1&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;idf.pythonBinPathWin&quot;</span><span class="punctuation">:</span> <span class="string">&quot;D:\\Espressif\\v5_2_1\\python_env\\idf5.2_py3.11_env\\Scripts\\python.exe&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;idf.toolsPathWin&quot;</span><span class="punctuation">:</span> <span class="string">&quot;D:\\Espressif\\v5_2_1&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;idf.customExtraPaths&quot;</span><span class="punctuation">:</span> <span class="string">&quot;D:\\Espressif\\v5_2_1\\tools\\xtensa-esp-elf-gdb\\12.1_20231023\\xtensa-esp-elf-gdb\\bin;D:\\Espressif\\v5_2_1\\tools\\riscv32-esp-elf-gdb\\12.1_20231023\\riscv32-esp-elf-gdb\\bin;D:\\Espressif\\v5_2_1\\tools\\xtensa-esp-elf\\esp-13.2.0_20230928\\xtensa-esp-elf\\bin;D:\\Espressif\\v5_2_1\\tools\\riscv32-esp-elf\\esp-13.2.0_20230928\\riscv32-esp-elf\\bin;D:\\Espressif\\v5_2_1\\tools\\esp32ulp-elf\\2.35_20220830\\esp32ulp-elf\\bin;D:\\Espressif\\v5_2_1\\tools\\cmake\\3.24.0\\bin;D:\\Espressif\\v5_2_1\\tools\\openocd-esp32\\v0.12.0-esp32-20230921\\openocd-esp32\\bin;D:\\Espressif\\v5_2_1\\tools\\ninja\\1.11.1;D:\\Espressif\\v5_2_1\\tools\\idf-exe\\1.0.3;D:\\Espressif\\v5_2_1\\tools\\ccache\\4.8\\ccache-4.8-windows-x86_64;D:\\Espressif\\v5_2_1\\tools\\dfu-util\\0.11\\dfu-util-0.11-win64;D:\\Espressif\\v5_2_1\\tools\\esp-rom-elfs\\20230320&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;idf.customExtraVars&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;OPENOCD_SCRIPTS&quot;</span><span class="punctuation">:</span> <span class="string">&quot;D:\\Espressif\\v5_2_1\\tools\\openocd-esp32\\v0.12.0-esp32-20230921/openocd-esp32/share/openocd/scripts&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;IDF_CCACHE_ENABLE&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;ESP_ROM_ELF_DIR&quot;</span><span class="punctuation">:</span> <span class="string">&quot;D:\\Espressif\\v5_2_1\\tools\\esp-rom-elfs\\20230320/&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;idf.gitPathWin&quot;</span><span class="punctuation">:</span> <span class="string">&quot;D:\\Espressif\\v5_2_1\\tools\\idf-git\\2.43.0\\cmd\\git.exe&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>   可以看到，其实它操作和终端配置环境变量差不多，就是设置idf工具的目录地址而已。其他版本可以参考这个来设置，这里不多赘述。需要做好的配置文件，可以直接到如下地址下载：<a href="https://gitee.com/SenySunny/picture/tree/master/idf_code-workspace">https://gitee.com/SenySunny/picture/tree/master/idf_code-workspace</a> </p>
+<p>   另外，经部分电脑<code>xxx.code-workspace</code>文件并不会生效，针对这种情况，请直接把<code>&quot;settings&quot;</code>的内容（即所有的<code>idf.xxx</code>相关的软件目录选项）复制到<code>.vscode</code>目录下的<code>settings.json</code>文件中，然后重新打开工程目录。</p>
+</blockquote>
+<h4 id="2-vscode中的idf工程代码跳转问题"><a href="#2-vscode中的idf工程代码跳转问题" class="headerlink" title="(2).  vscode中的idf工程代码跳转问题"></a>(2).  vscode中的idf工程代码跳转问题</h4><p>   在vscode中建立idf工程，或者直接从idf中复制<code>example</code>例程创建工程修改时，默认情况下我们点击使用的idf中的api函数是无法跳转到idf目录下，可以通过如下手段，实现代码的跳转（默认是按下<code>Ctrl</code>+鼠标左击实现跳转）——注意需要vscode已经安装idf插件和<code>C/C++</code>插件。</p>
+<p>   默认打开一个工程内的C文件，会在vscode的右下方出现win32的按钮图标（注意如下没有出现，可以尝试最大化vscode窗口），点击按钮，在弹出的选项栏中选择”编辑配置(JSON)”(也可以直接按住<code>Ctrl+P</code>按钮，在弹出的输入框输入<code>&gt; 编辑配置(JSON)</code>，效果一样)，此时，会自动为工程添加c_cpp_properties.json文件（在<code>.vscode</code>目录下）。</p>
+<p>   在c_cpp_properties.json文件文件中的”configurations”属性添加一行代：<code>码&quot;compileCommands&quot;: &quot;$&#123;workspaceFolder&#125;/build/compile_commands.json&quot;</code>， 注意json格式，需要在前面一行添加逗号，在正常添加之后的c_cpp_properties.json文件内容如下(不同环境下可能有所不同，只需要注意添加compileCommands属性即可)：</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;configurations&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Win32&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;includePath&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">                <span class="string">&quot;$&#123;workspaceFolder&#125;/**&quot;</span></span><br><span class="line">            <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;defines&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">                <span class="string">&quot;_DEBUG&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="string">&quot;UNICODE&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="string">&quot;_UNICODE&quot;</span></span><br><span class="line">            <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;windowsSdkVersion&quot;</span><span class="punctuation">:</span> <span class="string">&quot;10.0.22621.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;compilerPath&quot;</span><span class="punctuation">:</span> <span class="string">&quot;cl.exe&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;cStandard&quot;</span><span class="punctuation">:</span> <span class="string">&quot;c17&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;cppStandard&quot;</span><span class="punctuation">:</span> <span class="string">&quot;c++17&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;intelliSenseMode&quot;</span><span class="punctuation">:</span> <span class="string">&quot;windows-msvc-x64&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;compileCommands&quot;</span><span class="punctuation">:</span> <span class="string">&quot;$&#123;workspaceFolder&#125;/build/compile_commands.json&quot;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;version&quot;</span><span class="punctuation">:</span> <span class="number">4</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>   此时在进行编译之后，会在build目录下产生一个compile_commands.json文件，此时，便可以按住ctrl键，鼠标点击特定函数，即使函数是在idf的内部，也可以实现跳转。</p>
+<h4 id="3-在下载或者其他使用串口的时候，出现无法打开串口的情况解决办法（被占用）"><a href="#3-在下载或者其他使用串口的时候，出现无法打开串口的情况解决办法（被占用）" class="headerlink" title="(3). 在下载或者其他使用串口的时候，出现无法打开串口的情况解决办法（被占用）"></a>(3). 在下载或者其他使用串口的时候，出现无法打开串口的情况解决办法（被占用）</h4><p>  由于idf的操作都是在终端中进行的操作，如果它把串口占用了，可能会导致再次使用串口，出现无法打开串口的情况，此时可能会不清楚是哪个进程占用了串口的情况，导致无法使用串口（很多时候，即使把掉USB线，再插入也没有用，因为线程本身支持断线再插入的时候自动重新打开），可以通过如下方法来解除串口的占用。</p>
+<ol>
+<li><p>打开注册表，在系统的左下角软件搜索栏输入“regedit”，或者右击右下角windows图标选择“运行”， 输入regedit，都可以打开注册表</p>
+</li>
+<li><p>打开如下注册表选项<code>“计算机\HKEY_LOCAL_MACHINE\HARDWARE\DEVICEMAP\SERIALCOMM”</code>,在里面找到无法打开的注册表，如下图，我电脑是COM4</p>
+</li>
+</ol>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405111754694.png" alt="regedit_COMM"></p>
+<ol start="3">
+<li>复制它的名称，我的电脑为<code>\Device\USBSER000</code>.打开电脑资源管理器，选择“性能”选项卡， 点击下方的“打开资源监视器”，选择“CPU”，在关联的句柄中输入串口设备的名称，点击刷新，就可以看到占用串口的应用程序，选中右击，选择“结束进程”即可，此时，串口就又可以使用了,按照下图顺序操作即可。</li>
+</ol>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405111755363.png" alt="regedit_COMM2"></p>
+<h4 id="4-关于USB-Serial-JTAG的一些问题（目前发现在v5-1中可以正常打印，其他版本可以用于log打印，但是直接用于stdin和stdout貌似有bug）"><a href="#4-关于USB-Serial-JTAG的一些问题（目前发现在v5-1中可以正常打印，其他版本可以用于log打印，但是直接用于stdin和stdout貌似有bug）" class="headerlink" title="(4). 关于USB-Serial-JTAG的一些问题（目前发现在v5.1中可以正常打印，其他版本可以用于log打印，但是直接用于stdin和stdout貌似有bug）"></a>(4). 关于USB-Serial-JTAG的一些问题（目前发现在v5.1中可以正常打印，其他版本可以用于log打印，但是直接用于stdin和stdout貌似有bug）</h4><p>​		目前发现USB-Serial-JTAG，在打印的时候，会有缓冲机制，也就是只有当收到\n字符（或者超时相关）的时候才会进行打印和输入，而且不管是绑定esp_vfs虚拟文件系统还是通过<code>fflush(stdout);</code>强制刷新输出缓冲流都没有用，这部分的内容可以参考：<a href="https://docs.espressif.com/projects/esp-idf/zh_CN/v5.2.1/esp32s3/api-guides/usb-serial-jtag-console.html%EF%BC%88%E6%97%A0%E5%85%B3%E7%89%88%E6%9C%AC%E9%97%AE%E9%A2%98%EF%BC%8C%E5%9C%A85.1%E7%89%88%E6%9C%AC%E4%B9%9F%E4%B8%80%E6%A0%B7%EF%BC%89%E5%92%8Chttps://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32s3/api-guides/usb-serial-jtag-console.html%EF%BC%8C%E5%9C%A8%E6%96%87%E7%AB%A0%E4%B8%AD%E6%98%AF%E8%BF%99%E6%A0%B7%E8%AF%B4%E6%98%8E%E7%9A%84%EF%BC%9A">https://docs.espressif.com/projects/esp-idf/zh_CN/v5.2.1/esp32s3/api-guides/usb-serial-jtag-console.html（无关版本问题，在5.1版本也一样）和https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32s3/api-guides/usb-serial-jtag-console.html，在文章中是这样说明的：</a></p>
+<p>​		对于从 ESP32-S3 发送到 PC 终端的数据（例如 stdout、日志），ESP32-S3 会先写入一个小型内部缓冲区。如果该缓冲区达到最大容量（例如没有连接 PC 终端），ESP32-S3 会进行一次等待，时长约 50 ms。在此期间，PC 终端可以请求数据，但可能会导致应用程序出现非常短暂的暂停。</p>
+<p>​		对于从 PC 终端发送到 ESP32-S3 的数据（如控制台命令），许多 PC 终端会等待 ESP32-S3 接收字节后，再允许发送更多数据。这与使用 USB 转串口 (URAT) 桥接芯片不同，URAT 桥接芯片始终接收字节，并将其发送到（可能未在监听）的 ESP32-S3。</p>
+<p>​		在极少数情况下，从 ESP32-S3 发送到主机的数据可能会“阻塞”在主机内存中。继续发送数据即可“取消阻塞”，但如果应用程序未继续发送数据，则需要手动将这些数据刷新到主机。能否继续发送数据取决于驱动程序，默认配置的非阻塞驱动程序和 VFS 实现会在换行后自动刷新，而基于中断的阻塞驱动程序会在发送缓冲区变空时自动刷新。</p>
+<p>​		目前发现在5.1版本中通过设置usb_serial_jtag缓冲区，然后绑定esp_vfs。然后用<code>usb_serial_jtag_read_bytes</code>和<code>usb_serial_jtag_write_bytes</code>来替代<code>getchar</code>和<code>putchar</code>貌似在部分环境下有效（也可以使用putchar+fflush(stdout)），但是我测试在5.1.3版本中无效。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//初始化usb_serial_jtag缓冲区，并绑定esp_vfs</span></span><br><span class="line"><span class="type">usb_serial_jtag_driver_config_t</span> usb_serial_jtag_config = &#123;</span><br><span class="line">      .rx_buffer_size = <span class="number">1024</span> * <span class="number">8</span>, .tx_buffer_size = <span class="number">1024</span> * <span class="number">2</span>&#125;;</span><br><span class="line">usb_serial_jtag_driver_install(&amp;usb_serial_jtag_config);</span><br><span class="line">esp_vfs_usb_serial_jtag_use_driver();</span><br><span class="line"></span><br><span class="line"><span class="comment">//输入采用如下形式</span></span><br><span class="line"><span class="type">char</span> <span class="title function_">platform_getchar</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">    <span class="type">char</span> buff[<span class="number">1</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="keyword">if</span> (usb_serial_jtag_read_bytes(buff, <span class="number">1</span>, <span class="number">100</span>) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> buff[<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line">    vTaskDelay(<span class="number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//输出采用如下形式</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">platform_putchar</span><span class="params">(<span class="type">char</span> ch)</span> &#123;</span><br><span class="line">  usb_serial_jtag_write_bytes(&amp;ch, <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">  <span class="comment">//也可以使用如下两条语句替代代码</span></span><br><span class="line">  <span class="comment">//putchar(ch);</span></span><br><span class="line">  <span class="comment">//fflush(stdout);</span></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>​		如果直接绑定console做标准输入输出，<code>printf</code>或者<code>putchar</code>都会直接进行usb的缓冲区，直到接收到<code>\n</code>字符（部分版本超时之后也会）之后才会一并通过usb_serial_jtag输出。</p>
+<blockquote>
+<p>​		所以目前发现如果希望使用USB-Serial-JTAG即作为下载程序，又充当一个标准串口来使用，目前最好用v5.1版本，如果不是充当标准串口，而支持用作log打印或者不介意数据缓冲问题的情况下，可以采用任意版本的idf。</p>
+</blockquote>
+<h3 id="3、idf的工程和工具补充"><a href="#3、idf的工程和工具补充" class="headerlink" title="3、idf的工程和工具补充"></a>3、idf的工程和工具补充</h3><h4 id="1-一些常见的menuconfig配置问题"><a href="#1-一些常见的menuconfig配置问题" class="headerlink" title="(1). 一些常见的menuconfig配置问题"></a>(1). 一些常见的menuconfig配置问题</h4><p>​		idf的工程 配置是通过menuconfig来实现的，menuconfig是一种工程代码管理工具，可以通过图形化配置界面，对工程的信息进行配置，这里对一些经常使用的menuconfig配置做一个说明</p>
+<h5 id="1-Flash大小和CPU频率"><a href="#1-Flash大小和CPU频率" class="headerlink" title="1. Flash大小和CPU频率"></a>1. Flash大小和CPU频率</h5><p>​		比如ESP32-S3默认的flash大小是2M，CPU工作频率为160MHz这个可以修改成你的flash大小和频率如下：</p>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405111800041.png" alt="menuconfig_flash"></p>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405111800676.png" alt="menuconfig_cpu"></p>
+<h5 id="2-修改主线程app-main的栈大小"><a href="#2-修改主线程app-main的栈大小" class="headerlink" title="2. 修改主线程app_main的栈大小"></a>2. 修改主线程app_main的栈大小</h5><p>​		当程序比较大时，可能会导致主线程堆栈太小，可以设置高一些。否则可能会给出<code>***ERROR*** A stack overflow in task main has been detected.</code>的报错信息。</p>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405111800096.png" alt="menuconfig_main_stack"></p>
+<h5 id="3-flash分区表"><a href="#3-flash分区表" class="headerlink" title="3. flash分区表"></a>3. flash分区表</h5><p>​		esp-idf默认分区表如下，只占用了系统1M+64K的空间：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Name,   Type, SubType, Offset,  Size, Flags</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Note: <span class="keyword">if</span> you have increased the bootloader size, make sure to update the offsets to avoid overlap</span></span><br><span class="line">nvs,      data, nvs,     0x9000,        0x6000,</span><br><span class="line">phy_init, data, phy,     0xf000,        0x1000,</span><br><span class="line">factory,  app,  factory, 0x10000,		1M,</span><br></pre></td></tr></table></figure>
+
+<p>​		而程序稍微大一些，空间就可能不够，所以一般项目大一些情况，我们会自定义分区表，可以直接在工程下创建<code>partitions.csv</code>文件，然后再menuconfig中选择自己创建的分区表信息，如下：</p>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405111800774.png" alt="menuconfig_partition"></p>
+<p>​		具体分区表<code>partitions.csv</code>的内容可以参考		</p>
+<h5 id="4-PSRAM的开启和使用"><a href="#4-PSRAM的开启和使用" class="headerlink" title="4. PSRAM的开启和使用"></a>4. PSRAM的开启和使用</h5><h5 id="5-指定默认console输出通道"><a href="#5-指定默认console输出通道" class="headerlink" title="5. 指定默认console输出通道"></a>5. 指定默认console输出通道</h5><p>​		这里面有几个值可以选择：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Default:UART0: 		选择系统默认底串口0作为log是输出。</span><br><span class="line">USB CDC:			选择USB CDC设备作为输出，基于TinyUSB</span><br><span class="line">USB serial/JTAG:	选择系统底USB转串口/JTAG接口作为输出。</span><br><span class="line">Custom:UART:		选择系统指定串口作为输出，可以选择UART0/UART1</span><br><span class="line">None:				关闭输出通道，注意，如果这里关闭，但是实际有prinf，可能会报错，</span><br><span class="line">					如果只是希望关闭log,可以参考6，关闭log</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405111801417.png" alt="menuconfig_console"></p>
+<h5 id="6-设置log输出模式"><a href="#6-设置log输出模式" class="headerlink" title="6. 设置log输出模式"></a>6. 设置log输出模式</h5><p>​		log输出包括两个部分底输出，一个式Bootloader config底log输出，也就是系统启动底时候Bootloader代码底log输出，一个代码的log输出，一般情况下我们只需要设置代码底log输出即可，Bootloader的log输出对我们代码几乎没有影响，还可以方便看到一些代码的配置信息，所以一般不需要设置，保持默认就好。这里把两个都给出来</p>
+<p>​		Bootloader的log输出设置：</p>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405111802038.png" alt="boot_log"></p>
+<p>​		代码的log输出设置：</p>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405111802970.png" alt="app_log"></p>
+<h4 id="2-关于Kconfig-projbuild和sdkconfig-defaults"><a href="#2-关于Kconfig-projbuild和sdkconfig-defaults" class="headerlink" title="(2). 关于Kconfig.projbuild和sdkconfig.defaults"></a>(2). 关于Kconfig.projbuild和sdkconfig.defaults</h4><p>​		Kconfig.projbuild本质上是一个配置menuconfig的配置文件，可以同来配置和增加menuconfig相关的配置信息。</p>
+<p>​		关于Kconfig更多的信息可以参考如下图片：</p>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405111803239.png" alt="Kconfig_i"></p>
+<p>​		而sdkconfig.defaults可以定义一些默认的配置选项，即给menuconfig配置中的一些参数进行设定，这样可以使得我们不需要通过menuconfig交互式界面对设备信息进行配置，直接通过文本的形式进行配置（前提是我们已经知道了配置的名称和内容）。</p>
+<p>​		实际上，我们在执行idf.py menuconfig的时候，会自动根据menuconfig中的定义，加载sdkconfig.defaults的内容，进行配置。所以如果sdkconfig.defaults中的定义已经存在，则会自动进行menuconfig的配置。</p>
+<h4 id="3-组件管理-managed-components与components-与官方组件管理工具：-https-components-espressif-com"><a href="#3-组件管理-managed-components与components-与官方组件管理工具：-https-components-espressif-com" class="headerlink" title="(3). 组件管理(managed_components与components)与官方组件管理工具： https://components.espressif.com/"></a>(3). 组件管理(<code>managed_components</code>与<code>components</code>)与官方组件管理工具： <a href="https://components.espressif.com/">https://components.espressif.com/</a></h4><p>​		idf的组件分为三种：idf官方组件， 第三方组件， 自定义组件，它们分别在“idf的frameworks库的components目录”， 工程的<code>managed_components</code>目录， 工程的<code>components</code>目录下，这里对这三个组件做个简单介绍</p>
+<p>​		第一种为：idf官方组件，它跟随idf的发布而更新，在idf的frameworks库的components目录下，比如5.1版本的官方组件都在如下目录中</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">frameworks\esp-idf-v5.1\components</span><br></pre></td></tr></table></figure>
+
+<p>​		第二种为：第三方组件：一般指的是在官方组件管理工具： <a href="https://components.espressif.com/%E4%B8%AD%E5%8F%AF%E4%BB%A5%E6%90%9C%E7%B4%A2%E5%88%B0%E7%9A%84%E7%BB%84%E4%BB%B6%E5%BA%93%EF%BC%8C%E4%B9%90%E9%91%AB%E6%9C%89%E4%B8%80%E4%B8%AA%E7%BD%91%E7%BB%9C%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7%E7%BD%91%E7%AB%99%EF%BC%8C%E5%9C%A8idf%E4%B8%AD%E4%B9%9F%E6%9E%84%E5%BB%BA%E4%BA%86%E7%BB%84%E4%BB%B6%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7%E3%80%82%E5%AE%98%E6%96%B9%E5%92%8C%E6%9F%90%E4%BA%9B%E7%AC%AC%E4%B8%89%E6%96%B9%E5%8F%91%E5%B8%83%E7%9A%84%E7%BB%84%E4%BB%B6%E5%8F%AF%E4%BB%A5%E5%9C%A8%E8%BF%99%E9%87%8C%E6%90%9C%E7%B4%A2%E5%88%B0%E3%80%82%E5%AE%83%E5%8F%AF%E4%BB%A5%E9%80%9A%E8%BF%87idf_component.yml%E6%9D%A5%E7%AE%A1%E7%90%86%EF%BC%8C%E4%B8%80%E8%88%AC%E6%83%85%E5%86%B5%E4%B8%8B%EF%BC%8C%E5%9C%A8%E7%BB%84%E4%BB%B6%E5%BA%93%E7%9A%84%E7%95%8C%E9%9D%A2%E4%B8%AD%E4%BC%9A%E6%8F%90%E4%BE%9B%E4%B8%8B%E8%BD%BD%E7%BB%84%E4%BB%B6%E7%9A%84%E6%96%B9%E6%B3%95%E5%A6%82%E4%B8%8B%E5%9B%BE%EF%BC%9A">https://components.espressif.com/中可以搜索到的组件库，乐鑫有一个网络组件管理工具网站，在idf中也构建了组件管理工具。官方和某些第三方发布的组件可以在这里搜索到。它可以通过idf_component.yml来管理，一般情况下，在组件库的界面中会提供下载组件的方法如下图：</a></p>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405111803465.png" alt="components"></p>
+<p>​		更新完成之后组件库会自动添加到工程的<code>managed_components</code>目录下方。该组件在每次编译的时候会自动同步，以确保组件内容没有被修改，所以一般不允许修改组件的内容。</p>
+<p>​		第三种为：自定义组件，自定义组件库，我们一般放在工程目录的<code>components</code>目录下，用户可以自行修改，另外如果我们要对一些第三方组件进行修改定制，可以线同步到&#96;&#96;managed_components<code>目录，然后我们在剪贴到</code>components&#96;&#96;&#96;目录下，再进行编辑使用。</p>
+<h4 id="4-组件配置文件idf-component-yml-和组件信息文件dependencies-lock"><a href="#4-组件配置文件idf-component-yml-和组件信息文件dependencies-lock" class="headerlink" title="(4). 组件配置文件idf_component.yml 和组件信息文件dependencies.lock"></a>(4). 组件配置文件idf_component.yml 和组件信息文件dependencies.lock</h4><p>​		<code>idf_component.yml</code>文件是一个YAML格式的文件，用于定义组件的元数据和依赖关系。这个文件通常位于组件的根目录下，作用包括：</p>
+<ul>
+<li><strong>定义依赖项</strong>：它列出了当前组件依赖的其他组件或库，包括这些依赖的版本信息。这有助于确保项目中使用的是兼容的组件版本。</li>
+<li><strong>指定组件属性</strong>：比如组件的描述、维护者信息、许可证信息等。</li>
+<li><strong>配置选项</strong>：提供对组件内部设置的配置，如使能或禁用特定的功能。</li>
+</ul>
+<p>​		<code>dependencies.lock</code>文件是一个自动生成的文件，通常在执行项目配置过程（如运行<code>idf.py reconfigure</code>或首次构建项目时）生成。它的主要作用是：</p>
+<ul>
+<li><strong>锁定依赖版本</strong>：文件中详细记录了项目解析依赖时所确定的具体版本号。这确保了项目的再现性，即不同的开发者或在不同的环境中构建项目时，都将使用相同版本的依赖，避免由于依赖版本变化导致的问题。</li>
+<li><strong>依赖解析的结果</strong>：这个文件是项目依赖解析过程的直接产物，它包含了所有必需的、已解析的依赖组件及其版本，确保了构建系统能够获取和使用正确的组件版本。</li>
+</ul>
+<p><code>idf_component.yml</code>和<code>dependencies.lock</code>的区别</p>
+<ul>
+<li><strong>用途差异</strong>：<code>idf_component.yml</code>用于声明依赖和组件配置，而<code>dependencies.lock</code>用于锁定这些依赖的具体版本，确保构建的一致性。</li>
+<li><strong>更新机制</strong>：<code>idf_component.yml</code>由开发者手动更新，以匹配组件需求和属性；<code>dependencies.lock</code>通常在依赖关系有变化或首次解析依赖时自动更新。</li>
+<li><strong>目标用户</strong>：<code>idf_component.yml</code>面向项目和组件开发者，他们需要在这个文件中指定和管理组件的依赖关系；而<code>dependencies.lock</code>主要是给构建系统使用，以保证项目的构建环境和条件的一致性。</li>
+</ul>
+<p>​		<code>idf_component.yml</code>文件内容大致如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dependencies:</span><br><span class="line">  espressif/esp_lcd_touch_ft5x06: <span class="string">&quot;^1.0.6&quot;</span></span><br><span class="line">  idf: <span class="string">&quot;&gt;=4.4&quot;</span></span><br><span class="line">  lvgl/lvgl: <span class="string">&quot;~8.3.0&quot;</span></span><br><span class="line">  espressif/zlib: <span class="string">&quot;^1.3.0&quot;</span></span><br><span class="line">  espressif/es8311: <span class="string">&quot;^1.0.0&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>​		<code>dependencies.lock</code>文件内容大致如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dependencies:</span><br><span class="line">  espressif/es8311:</span><br><span class="line">    component_hash: eacbe7cb7f6993eb0f439121a56663cdfbf95925e7ddf5d2ed5aa640bed476fd</span><br><span class="line">    <span class="built_in">source</span>:</span><br><span class="line">      service_url: https://api.components.espressif.com/</span><br><span class="line">      <span class="built_in">type</span>: service</span><br><span class="line">    version: 1.0.0</span><br><span class="line">  espressif/esp_lcd_touch:</span><br><span class="line">    component_hash: d4d8f2dc33205797169a97a02e0d89a8982f59fe0509129b54422052b8522f59</span><br><span class="line">    <span class="built_in">source</span>:</span><br><span class="line">      service_url: https://api.components.espressif.com/</span><br><span class="line">      <span class="built_in">type</span>: service</span><br><span class="line">    version: 1.1.1</span><br><span class="line">  espressif/esp_lcd_touch_ft5x06:</span><br><span class="line">    component_hash: 97759953d9436a365e9427078c5b04ecce4e6a50f50cf62c68cd6bfa229b812c</span><br><span class="line">    <span class="built_in">source</span>:</span><br><span class="line">      service_url: https://api.components.espressif.com/</span><br><span class="line">      <span class="built_in">type</span>: service</span><br><span class="line">    version: 1.0.6</span><br><span class="line">  espressif/zlib:</span><br><span class="line">    component_hash: 999ec50086ac1c82b8321d8f540dc9fd10f5622948b935558aa16b4b66e95d9d</span><br><span class="line">    <span class="built_in">source</span>:</span><br><span class="line">      service_url: https://api.components.espressif.com/</span><br><span class="line">      <span class="built_in">type</span>: service</span><br><span class="line">    version: 1.3.0</span><br><span class="line">  idf:</span><br><span class="line">    component_hash: null</span><br><span class="line">    <span class="built_in">source</span>:</span><br><span class="line">      <span class="built_in">type</span>: idf</span><br><span class="line">    version: 5.1.0</span><br><span class="line">  lvgl/lvgl:</span><br><span class="line">    component_hash: 948bff879a345149b83065535bbc4a026ce9f47498a22881e432a264b9098015</span><br><span class="line">    <span class="built_in">source</span>:</span><br><span class="line">      service_url: https://api.components.espressif.com/</span><br><span class="line">      <span class="built_in">type</span>: service</span><br><span class="line">    version: 8.3.11</span><br><span class="line">manifest_hash: b2c9ad493b01235aaa12d62f4d6922fb1ee3203b34b14257305de16c9838f577</span><br><span class="line">target: esp32c3</span><br><span class="line">version: 1.0.0</span><br></pre></td></tr></table></figure>
+
+<p>​		下面是几个常用的针对<code>idf_component.yml</code>组件描述符</p>
+<h5 id="1-Caret-允许版本在当前主版本号范围内更新。"><a href="#1-Caret-允许版本在当前主版本号范围内更新。" class="headerlink" title="1.  ^ (Caret): 允许版本在当前主版本号范围内更新。"></a>1.  <strong>^ (Caret)</strong>: 允许版本在当前主版本号范围内更新。</h5><blockquote>
+<p>​		例如，<code>^1.0.6</code>允许使用1.0.6以上到2.0.0以下的版本。</p>
+</blockquote>
+<h5 id="2-Tilde-允许次要版本的更新，如果指定了次版本，则只更新补丁版本。"><a href="#2-Tilde-允许次要版本的更新，如果指定了次版本，则只更新补丁版本。" class="headerlink" title="2. ~ (Tilde): 允许次要版本的更新，如果指定了次版本，则只更新补丁版本。"></a>2. <strong>~ (Tilde)</strong>: 允许次要版本的更新，如果指定了次版本，则只更新补丁版本。</h5><blockquote>
+<p>​		例如，<code>~8.3.0</code>可以更新到8.3.x的任何版本，但不超过8.4.0。</p>
+</blockquote>
+<h5 id="3-Greater-Than-or-Equal-To-指定版本必须大于或等于特定版本。"><a href="#3-Greater-Than-or-Equal-To-指定版本必须大于或等于特定版本。" class="headerlink" title="3. &gt;&#x3D; (Greater Than or Equal To): 指定版本必须大于或等于特定版本。"></a>3. <strong>&gt;&#x3D; (Greater Than or Equal To)</strong>: 指定版本必须大于或等于特定版本。</h5><blockquote>
+<p>​		例如，<code>&gt;=4.4</code>表示版本必须是4.4或更高。</p>
+</blockquote>
+<h4 id="5-idf中Cmake配置的一些关键词"><a href="#5-idf中Cmake配置的一些关键词" class="headerlink" title="(5). idf中Cmake配置的一些关键词"></a>(5). idf中Cmake配置的一些关键词</h4><h5 id="1-屏蔽一些不必要的警告"><a href="#1-屏蔽一些不必要的警告" class="headerlink" title="1. 屏蔽一些不必要的警告"></a>1. 屏蔽一些不必要的警告</h5><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">set</span>(CMAKE_C_FLAGS <span class="string">&quot;$&#123;CMAKE_C_FLAGS&#125; -Wno-char-subscripts -Wno-maybe-uninitialized&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<ol>
+<li><code>set</code>: 这是CMake的命令，用于设置或修改变量的值。</li>
+<li><code>CMAKE_C_FLAGS</code>: 这是一个CMake变量，代表用于C语言编译器的编译选项。</li>
+<li><code>&quot;$&#123;CMAKE_C_FLAGS&#125;&quot;</code>: 这部分是变量替换，意思是取出<code>CMAKE_C_FLAGS</code>变量当前的值。</li>
+<li><code>-Wno-char-subscripts</code> 和 <code>-Wno-maybe-uninitialized</code> 是具体添加到<code>CMAKE_C_FLAGS</code>变量中的编译器选项：<ul>
+<li><code>-Wno-char-subscripts</code>：这个选项用来禁止编译器发出警告，当数组下标是char类型时。通常这种情况下，char类型的下标会被隐式转换为整型，某些情况下可能会引发问题或警告。</li>
+<li><code>-Wno-maybe-uninitialized</code>：这个选项用来禁止编译器发出警告，当变量可能未初始化时。这可以防止编译器对可能未初始化的使用发出警告，尽管这样做有时可能隐藏实际的编程错误。</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<h5 id="2-自动扫描文件夹下的C文件自动添加（循环扫描目录以及子目录下的所有c文件）"><a href="#2-自动扫描文件夹下的C文件自动添加（循环扫描目录以及子目录下的所有c文件）" class="headerlink" title="2. 自动扫描文件夹下的C文件自动添加（循环扫描目录以及子目录下的所有c文件）"></a>2. 自动扫描文件夹下的C文件自动添加（循环扫描目录以及子目录下的所有c文件）</h5><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">file</span>(GLOB_RECURSE SOURCES *.c)</span><br><span class="line">idf_component_register(SRCS <span class="variable">$&#123;SOURCES&#125;</span>)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意，这可能导致增加或者删除文件，但是cmake并没有发现，导致其没有被编译仅二进制文件的可能性，所以这种情况下，建议增加或者删除文件的时候，可以先clean一下项目，然后再重新编译。</p>
+<p>​		另一个常用的实践是尽量避免在配置文件中使用GLOB来指定源文件。可以考虑明确列出所有源文件，虽然这增加了维护成本，但可以提高项目的可预测性。</p>
+</blockquote>
+<h5 id="3-静态库编译到二进制系统中关键字：WHOLE-ARCHIVE"><a href="#3-静态库编译到二进制系统中关键字：WHOLE-ARCHIVE" class="headerlink" title="3. 静态库编译到二进制系统中关键字：WHOLE_ARCHIVE"></a>3. 静态库编译到二进制系统中关键字：WHOLE_ARCHIVE</h5><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">file</span>(GLOB_RECURSE SOURCES *.c)</span><br><span class="line">idf_component_register(SRCS <span class="variable">$&#123;SOURCES&#125;</span></span><br><span class="line">                    WHOLE_ARCHIVE</span><br><span class="line">                    INCLUDE_DIRS <span class="string">&quot;.&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这个意思是，有些函数，即使没有被系统调用（比如被main函数，或者中断函数，或者其他函数调用），这些函数仍然需要被编译到二进制文件中，这样做的目的是，一些脚本解析器，本身系统不会调用该函数，但是系统会执行来自外部的命令，或者文件系统中的脚本代码，根据脚本代码的执行情况会产生调用函数的可能性，如果不包含此关键字可能导致，该函数并未被编译到二进制文件中，而导致系统执行失败。</p>
+</blockquote>
+<h5 id="4-组件依赖关键字：REQUIRES"><a href="#4-组件依赖关键字：REQUIRES" class="headerlink" title="4. 组件依赖关键字：REQUIRES"></a>4. 组件依赖关键字：REQUIRES</h5><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">file</span>(GLOB_RECURSE SOURCES *.c)</span><br><span class="line">idf_component_register(SRCS <span class="variable">$&#123;SOURCES&#125;</span></span><br><span class="line">                    WHOLE_ARCHIVE</span><br><span class="line">                    INCLUDE_DIRS <span class="string">&quot;.&quot;</span></span><br><span class="line">                    REQUIRES</span><br><span class="line">                	driver</span><br><span class="line">                	fatfs)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>REQUIRES关键字描述的是代码对一些其他组件库的依赖关系，也就是说，这部分代码可能需要依赖一些其他组件库一起运行（包括官方组件，第三方组件，自定义组件）如果没有相关的组件，可能会导致编译失败，加上这个组件库之后，系统会把需要的组件库一起添加到系统的编译选项里面进行编译。</p>
+</blockquote>
+<h5 id="5-添加预处理器定义"><a href="#5-添加预处理器定义" class="headerlink" title="5. 添加预处理器定义"></a>5. 添加预处理器定义</h5><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="comment"># add macro</span></span><br><span class="line">idf_build_set_property(</span><br><span class="line">    COMPILE_DEFINITIONS <span class="string">&quot;-DPIKA_CONFIG_ENABLE&quot;</span> APPEND)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这会将<code>PIKA_CONFIG_ENABLE</code>定义添加到当前目标的编译定义中。</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>嵌入式</category>
+        <category>ESP32学习笔记</category>
+      </categories>
+      <tags>
+        <tag>esp32</tag>
+        <tag>esp-idf</tag>
+        <tag>vscode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo博客搭建（一）：在PC上搭建Hexo博客系统，并设置博客主题</title>
+    <url>/Web/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%9C%A8PC%E4%B8%8A%E6%90%AD%E5%BB%BAHexo%E5%8D%9A%E5%AE%A2%E7%B3%BB%E7%BB%9F%EF%BC%8C%E5%B9%B6%E8%AE%BE%E7%BD%AE%E5%8D%9A%E5%AE%A2%E4%B8%BB%E9%A2%98/</url>
+    <content><![CDATA[<blockquote>
+<p>​		本文主要讲解如何搭建hexo博客网站，并直接部署在github上，实现通过<code>xxx.github.io</code>来访问博客，同时针对云服务器的用户，可以把Hexo博客同步部署到服务器上，通过宝塔Linux面板架设网站，并实现域名解析和绑定。针对没有云服务器的用户，也给出了直接部署在个人的Linux终端（比如：树莓派或者其他Linux开发板，软路由，NAS等）的方案和思路，并给出通过内网穿透方法实现通过自主域名访问博客的方法。最终实现可以通过<code>xxx.github.io</code>和自主域名访问博客网页。</p>
+<p>​		这里不对Hexo博客的特性做说明，详细的Hexo相关的内容，可以参考Hexo官方网站：<a href="https://hexo.io/zh-cn/">https://hexo.io/zh-cn/</a></p>
+<p>​		这里用宝塔面板主要因为：一方面宝塔面板免去了Nginx的相关配置，可以直接用可视化操作来部署网页；另外一方面，一台Linux服务器可以同属部署多个网站，可以统一用宝塔面板统一管理。也方便该服务器不仅可以用来部署网站，还可以同时作为其他左右使用（比如可以用来做远程代码调试，内网穿透服务等）。</p>
+<p>​		本文主要分四个章节来讲解：</p>
+<ul>
+<li><p>一：<a href="/Web/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%9C%A8PC%E4%B8%8A%E6%90%AD%E5%BB%BAHexo%E5%8D%9A%E5%AE%A2%E7%B3%BB%E7%BB%9F%EF%BC%8C%E5%B9%B6%E8%AE%BE%E7%BD%AE%E5%8D%9A%E5%AE%A2%E4%B8%BB%E9%A2%98/">讲解如何在PC机上搭建Hexo博客，并设置博客主题</a>；</p>
+</li>
+<li><p>二：<a href="/Web/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E6%8A%8Ahexo%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2%E5%88%B0github%E7%BD%91%E9%A1%B5%E6%89%98%E7%AE%A1%EF%BC%8C%E5%AE%9E%E7%8E%B0%E9%80%9A%E8%BF%87%E7%B1%BB%E4%BC%BCxxx-github-io%E6%9D%A5%E8%AE%BF%E9%97%AE%E5%8D%9A%E5%AE%A2/">如何把Hexo搭建的博客同步到github的网页托管服务上，实现以<code>xxx.github.io</code>(其中<code>xxx</code>为你的github用户名)访问</a>；</p>
+</li>
+<li><p>三： <a href="/Web/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E9%83%A8%E7%BD%B2%E4%BA%91%E7%AB%AFLinux%E6%9C%8D%E5%8A%A1%E5%99%A8%EF%BC%8C%E6%90%AD%E5%BB%BA%E5%AE%9D%E5%A1%94Linux%E9%9D%A2%E6%9D%BF%EF%BC%8C%E5%AE%9E%E7%8E%B0%E8%BF%9C%E7%A8%8B%E6%88%96%E5%9F%9F%E5%90%8D%E8%AE%BF%E9%97%AE/">如果你有一个具有公网IP的云服务器和已经备案的域名，如何把hexo同时部署到服务器上，实现自主域名的访问</a>；</p>
+</li>
+<li><p>四：<a href="/Web/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E6%9C%AC%E5%9C%B0Linux%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2%EF%BC%8C%E6%90%AD%E5%BB%BA%E5%AE%9D%E5%A1%94Linux%E9%9D%A2%E6%9D%BF%EF%BC%8C%E9%80%9A%E8%BF%87%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F%E5%AE%9E%E7%8E%B0%E5%9F%9F%E5%90%8D%E8%AE%BF%E9%97%AE/">如何把博客部署到本地的Linux服务器（树莓派或者其他Linux开发板，软路由，NAS等）上，通过内网穿透服务和自主域名绑定实现实现自主域名的访问</a>。</p>
+</li>
+</ul>
+<p>​		一般情况下，自主域名需要做域名解析，所以，它只能访问你的云服务器或者你本地的Linux服务器，二选一即可，把hexo博客部署在Linux服务器上的操作在第三章节的前面两个部分。</p>
+</blockquote>
+<h2 id="一、在PC上搭建Hexo博客，并设置博客主题"><a href="#一、在PC上搭建Hexo博客，并设置博客主题" class="headerlink" title="一、在PC上搭建Hexo博客，并设置博客主题"></a>一、在PC上搭建Hexo博客，并设置博客主题</h2><blockquote>
+<p>​		设计到的工具和软件：</p>
+<ul>
+<li><p>Node.js (windows，这里安装的是v18.20.2 LTS版本): 	 <a href="https://nodejs.org/en/download">https://nodejs.org/en/download</a></p>
+</li>
+<li><p><code>NodeSource</code> 的github网址： <a href="https://github.com/nodesource/distributions">https://github.com/nodesource/distributions</a></p>
+</li>
+<li><p>git：<a href="https://git-scm.com/">https://git-scm.com/</a></p>
+</li>
+<li><p>Hexo博客系统： <a href="https://hexo.io/zh-cn/">https://hexo.io/zh-cn/</a></p>
+</li>
+<li><p>安知鱼博客主题（一款基于Hexo-Butterfly修改的Hexo主题）：<a href="https://docs.anheyu.com/">https://docs.anheyu.com/</a></p>
+</li>
+<li><p>vscode(编辑文本使用，有需要可以安装)：<a href="https://code.visualstudio.com/">https://code.visualstudio.com/</a></p>
+</li>
+<li><p>Typora文档编辑器（markdown编辑器，89元终身）：<a href="https://typoraio.cn/">https://typoraio.cn/</a></p>
+<p>​		Typora和vscode仅仅是用来作为文章编辑和代码编辑使用，理论上有很多选择，vscode本身也支持markdown编辑功能（通过插件），这里只是给出本人使用的工具而已。关于vscode的安装和使用，可以网络搜索方法，正常情况下直接安装安装包即可，安装后可以安装一个<code>简体中文</code>插件，以方便使用，这里就不赘述了。</p>
+</li>
+</ul>
+</blockquote>
+<h3 id="1、-PC机安装hexo博客"><a href="#1、-PC机安装hexo博客" class="headerlink" title="1、 PC机安装hexo博客"></a>1、 PC机安装hexo博客</h3><ol>
+<li>针对windows和MAC系统下：Node.js和git直接下载对应的安装包安装即可。安装之后在终端中（CMD终端和PowerShell终端都可以）输入以下命令，确保软件都正确安装：</li>
+</ol>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">node <span class="literal">-v</span></span><br><span class="line">npm <span class="literal">-v</span></span><br><span class="line">git <span class="literal">--version</span></span><br></pre></td></tr></table></figure>
+
+<p>​		如果你的是Linux系统（注意：这里的安装hexo博客系统的指的是你的个人电脑，你后续写文章用的电脑，一般情况下这个电脑为windows和mac为主，这里只是提供一个在Linux上安装Node.js的方法），很多Linux系统的源提供的node.js的版本都过于老旧，所以一般Linux系统我们建议用<code>NodeSource</code> 来安装，<code>NodeSource</code> 的官方github的地址在上面说明已经提供，这里假如我们的PC机是Ubuntu，我们需要安装的node版本为v18.20.2 LTS版本，则在终端中输入如下内容 (其他系统在<code>NodeSource</code> 的github网址都有提高安装方法)：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash - &amp;&amp; sudo apt-get install -y nodejs</span><br></pre></td></tr></table></figure>
+
+<p>​		git则只需要用标准的包管理器安装即可，ubuntu的安装指令如下：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo apt install git</span><br></pre></td></tr></table></figure>
+
+<p>​		安装完成之后和windows与MAC一样在终端中输入以下指令查看是否正确安装以及其版本：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">node -v</span><br><span class="line">npm -v</span><br><span class="line">git --version</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>​		如果担心网络问题，后续用npm下载和更新插件导致失败，可以把npm的源修改为国内的源(本文选择的是淘宝npm的镜像)：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm config set registry https://registry.npmmirror.com</span><br></pre></td></tr></table></figure>
+
+<p>​		当然，我们也可以通过如下语句，把镜像源修改为官方的镜像源：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm config set registry http://www.npmjs.org</span><br></pre></td></tr></table></figure>
+
+<p>​		或者只是临时把镜像源修改为淘宝镜像源：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm --registry https://registry.npmmirror.com install node-red-contrib-composer@latest</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>​		</p>
+<ol start="2">
+<li>建立一个文件夹，用来存储博客，比如，我的博客放在的目录为<code>E:\00_blog_senysunny\senysunny</code>，可以直接用vscode打开该目录，开启一个终端，输入<code>npm install hexo-cli -g</code>安装Hexo，安装后，可以在终端界面输入<code>hexo -v</code>查看安装情况：</li>
+</ol>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">npm install hexo<span class="literal">-cli</span> <span class="literal">-g</span></span><br><span class="line">hexo <span class="literal">-v</span></span><br></pre></td></tr></table></figure>
+
+<p>​		有正确打印hexo的版本信息，例如<code>hexo-cli: 4.3.2</code>则表示安装完成。</p>
+<ol start="3">
+<li>输入<code>hexo init</code>初始化博客，然后输入<code>npm install</code>安装hexo相关依赖</li>
+</ol>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">hexo init</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>输入<code>hexo g</code>和<code>hexo s</code>，分别式生成静态网页和启动hexo本地服务器的命令缩写，其全称是<code>hexo generate</code>和<code>hexo server</code></li>
+</ol>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">hexo g</span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>此时，你就可以在浏览器打开<code>http://localhost:4000/</code>看到创建的网站了。</li>
+</ol>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405082319800.png" alt="hexo1"></p>
+<ol start="6">
+<li>测试没有问题，我们可以在终端中按<code>ctrl + c</code>关闭本地服务。为了后续可以把博客同步到github，以及自己的云服务器，可以先安装一个hexo自动部署发布工具。</li>
+</ol>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">npm install hexo<span class="literal">-deployer-git</span> <span class="literal">--save</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2、安装anzhiyu博客主题"><a href="#2、安装anzhiyu博客主题" class="headerlink" title="2、安装anzhiyu博客主题"></a>2、安装anzhiyu博客主题</h3><blockquote>
+<pre><code>             ​		博客已经安装好，但是博客美观还是不行，这里开始给博客安装一个主题，这里安装的是安知鱼的主题，它本身也是基于Butterfly主题修改的。当然，你也可以选择其他主题，不同主题可以参考主题的安装设置文档，这里给出Butterfly和anzhiyu主题的中文文档，可以供参考。实际上我们按照文档一步一步来即可。后续也可以根据文档自己优化自己的博客内容。
+         
+             Butterfly主题文档中文版： https://butterfly.js.org/posts/21cfbf15/
+         
+             安知鱼主题文档中文版： https://docs.anheyu.com/initall.html
+</code></pre>
+</blockquote>
+<ol>
+<li>输入<code>npm i hexo-theme-anzhiyu</code>安装安知鱼博客主题，并且安装pug 和 stylus 渲染插件</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm i hexo-theme-anzhiyu</span><br><span class="line">npm install hexo-renderer-pug hexo-renderer-stylus --save</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>此时，在博客的目录下会有<code>node_modules\hexo-theme-anzhiyu</code>文件夹，表示已经安装好了主题，我们把该目录下的<code>_config.yml</code>复制到根目录，并修改为<code>_config.anzhiyu.yml</code>（注意根目录下本身就有一个<code>_config.yml</code>两个文件不一样），此时根目录下会有<code>_config.yml</code>和<code>_config.anzhiyu.yml</code>两个文件。</li>
+</ol>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405082358531.png" alt="hexo2"></p>
+<ol start="3">
+<li>把根目录下的<code>_config.yml</code>的主题修改成<code>anzhiyu</code>，这里顺带把博客的名称、语言、时区等信息一并修改了，如下（下面的内容并不是<code>_config.yml</code>所有内容，只展示了修改的部分,即<code># Site</code>部分和<code># Extensions</code> 部分）：</li>
+</ol>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="type">![hexo3](E:/00_blog_senysunny/img/hexo3.png)</span><span class="type">![hexo3](E:/00_blog_senysunny/img/hexo3.png)#</span> <span class="string">Site</span></span><br><span class="line"><span class="attr">title:</span> <span class="string">SenySunny</span></span><br><span class="line"><span class="attr">subtitle:</span> <span class="string">&#x27;SenySunny的技术笔记&#x27;</span></span><br><span class="line"><span class="attr">description:</span> <span class="string">&#x27;SenySunny的技术笔记&#x27;</span></span><br><span class="line"><span class="attr">keywords:</span> <span class="string">SenySunny</span></span><br><span class="line"><span class="attr">author:</span> <span class="string">Seny</span> <span class="string">Lee</span></span><br><span class="line"><span class="attr">language:</span> <span class="string">zh-CN</span></span><br><span class="line"><span class="attr">timezone:</span> <span class="string">Asia/Shanghai</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Extensions</span></span><br><span class="line"><span class="comment">## Plugins: https://hexo.io/plugins/</span></span><br><span class="line"><span class="comment">## Themes: https://hexo.io/themes/</span></span><br><span class="line"><span class="attr">theme:</span> <span class="string">anzhiyu</span></span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>通过<code>hexo cl</code>来清除缓存（其为<code>hexo clean</code>的缩写），再通过<code>hexo g</code>和<code>hexo s</code>来重新生成静态网页和启动hexo本地服务器，再次打开<code>http://localhost:4000/</code>可以看到主题已经修改了。</li>
+</ol>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405090009771.png" alt="hexo3"></p>
+<ol start="5">
+<li>更多的hexo命令可以详细参考：<a href="https://hexo.io/zh-cn/docs/commands">https://hexo.io/zh-cn/docs/commands</a></li>
+</ol>
+<h3 id="3、安装博客文章加密插件"><a href="#3、安装博客文章加密插件" class="headerlink" title="3、安装博客文章加密插件"></a>3、安装博客文章加密插件</h3><blockquote>
+<p>​	本节是属于个人额外补充的内容，如果你写的部分文章，希望再一定时间内暂时加密隐藏，或者说只允许知道访问密码的人观看，可以尝试给博客文件加密，这里用到了一个hexo的encrypt插件，其github的地址为：<a href="https://github.com/D0n9X1n/hexo-blog-encrypt%E3%80%82%E5%8F%AF%E4%BB%A5%E5%8F%82%E8%80%83%EF%BC%8C%E8%BF%99%E9%87%8C%E4%BB%85%E4%BB%85%E5%81%9A%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D%E3%80%82">https://github.com/D0n9X1n/hexo-blog-encrypt。可以参考，这里仅仅做简单介绍。</a></p>
+</blockquote>
+<ol>
+<li>直接输入<code>npm install --save hexo-blog-encrypt</code>安装插件，如果本地服务没有退出，按<code>CTRL + C</code>关闭服务。</li>
+</ol>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">npm install <span class="literal">--save</span> hexo<span class="literal">-blog-encrypt</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>此时，你只需要再文章的头部添加<code> &quot;password&quot;</code>字段即可实现文章的加密，比如下面就是把<code>hello world</code>文章加密，密码为：<code>hello</code>：</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: Hello World</span><br><span class="line">date: 2016-03-30 21:18:02</span><br><span class="line">password: hello</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>更多的其他功能，可以参考<code>hexo-blog-encrypt</code>的官方文档，官方有提高中文文档，地址已经再本节开头给出。</li>
+</ol>
+]]></content>
+      <categories>
+        <category>Web前端</category>
+        <category>hexo博客系统</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo博客搭建（三）：部署云端Linux服务器，搭建宝塔Linux面板，实现远程或域名访问。</title>
+    <url>/Web/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E9%83%A8%E7%BD%B2%E4%BA%91%E7%AB%AFLinux%E6%9C%8D%E5%8A%A1%E5%99%A8%EF%BC%8C%E6%90%AD%E5%BB%BA%E5%AE%9D%E5%A1%94Linux%E9%9D%A2%E6%9D%BF%EF%BC%8C%E5%AE%9E%E7%8E%B0%E8%BF%9C%E7%A8%8B%E6%88%96%E5%9F%9F%E5%90%8D%E8%AE%BF%E9%97%AE/</url>
+    <content><![CDATA[<blockquote>
+<p>​		本文主要讲解如何搭建hexo博客网站，并直接部署在github上，实现通过<code>xxx.github.io</code>来访问博客，同时针对云服务器的用户，可以把Hexo博客同步部署到服务器上，通过宝塔Linux面板架设网站，并实现域名解析和绑定。针对没有云服务器的用户，也给出了直接部署在个人的Linux终端（比如：树莓派或者其他Linux开发板，软路由，NAS等）的方案和思路，并给出通过内网穿透方法实现通过自主域名访问博客的方法。最终实现可以通过<code>xxx.github.io</code>和自主域名访问博客网页。</p>
+<p>​		这里不对Hexo博客的特性做说明，详细的Hexo相关的内容，可以参考Hexo官方网站：<a href="https://hexo.io/zh-cn/">https://hexo.io/zh-cn/</a></p>
+<p>​		这里用宝塔面板主要因为：一方面宝塔面板免去了Nginx的相关配置，可以直接用可视化操作来部署网页；另外一方面，一台Linux服务器可以同属部署多个网站，可以统一用宝塔面板统一管理。也方便该服务器不仅可以用来部署网站，还可以同时作为其他左右使用（比如可以用来做远程代码调试，内网穿透服务等）。</p>
+<p>​		本文主要分四个章节来讲解：</p>
+<ul>
+<li><p>一：<a href="/Web/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%9C%A8PC%E4%B8%8A%E6%90%AD%E5%BB%BAHexo%E5%8D%9A%E5%AE%A2%E7%B3%BB%E7%BB%9F%EF%BC%8C%E5%B9%B6%E8%AE%BE%E7%BD%AE%E5%8D%9A%E5%AE%A2%E4%B8%BB%E9%A2%98/">讲解如何在PC机上搭建Hexo博客，并设置博客主题</a>；</p>
+</li>
+<li><p>二：<a href="/Web/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E6%8A%8Ahexo%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2%E5%88%B0github%E7%BD%91%E9%A1%B5%E6%89%98%E7%AE%A1%EF%BC%8C%E5%AE%9E%E7%8E%B0%E9%80%9A%E8%BF%87%E7%B1%BB%E4%BC%BCxxx-github-io%E6%9D%A5%E8%AE%BF%E9%97%AE%E5%8D%9A%E5%AE%A2/">如何把Hexo搭建的博客同步到github的网页托管服务上，实现以<code>xxx.github.io</code>(其中<code>xxx</code>为你的github用户名)访问</a>；</p>
+</li>
+<li><p>三： <a href="/Web/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E9%83%A8%E7%BD%B2%E4%BA%91%E7%AB%AFLinux%E6%9C%8D%E5%8A%A1%E5%99%A8%EF%BC%8C%E6%90%AD%E5%BB%BA%E5%AE%9D%E5%A1%94Linux%E9%9D%A2%E6%9D%BF%EF%BC%8C%E5%AE%9E%E7%8E%B0%E8%BF%9C%E7%A8%8B%E6%88%96%E5%9F%9F%E5%90%8D%E8%AE%BF%E9%97%AE/">如果你有一个具有公网IP的云服务器和已经备案的域名，如何把hexo同时部署到服务器上，实现自主域名的访问</a>；</p>
+</li>
+<li><p>四：<a href="/Web/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E6%9C%AC%E5%9C%B0Linux%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2%EF%BC%8C%E6%90%AD%E5%BB%BA%E5%AE%9D%E5%A1%94Linux%E9%9D%A2%E6%9D%BF%EF%BC%8C%E9%80%9A%E8%BF%87%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F%E5%AE%9E%E7%8E%B0%E5%9F%9F%E5%90%8D%E8%AE%BF%E9%97%AE/">如何把博客部署到本地的Linux服务器（树莓派或者其他Linux开发板，软路由，NAS等）上，通过内网穿透服务和自主域名绑定实现实现自主域名的访问</a>。</p>
+</li>
+</ul>
+<p>​		一般情况下，自主域名需要做域名解析，所以，它只能访问你的云服务器或者你本地的Linux服务器，二选一即可，把hexo博客部署在Linux服务器上的操作在第三章节的前面两个部分。</p>
+</blockquote>
+<h2 id="三、部署Linux服务器，搭建宝塔Linux面板，实现远程或域名访问。"><a href="#三、部署Linux服务器，搭建宝塔Linux面板，实现远程或域名访问。" class="headerlink" title="三、部署Linux服务器，搭建宝塔Linux面板，实现远程或域名访问。"></a>三、部署Linux服务器，搭建宝塔Linux面板，实现远程或域名访问。</h2><blockquote>
+<p>​			可能涉及的工具和软件：</p>
+<ul>
+<li>一台已经安装Linux的云服务器，且有公网IP地址：这里使用的是阿里云ECS云服务器，安装Ubuntu 20.04</li>
+<li>ssh终端工具登录软件（Xshell，putty或者MobaXterm等都可以）<ul>
+<li>Xshell： <a href="https://www.xshell.com/zh/free-for-home-school/">https://www.xshell.com/zh/free-for-home-school/</a></li>
+<li>putty：<a href="https://www.putty.org/">https://www.putty.org/</a></li>
+<li>MobaXterm： <a href="https://mobaxterm.mobatek.net/">https://mobaxterm.mobatek.net/</a></li>
+</ul>
+</li>
+<li>宝塔Linux面板：<a href="https://www.bt.cn/">https://www.bt.cn</a></li>
+<li>已经备案的域名（如果云服务器是在国内的话），没有也可以直接用<code>IP:端口</code>来访问（因为国内云服务器默认不允许80端口直接访问）。</li>
+<li>无服务静态托管云平台Vercel： <a href="https://vercel.com/">https://vercel.com/</a></li>
+</ul>
+</blockquote>
+<h3 id="1、-Linux系统部署git服务器"><a href="#1、-Linux系统部署git服务器" class="headerlink" title="1、 Linux系统部署git服务器"></a>1、 Linux系统部署git服务器</h3><ol>
+<li><p>如果是新的云服务器系统，一般情况下我们首先需要到云服务后台，设置安全组，对常用端口放行，主要有：SSH连接端口：<strong>22</strong>；FTP端口：<strong>20、21、39000-40000</strong>；网站访问端口：<strong>80、443</strong>；phpmyadmin访问端口：<strong>888</strong>；如果还有其他诉求，也需要放行对应端口。如果是本地的Linux系统，则不需要管这些。</p>
+<p>​		然后用ssh终端工具登录服务器。一般情况下国内的云服务器安装的Linux系统都会默认已经把软件源修改到国内了，如果是，这一步不需要操作。如果你的系统不是云服务器，或者源并不是国内的，可以用下面方法对软件源进行备份，并且替换到国内的软件源（本文替换的是阿里云的镜像，你也可以替换成其他的镜像）。</p>
+</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo cp /etc/apt/sources.list /etc/apt/sources.list.org</span><br><span class="line">sudo vim /etc/apt/sources.list</span><br></pre></td></tr></table></figure>
+
+<p>​		上面的语句是备份软件源的文件，之后便可以编辑修改<code>/etc/apt/sources.list</code>中的软件源地址了，即把里面与<code>ubuntu.com</code>的内容替换成阿里云的源地址即可。</p>
+<p>​		一般情况下，默认的源地址ubuntu的官方源：</p>
+<p>archive 源（针对X86_64架构）					：<a href="http://archive.ubuntu.com/ubuntu/">http://archive.ubuntu.com/ubuntu/</a></p>
+<p>ports   源（针对arm，PowerPC等架构）：<a href="http://ports.ubuntu.com/ubuntu-ports/">http://ports.ubuntu.com/ubuntu-ports/</a></p>
+<p>​		或者ubuntu中国官方源</p>
+<p>archive 源（针对X86_64架构）					：<a href="http://cn.archive.ubuntu.com/ubuntu/">http://cn.archive.ubuntu.com/ubuntu/</a></p>
+<p>ports   源（针对arm，PowerPC等架构）：<a href="http://cn.ports.ubuntu.com/ubuntu-ports/">http://cn.ports.ubuntu.com/ubuntu-ports/</a></p>
+<p>​		把对应的内容替换成阿里云镜像即可：</p>
+<p>archive 源（针对X86_64架构）					：<a href="https://mirrors.aliyun.com/ubuntu/">https://mirrors.aliyun.com/ubuntu/</a><br>ports   源（针对arm，PowerPC等架构）：<a href="https://mirrors.aliyun.com/ubuntu-ports/">https://mirrors.aliyun.com/ubuntu-ports/</a></p>
+<p>​		其他内容可以不变，这里给出一个快速替换网址的指令：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo sed -i -e &#x27;s/ports.ubuntu.com/mirrors.aliyun.com/g&#x27; /etc/apt/sources.list</span><br></pre></td></tr></table></figure>
+
+<p>​		这句话的意思是把<code>/etc/apt/sources.list</code>文件中所有的<code>ports.ubuntu.com</code>字符，全部替换为<code>mirrors.aliyun.com</code>，从而实现软件源的替换。</p>
+<p>​		另外关于Ubuntu 国内软件源介绍可以参考这篇博客： <a href="https://www.cnblogs.com/Brendon-Tan/p/13236042.html">https://www.cnblogs.com/Brendon-Tan/p/13236042.html</a></p>
+<ol start="2">
+<li>在终端中输入<code>sudo apt update</code>和<code>sudo apt upgrade</code>来同步和更新系统相关软件。</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt upgrade</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>可以通过<code>git --version</code>来查看系统是否安装了git，如果没有，输入<code>sudo apt install git</code>安装git</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo apt install git</span><br><span class="line">git --version</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>确保安装了git之后，我们可以为git服务器创建一个单独的账户。</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo adduser git</span><br></pre></td></tr></table></figure>
+
+<p>​		其中需要输入2次密码之后，一起其他信息，可以直接输入回车保持默认值。最后输入Y确认创建用户。创建完成之后，可以输入<code>ls /home</code>看是否已经存在一个名为<code>git</code>的文件夹，这个为该用户的默认用户文件夹，如果有，则表示用户创建成功。</p>
+<ol start="5">
+<li>接下来我们针对git账户配置ssh用户公钥，通过如下代码在<code>/home/git</code>目录下创建<code>.ssh</code>文件夹，并在里面创建<code>authorized_keys</code>文件：</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">mkdir /home/git/.ssh</span><br><span class="line">touch /home/git/.ssh/authorized_keys</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>把之前在PC电脑上创建的<code>id_rsa.pub</code>文件内容复制到<code>authorized_keys</code>文件中,具体操作，先用下面指令打开文件，按字母<code>i</code>插入内容，把光标移到文件头，右击鼠标把内容粘贴到文件中，之后按<code>ESC</code>按键，输入<code>:wq</code>保存并退出</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">vim /home/git/.ssh/authorized_keys</span><br></pre></td></tr></table></figure>
+
+<ol start="7">
+<li>修改该文件夹和文件的权限，确保git用户有读写目录的权限</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">chmod 775 /home/git/.ssh</span><br><span class="line">chown -R git:git /home/git/.ssh</span><br></pre></td></tr></table></figure>
+
+<ol start="8">
+<li>在<code>/home/git</code>目录下创建一个git仓库，名称为<code>blog.git</code>，并把其拥有者定义为git用户。</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo -u git git init --bare /home/git/blog.git</span><br><span class="line">cd /home/git</span><br><span class="line">chown git:git -R blog.git</span><br></pre></td></tr></table></figure>
+
+<ol start="9">
+<li>创建目录<code>/www/wwwroot/blog</code>目录，用来架设网站服务</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">mkdir -p /www/wwwroot/blog</span><br></pre></td></tr></table></figure>
+
+<p>​			<code>-p</code>的意思，以递归的形式来创建文件夹，如果时递归的形式删除文件夹，则用<code>rm -rf dir_path</code></p>
+<ol start="10">
+<li>确保git用户有操作该文件夹的权限，如下操作：</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo chown -R git:git /www/wwwroot/blog</span><br><span class="line">chmod -R 755 /www/wwwroot/blog</span><br></pre></td></tr></table></figure>
+
+<ol start="11">
+<li>创建一个git钩子文件，当接收到用户推送过来的文件修改时，把它推送到系统<code>/www/wwwroot/blog</code>目录下，以方便后面用来架设网站。</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">vim /home/git/blog.git/hooks/post-receive</span><br></pre></td></tr></table></figure>
+
+<p>​		用上面的指令打开文件，按字母<code>i</code>插入内容，把光标移到文件头，右击鼠标把内容粘贴到文件中，之后按<code>ESC</code>按键，输入<code>:wq</code>保存并退出：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line">git --work-tree=/www/wwwroot/blog --git-dir=/home/git/blog.git checkout -f</span><br></pre></td></tr></table></figure>
+
+<p>​		然后给该文件设置可执行权限</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">chmod +x /home/git/blog.git/hooks/post-receive</span><br></pre></td></tr></table></figure>
+
+<ol start="12">
+<li>输入<code>sudo reboot</code>重启系统</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo reboot</span><br></pre></td></tr></table></figure>
+
+<ol start="13">
+<li>等待重启完毕之后，我们再次修改PC端hexo博客根目录下的<code>_config.yml</code>文件，这里只需要修改<code>\# Deployment</code>部分内容即可，我们给hexo添加一个git服务器到我们自己的Linux服务器上（注意其中的xxx.xxx.xxx.xxx为你自己服务器的IP地址）：</li>
+</ol>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Deployment</span></span><br><span class="line"><span class="comment">## Docs: https://hexo.io/docs/one-command-deployment</span></span><br><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repository:</span></span><br><span class="line">    <span class="attr">server1:</span> <span class="string">git@github.com:SenySunny/SenySunny.github.io.git</span></span><br><span class="line">    <span class="attr">server2:</span> <span class="string">git@xxx.xxx.xxx.xxx:/home/git/blog.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">main</span></span><br></pre></td></tr></table></figure>
+
+<ol start="14">
+<li>我们在PC端的终端中输入<code>hexo g</code>来重新生成静态网页， 然后通过<code>hexo d</code>来把生成的网页同时部署到github和我们自己的Linux服务器上，</li>
+</ol>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">hexo g</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+
+<p>​		如果中间操作有问题，直接用<code>hexo d</code>部署，可能会导致由于没有文件变化，导致并没有进行重新部署，导致没有被正确响应，可以尝试先用<code>hexo cl</code>清除以下缓存，然后再用<code>hexo g</code>重新生成静态网页，再<code>hexo d</code>进行部署，便会把所有的文件都会进行重新部署。</p>
+<ol start="15">
+<li>此时，我们可以通过<code>ls /www/wwwroot/blog/</code>来查看代码是否被正确的复制到该目录下。如果该目录下有<code>index.html</code>等文件，就证明代码已经被正确的复制, 终端运行效果如下（文件内容根据博客网页情况会略有不同）。</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git@seny:~/blog.git$ ls /www/wwwroot/blog/</span><br><span class="line">2016  404.html  anzhiyu  archives  css  favicon.ico  img  index.html  js  lib</span><br></pre></td></tr></table></figure>
+
+<h3 id="2、-安装和配置宝塔Linux面板"><a href="#2、-安装和配置宝塔Linux面板" class="headerlink" title="2、 安装和配置宝塔Linux面板"></a>2、 安装和配置宝塔Linux面板</h3><ol>
+<li>先输入<code>su</code>,输入管理员密码，以<code>root</code>用户登录，以确保能够获取到系统足够的权限</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo root</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>根据系统不同，按照宝塔安装教程安装宝塔Linux面板，本人是ubuntu系统，所以再终端中输入：</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">wget -O install.sh https://download.bt.cn/install/install-ubuntu_6.0.sh &amp;&amp; sudo bash install.sh ed8484bec</span><br></pre></td></tr></table></figure>
+
+<p>​		等待面板安装完成，安装可能会提示需要输入<code>y</code>回车确认，安装完成后会给出如下信息：</p>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405091716605.png" alt="baota1"></p>
+<ol start="3">
+<li><p>根据生成的内网面板地址和外网面板地址情况，再浏览器访问宝塔面板。</p>
+<ul>
+<li>一般情况下，如果是云服务器，我们首先需要再云服务的安全组里面，放行把他面板的端口信息，以确保我们可以正常访问宝塔面板。然后通过外网面板地址进行访问。</li>
+<li>如果是本地的Linux系统，我们直接通过内网面板地址进行访问即可。</li>
+</ul>
+<p>如果提示”您的连接不是私密连接“，直接点击”高级“，选择继续前往即可。然后输入安装完成之后提供的<code>username</code>和<code>password</code>作为用户名和密码进行登录，登录之后，阅读”用户协议“，阅读完成之后，勾选&lt;我已阅读并同意”《用户协议》“&gt;，点击<code>&lt;进入面板&gt;</code>，进入宝塔面板界面。</p>
+</li>
+<li><p>进入之后，会要求你绑定宝塔账号，目前的宝塔面板，必须注册一个账号，用注册的账号进行登录，登录后界面如下，会给出一个建站需要的软件包安装推荐，因为我们本身是静态网站，所以理论上我们只需要安装<code>Nginx</code>软件即可满足要求，所以理论上我们选择<code>LNMP</code>或者<code>JAVA</code>都包含了<code>Nginx</code>，或者我们关闭它，再手动安装<code>Nginx</code>也是可以的。这里我们直接选择了推荐的<code>LNMP</code>,等待它安装完毕。</p>
+</li>
+</ol>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405091735892.png" alt="baota2"></p>
+<ol start="4">
+<li><p>软件安装完毕之后，我们就可以关闭消息盒子了（也可以关闭等待安装），到这里，宝塔面板就基本安装好了，这里我们对宝塔Linux面板做简单的配置，点击左侧的&lt;面板设置&gt;，既可设置相关信息，主要可能有（其他的可以自行配置）：</p>
+<ul>
+<li><p>修改登录的用户名和密码，以确保安全。</p>
+</li>
+<li><p>宝塔面板的端口号，以防止忘记宝塔面板的端口号，注意，如果修改了端口号，需要开放对应的端口信息,通过如下信息，否则可能导致无法访问宝塔面板（一般不建议采用8888，因为用户很容易猜到）：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo iptables -I INPUT -p tcp --dport 8888 -j ACCEPT</span><br></pre></td></tr></table></figure>
+
+<p>云服务器除要在系统中开放对应端口之外，还需要再安全组中开启对应的端口号</p>
+</li>
+<li><p>安全入口</p>
+</li>
+</ul>
+</li>
+<li><p>点击左侧&lt;网站&gt;选项，选择默认的&lt;PHP项目&gt;（或者&lt;html项目&gt;皆可），点击&lt;添加站点&gt;,按照如图填写：</p>
+</li>
+</ol>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405091908646.png" alt="baota3"></p>
+<blockquote>
+<p>​		这里对填入的信息做简单介绍：</p>
+<ul>
+<li>域名：我们只是测试hexo博客的访问情况，还没有做域名解析和绑定域名情况，在域名栏中，我们可以输入服务器的IP地址，或者IP:端口号的形式（注意：端口号必须开放访问）</li>
+<li>备注：给网站取一个名字，方便我们记住这个网站是干什么的</li>
+<li>根目录：就是我们前面部署的存放网站的目录<code>/www/wwwroot/blog</code><ul>
+<li>ftp,数据库： 静态网站不需要</li>
+<li>PHP版本： 没有用到，选择<code>&lt;纯静态&gt;</code>即可</li>
+<li>网站分类： 可以设置，或者默认</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<ol start="6">
+<li>此时我们在浏览器输入<code>服务器IP</code>或者<code>服务器IP:端口号</code>来访问（有些云服务器，再国内，默认不开放80端口，必须用备案的域名访问。可能就必须用<code>服务器IP:端口号</code>来实现远程访问了），下面是采用开放11000端口之后，用<code>服务器IP:11000</code>访问的接结果：</li>
+</ol>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405091930876.png" alt="baota4"></p>
+<blockquote>
+<p>​		理论上我们可以再任何地点用云服务器的<code>服务器IP:11000</code>来访问该博客。</p>
+</blockquote>
+<h3 id="3、-域名解析和宝塔面板部署网站"><a href="#3、-域名解析和宝塔面板部署网站" class="headerlink" title="3、 域名解析和宝塔面板部署网站"></a>3、 域名解析和宝塔面板部署网站</h3><blockquote>
+<p>​		前面已经讲解网页的部署和安装，如果我们有备案的域名，我们可以把备案的域名与服务器进行绑定，做好域名解析，便可以实现通过网址访问博客。</p>
+</blockquote>
+<ol>
+<li>域名备案，可以再购买域名的网站查看到，比如，这是再阿里云备案的域名情况示意图：</li>
+</ol>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405091945640.png" alt="beian1"></p>
+<ol start="2">
+<li>我们再域名控制台下，可以对域名进行域名解析：如下图：</li>
+</ol>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405091948044.png" alt="beian2"></p>
+<blockquote>
+<p>​		 这里对域名中的几个关键词做说明：</p>
+<ul>
+<li>记录类型： A： 标志一个IPV4地址；AAA：标志一个IPV6地址；CHANE：将域名指向另外一个域名；其他的具体自己查询</li>
+<li>主机记录：www：表示域名前面加www.来访问；@：表示直接用域名访问；*表示泛解析；其他字母：表示该字母.开头的域名访问，比如：如果域名是senysunny.com。解析主机记录为blog。表示用blog.senysunny.com访问。</li>
+<li>记录值：一般为IP地址或者另一个域名。</li>
+</ul>
+</blockquote>
+<ol start="3">
+<li>做好域名解析之后，我们把对应域名的解析到对应的服务器ip，一般解析之后差不多10分钟左右生效。</li>
+<li>此时我们再进入宝塔面板，打开左侧<code>&lt;网站&gt;</code>选项,可以看到我们建立的网站，点击设置，把我们已经做过域名解析的域名填写到域名管理中，点击<code>&lt;添加&gt;</code>按钮。</li>
+</ol>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405091959266.png" alt="baota5"></p>
+<p>​		此时，我们就可以用我们已经备案的域名来访问我们的博客了。</p>
+<blockquote>
+<p>​		这里需要提醒的是：中国的域名备案后，一般要求把备案号填写再网页的尾部位置，并链接到”ICP&#x2F;IP地址&#x2F;域名信息备案管理系统“网址： <a href="https://beian.miit.gov.cn.当然,如果你的云服务器本身不在大陆境内,则无需考虑备案事宜,直接做域名解析就可以了./">https://beian.miit.gov.cn。当然，如果你的云服务器本身不在大陆境内，则无需考虑备案事宜，直接做域名解析就可以了。</a></p>
+</blockquote>
+<p>​		到这里，hexo博客的建立和部署就已经完成了。我们可以发现博客的创建是比较简单的，都是一些基本的操作，hexo博客服务也提供了非常详细的文档。但是一个完整的有自己域名的博客要上线，还需要部署到自己的云服务，以及域名的解析和备案等操作。这些是需要一定的费用和操作的。实际上，我们也有很多其他选择，这里做一个简单的介绍和说明：</p>
+<ol>
+<li>Vercel：它是一个用于静态站点和无服务器函数的云平台，可以用来部署静态网站项目，并且可以直接与github的网页托管绑定，并且可以与自己注册的域名做域名解析，实现域名访问网站，且服务器本身不在国内，也避免了域名备案的麻烦。</li>
+<li>现在很多人会选择把博客部署在本地（比如树莓派等开发板，软路由，NAS）上，在通过各种内网穿透服务，实现外网访问，以及域名绑定的工作。如果内网穿透服务器不在大陆的话，也不需要域名备案。建议购买域名的话还是备案使用更佳。</li>
+<li>这里会在下一个章节给出一个把hexo博客部署在本地的Linux服务器（Linux开发板）的解决方案，这里采用了《Nanopi R6S》开发板运行Ubuntu系统作为博客服务器，然后通过内网传统实现博客的访问和使用.</li>
+</ol>
+]]></content>
+      <categories>
+        <category>Web前端</category>
+        <category>hexo博客系统</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>Linux</tag>
+        <tag>宝塔面板</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo博客搭建（二）：把hexo博客部署到github网页托管，实现通过类似xxx.github.io来访问博客</title>
+    <url>/Web/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E6%8A%8Ahexo%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2%E5%88%B0github%E7%BD%91%E9%A1%B5%E6%89%98%E7%AE%A1%EF%BC%8C%E5%AE%9E%E7%8E%B0%E9%80%9A%E8%BF%87%E7%B1%BB%E4%BC%BCxxx-github-io%E6%9D%A5%E8%AE%BF%E9%97%AE%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<blockquote>
+<p>​		本文主要讲解如何搭建hexo博客网站，并直接部署在github上，实现通过<code>xxx.github.io</code>来访问博客，同时针对云服务器的用户，可以把Hexo博客同步部署到服务器上，通过宝塔Linux面板架设网站，并实现域名解析和绑定。针对没有云服务器的用户，也给出了直接部署在个人的Linux终端（比如：树莓派或者其他Linux开发板，软路由，NAS等）的方案和思路，并给出通过内网穿透方法实现通过自主域名访问博客的方法。最终实现可以通过<code>xxx.github.io</code>和自主域名访问博客网页。</p>
+<p>​		这里不对Hexo博客的特性做说明，详细的Hexo相关的内容，可以参考Hexo官方网站：<a href="https://hexo.io/zh-cn/">https://hexo.io/zh-cn/</a></p>
+<p>​		这里用宝塔面板主要因为：一方面宝塔面板免去了Nginx的相关配置，可以直接用可视化操作来部署网页；另外一方面，一台Linux服务器可以同属部署多个网站，可以统一用宝塔面板统一管理。也方便该服务器不仅可以用来部署网站，还可以同时作为其他左右使用（比如可以用来做远程代码调试，内网穿透服务等）。</p>
+<p>​		本文主要分四个章节来讲解：</p>
+<ul>
+<li><p>一：<a href="/Web/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%9C%A8PC%E4%B8%8A%E6%90%AD%E5%BB%BAHexo%E5%8D%9A%E5%AE%A2%E7%B3%BB%E7%BB%9F%EF%BC%8C%E5%B9%B6%E8%AE%BE%E7%BD%AE%E5%8D%9A%E5%AE%A2%E4%B8%BB%E9%A2%98/">讲解如何在PC机上搭建Hexo博客，并设置博客主题</a>；</p>
+</li>
+<li><p>二：<a href="/Web/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E6%8A%8Ahexo%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2%E5%88%B0github%E7%BD%91%E9%A1%B5%E6%89%98%E7%AE%A1%EF%BC%8C%E5%AE%9E%E7%8E%B0%E9%80%9A%E8%BF%87%E7%B1%BB%E4%BC%BCxxx-github-io%E6%9D%A5%E8%AE%BF%E9%97%AE%E5%8D%9A%E5%AE%A2/">如何把Hexo搭建的博客同步到github的网页托管服务上，实现以<code>xxx.github.io</code>(其中<code>xxx</code>为你的github用户名)访问</a>；</p>
+</li>
+<li><p>三： <a href="/Web/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E9%83%A8%E7%BD%B2%E4%BA%91%E7%AB%AFLinux%E6%9C%8D%E5%8A%A1%E5%99%A8%EF%BC%8C%E6%90%AD%E5%BB%BA%E5%AE%9D%E5%A1%94Linux%E9%9D%A2%E6%9D%BF%EF%BC%8C%E5%AE%9E%E7%8E%B0%E8%BF%9C%E7%A8%8B%E6%88%96%E5%9F%9F%E5%90%8D%E8%AE%BF%E9%97%AE/">如果你有一个具有公网IP的云服务器和已经备案的域名，如何把hexo同时部署到服务器上，实现自主域名的访问</a>；</p>
+</li>
+<li><p>四：<a href="/Web/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E6%9C%AC%E5%9C%B0Linux%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2%EF%BC%8C%E6%90%AD%E5%BB%BA%E5%AE%9D%E5%A1%94Linux%E9%9D%A2%E6%9D%BF%EF%BC%8C%E9%80%9A%E8%BF%87%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F%E5%AE%9E%E7%8E%B0%E5%9F%9F%E5%90%8D%E8%AE%BF%E9%97%AE/">如何把博客部署到本地的Linux服务器（树莓派或者其他Linux开发板，软路由，NAS等）上，通过内网穿透服务和自主域名绑定实现实现自主域名的访问</a>。</p>
+</li>
+</ul>
+<p>​		一般情况下，自主域名需要做域名解析，所以，它只能访问你的云服务器或者你本地的Linux服务器，二选一即可，把hexo博客部署在Linux服务器上的操作在第三章节的前面两个部分。</p>
+</blockquote>
+<h2 id="二、把hexo博客部署到github网页托管，实现通过类似xxx-github-io来访问博客"><a href="#二、把hexo博客部署到github网页托管，实现通过类似xxx-github-io来访问博客" class="headerlink" title="二、把hexo博客部署到github网页托管，实现通过类似xxx.github.io来访问博客"></a>二、把hexo博客部署到github网页托管，实现通过类似<code>xxx.github.io</code>来访问博客</h2><blockquote>
+<p>​		本节讲解如何把在本地PC部署好的博客系统同步到GitHub上，实现可以直接用<code>xxx.github.io</code>来访问你博客，在这里，你首先需要有一个github的账号，这里假设的github的账号名就就是<code>senysunny</code>，到时候你只需要替换你的账户名即可。另外需要说明的是，由于github的服务器在国外，可能会导致你登录和使用GitHub缓慢，这里你可能需要VPN服务实现github的流畅访问，这里不做VPN服务做介绍，正常情况下github国内是可以访问的。</p>
+<p>​		本来想着也可以把博客假设到gitee上，但是gitee目前已经停止了<code>gitee pages</code>服务，所以无法实现静态网页的托管服务，这里做一个说明。</p>
+<p>​		涉及的工具和软件：</p>
+<ul>
+<li>github账户：	<a href="https://github.com/">https://github.com/</a></li>
+<li>必要情况的下的VPN服务。</li>
+</ul>
+</blockquote>
+<h3 id="1、-把Hexo博客部署到GitHub上"><a href="#1、-把Hexo博客部署到GitHub上" class="headerlink" title="1、 把Hexo博客部署到GitHub上"></a>1、 把Hexo博客部署到GitHub上</h3><ol>
+<li>创建一个gtihub的仓库，这个仓库的名称为<code>用户名.github.io</code>。比如，在这里我创建的便是：<code>SenySunny.github.io</code>。注意，需要设置为”Public“，确保用户可以访问。</li>
+</ol>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405091250624.png" alt="github1"></p>
+<ol start="2">
+<li>为 github服务器配置用户公钥，在你的电脑终端中输入<code>ssh-keygen -t rsa -C &quot;邮件地址&quot;</code>，然后输入4次回车，如果曾经创建过公钥，可能会提示你是否覆盖，输入Y回车即可。</li>
+</ol>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">ssh<span class="literal">-keygen</span> <span class="literal">-t</span> rsa <span class="literal">-C</span> <span class="string">&quot;senysunny@163.com&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>​		实际的效果如下：</p>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405091151802.png" alt="ssh1"></p>
+<ol start="2">
+<li>此时会在你的电脑<code>C:\Users\用户名</code>目录下有一个<code>.ssh</code>文件夹，里面有一个<code>id_rsa.pub</code>文件，我们可以复制一份出来备份，后面都会用的到，用记事本打开该文件，复制里面的内容。</li>
+<li>打开你的github的用户设置界面，选择左侧的<code>SSH and GPG keys</code>菜单，在里面添加一个<code>SSH keys</code>,其中<code>Title</code>可以随机填入，如下图：</li>
+</ol>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405091158022.png" alt="ssh2"></p>
+<ol start="4">
+<li>你可以在终端中输入<code>ssh -T git@github.com</code>测试是否成功，如果成功，会提示<code>You&#39;ve successfully authenticated</code>的字样。</li>
+</ol>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">ssh <span class="literal">-T</span> git@github.com</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>修改博客根目录下的<code>_config.yml</code>文件，这里只需要修改<code>\# Deployment</code>部分内容即可：</li>
+</ol>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Deployment</span></span><br><span class="line"><span class="comment">## Docs: https://hexo.io/docs/one-command-deployment</span></span><br><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repository:</span> <span class="string">git@github.com:SenySunny/SenySunny.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">main</span></span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>如果你是第一次使用git，输入以下内容创建一个本地的git账户信息</li>
+</ol>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">git config <span class="literal">--global</span> user.name <span class="string">&quot;你的名字&quot;</span></span><br><span class="line">git config <span class="literal">--global</span> user.email <span class="string">&quot;你的邮箱&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>​		比如我，输入的信息如下：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">git config <span class="literal">--global</span> user.name <span class="string">&quot;SenySunny&quot;</span></span><br><span class="line">git config <span class="literal">--global</span> user.email <span class="string">&quot;senysunny@163.com&quot;</span></span><br></pre></td></tr></table></figure>
+
+<ol start="7">
+<li>此时我们重新在终端中输入<code>hexo cl</code>来清除缓存，再通过<code>hexo g</code>来重新生成静态网页， 然后通过<code>hexo d</code>（其为<code>hexo deploy</code>de 缩写）来把生成的网页部署到github上</li>
+</ol>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">hexo cl</span><br><span class="line">hexo g</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+
+<ol start="8">
+<li>这时，进入我们创建的仓库，就可以看到有内容被添加仓库中了,等待十几秒中之后，我们输入<code>https://senysunny.github.io/</code>就可以访问博客了，这个博客是可以远程访问的，效果如下：</li>
+</ol>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405091255146.png" alt="github2"></p>
+]]></content>
+      <categories>
+        <category>Web前端</category>
+        <category>hexo博客系统</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>github</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo博客搭建（四）：本地Linux系统部署，搭建宝塔Linux面板，通过内网传统实现域名访问</title>
+    <url>/Web/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E6%9C%AC%E5%9C%B0Linux%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2%EF%BC%8C%E6%90%AD%E5%BB%BA%E5%AE%9D%E5%A1%94Linux%E9%9D%A2%E6%9D%BF%EF%BC%8C%E9%80%9A%E8%BF%87%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F%E5%AE%9E%E7%8E%B0%E5%9F%9F%E5%90%8D%E8%AE%BF%E9%97%AE/</url>
+    <content><![CDATA[<blockquote>
+<p>​		本文主要讲解如何搭建hexo博客网站，并直接部署在github上，实现通过<code>xxx.github.io</code>来访问博客，同时针对云服务器的用户，可以把Hexo博客同步部署到服务器上，通过宝塔Linux面板架设网站，并实现域名解析和绑定。针对没有云服务器的用户，也给出了直接部署在个人的Linux终端（比如：树莓派或者其他Linux开发板，软路由，NAS等）的方案和思路，并给出通过内网穿透方法实现通过自主域名访问博客的方法。最终实现可以通过<code>xxx.github.io</code>和自主域名访问博客网页。</p>
+<p>​		这里不对Hexo博客的特性做说明，详细的Hexo相关的内容，可以参考Hexo官方网站：<a href="https://hexo.io/zh-cn/">https://hexo.io/zh-cn/</a></p>
+<p>​		这里用宝塔面板主要因为：一方面宝塔面板免去了Nginx的相关配置，可以直接用可视化操作来部署网页；另外一方面，一台Linux服务器可以同属部署多个网站，可以统一用宝塔面板统一管理。也方便该服务器不仅可以用来部署网站，还可以同时作为其他左右使用（比如可以用来做远程代码调试，内网穿透服务等）。</p>
+<p>​		本文主要分四个章节来讲解：</p>
+<ul>
+<li><p>一：<a href="/Web/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%9C%A8PC%E4%B8%8A%E6%90%AD%E5%BB%BAHexo%E5%8D%9A%E5%AE%A2%E7%B3%BB%E7%BB%9F%EF%BC%8C%E5%B9%B6%E8%AE%BE%E7%BD%AE%E5%8D%9A%E5%AE%A2%E4%B8%BB%E9%A2%98/">讲解如何在PC机上搭建Hexo博客，并设置博客主题</a>；</p>
+</li>
+<li><p>二：<a href="/Web/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E6%8A%8Ahexo%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2%E5%88%B0github%E7%BD%91%E9%A1%B5%E6%89%98%E7%AE%A1%EF%BC%8C%E5%AE%9E%E7%8E%B0%E9%80%9A%E8%BF%87%E7%B1%BB%E4%BC%BCxxx-github-io%E6%9D%A5%E8%AE%BF%E9%97%AE%E5%8D%9A%E5%AE%A2/">如何把Hexo搭建的博客同步到github的网页托管服务上，实现以<code>xxx.github.io</code>(其中<code>xxx</code>为你的github用户名)访问</a>；</p>
+</li>
+<li><p>三： <a href="/Web/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E9%83%A8%E7%BD%B2%E4%BA%91%E7%AB%AFLinux%E6%9C%8D%E5%8A%A1%E5%99%A8%EF%BC%8C%E6%90%AD%E5%BB%BA%E5%AE%9D%E5%A1%94Linux%E9%9D%A2%E6%9D%BF%EF%BC%8C%E5%AE%9E%E7%8E%B0%E8%BF%9C%E7%A8%8B%E6%88%96%E5%9F%9F%E5%90%8D%E8%AE%BF%E9%97%AE/">如果你有一个具有公网IP的云服务器和已经备案的域名，如何把hexo同时部署到服务器上，实现自主域名的访问</a>；</p>
+</li>
+<li><p>四：<a href="/Web/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E6%9C%AC%E5%9C%B0Linux%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2%EF%BC%8C%E6%90%AD%E5%BB%BA%E5%AE%9D%E5%A1%94Linux%E9%9D%A2%E6%9D%BF%EF%BC%8C%E9%80%9A%E8%BF%87%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F%E5%AE%9E%E7%8E%B0%E5%9F%9F%E5%90%8D%E8%AE%BF%E9%97%AE/">如何把博客部署到本地的Linux服务器（树莓派或者其他Linux开发板，软路由，NAS等）上，通过内网穿透服务和自主域名绑定实现实现自主域名的访问</a>。</p>
+</li>
+</ul>
+<p>​		一般情况下，自主域名需要做域名解析，所以，它只能访问你的云服务器或者你本地的Linux服务器，二选一即可，把hexo博客部署在Linux服务器上的操作在第三章节的前面两个部分。</p>
+</blockquote>
+<h2 id="四、本地Linux系统部署，搭建宝塔Linux面板，通过内网穿透实现域名访问"><a href="#四、本地Linux系统部署，搭建宝塔Linux面板，通过内网穿透实现域名访问" class="headerlink" title="四、本地Linux系统部署，搭建宝塔Linux面板，通过内网穿透实现域名访问"></a>四、本地Linux系统部署，搭建宝塔Linux面板，通过内网穿透实现域名访问</h2><blockquote>
+<p>​		本节主要介绍假如没有云服务器，而手头刚好有一块linux的开发板（比如树莓派—也包括其他XX派，软路由，NAS等），可以实现再本地的linux电脑上假设网站，然后通过内网穿透服务（内网穿透有多种方法，比如如果自己有云服务器，可以通过自己搭建frp，或者nps实现内网穿透），当然，也有一些其他的内网穿透方法，这里不一一介绍了。但是，一般情况下内网穿透软件都是由两部分组成，服务端和客户端，服务端也需要部署在一个拥有公网IP的机器上（本身上还是需要一个云服务器），当然也可以用一个云服务器给多个内网设备做穿透，这个取决于个人的业务需求和选择。</p>
+<p>​		如果你没有云服务器（而如果你只需要实现一个博客网站，也不需要专门购买一个云服务器，虽然一个云服务器本身并不贵，而且阿里云，腾讯云，华为云还经常由活动，一个基本的云服务器在做活动的时候是需要几十到百来元&#x2F;一年不等的价格），也可以采用其他服务商提供的内网穿透服务来实现访问，有免费的有收费的，这里只是提供一种思路，所以采用了第三方公司的内网穿透服务natapp，它是一家国内基于ngrok的内网穿透服务提供商。它有免费的和收费的可以选择，内网穿透的服务器也可以选择国内服务器和香港的服务器，如果你的域名已经备案，可以选择国内服务。如果域名没有备案，也可以选择香港的服务器。不过免费的内网穿透方案，不支持绑定自己的域名，只能使用服务商提供的二级域名。</p>
+<p>​		可能涉及到的软件和工具：</p>
+<ul>
+<li><p>frp内网穿透工具：<a href="https://gofrp.org/zh-cn/">https://gofrp.org/zh-cn/</a></p>
+</li>
+<li><p>nps内网穿透工具：<a href="https://ehang-io.github.io/nps/#/">https://ehang-io.github.io/nps/#/</a></p>
+</li>
+<li><p>ngrok 反向代理： <a href="https://ngrok.com/">https://ngrok.com/</a></p>
+</li>
+<li><p>natapp内网穿透服务：<a href="https://natapp.cn/">https://natapp.cn/</a></p>
+</li>
+</ul>
+<p>​		另外，由于本次实验采用的开发板也是基于ubuntu的系统，所以，再部署git服务器和安装和配置宝塔Linux面板操作（即1和2部分）和在云服务器上基本一样，只是ip地址变成了局域网的ip地址，你只需要按照上一章节的1和2部分一样操作即可。这里就不重复介绍了，这里假设你已经在开发板上部署好了你的博客系统。只是介绍如何部署内网穿透，以及如何在宝塔Linux面板中配置与内网穿透对接实现域名访问。</p>
+</blockquote>
+<h3 id="1、-把在本地部署的hexo博客通过内网穿透绑定自主域名"><a href="#1、-把在本地部署的hexo博客通过内网穿透绑定自主域名" class="headerlink" title="1、 把在本地部署的hexo博客通过内网穿透绑定自主域名"></a>1、 把在本地部署的hexo博客通过内网穿透绑定自主域名</h3><ol>
+<li>进入natapp的网站注册一个账号，注意，natapp的默认免费通道是不支持绑定自主域名的，如果你的域名没有备案，则需要购买香港服务器（HK-1和HK-2型）。由于我们已经有一个测试的备案域名，所以我们购买一个1个月的VIP-1型，另外，如果需要绑定已经备案自主域名还需要花费1元购买10积分，添加一个备案域名（HK型可以直接添加自定义域名）。添加的备案域名可以在自主域名处查看到(这里我们以一个我已经备案的域名senyblog.com为例)：</li>
+</ol>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405092309226.png" alt="natapp1"></p>
+<ol start="2">
+<li>接着我们可以配置我们的VIP-1 型通道，设置如下：</li>
+</ol>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405092313428.png" alt="natapp2"></p>
+<blockquote>
+<p>​		 这里简单介绍以下，我们选择自主域名，并且以我们备案的域名<code>www.senyblog.com</code>作为自主域名，来映射到服务器的主机的80端口上，免费开启https是指在我们有SSL证书的情况下，可以开启安全的https访问。这个后面会说明。</p>
+<p>​		注意到通道名称上面有一个<code>authtoken</code>字符串，这个后面我们在客户端中需要用到。</p>
+</blockquote>
+<ol start="3">
+<li>我们需要在域名提供商（我们域名是在阿里云购买），设置域名解析，把<code>senyblog.com</code>域名的主机记录：www，以CHANE的记录类型，记录值为通道提供的 <code>c80de39d61648d86.natapp.cc</code> 上。</li>
+</ol>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405092329539.png" alt="natapp3"></p>
+<ol start="4">
+<li>然后我们进入到宝塔linux面板，在网页中添加我们的备案域名<code>www.senyblog.com</code>，如下图：</li>
+</ol>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405092317581.png" alt="baota6"></p>
+<ol start="5">
+<li><p>我们从natapp官网下载客户端（根据自己的服务器类型，我们采用的是RK3588的处理器，64位的ubuntu系统，所以选择<code>Linux/ARM 64位</code>版本），然后用支持文件传输的ssh工具（这里使用<code>MobaXterm</code>,当然也可以直接使用宝塔的linxu面板来传输文件)，把文件传输到<code>/usr/local/natapp/</code>中（如果没有则创建对应的文件夹），也就是把下载的natapp的应用程序拷贝到该目录下。</p>
+</li>
+<li><p>以root权限，在终端中进入<code>/usr/local/natapp/</code>目录，给与<code>natapp</code>的运行权限，并运行<code>natapp</code>，其中的<code>-authtoken=XXXXXXX</code>填入通道的<code>authtoken</code>值即可。</p>
+</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo root</span><br><span class="line">cd /usr/local/natapp/</span><br><span class="line">chmod a+x natapp</span><br><span class="line">./natapp -authtoken=XXXXXXX</span><br></pre></td></tr></table></figure>
+
+<ol start="7">
+<li>这个时候我们就可以通过能够上网的任何设备，直接用<code>www.senyblog.com</code>访问我们的网页了。</li>
+</ol>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405092339721.png" alt="natapp4"></p>
+<ol start="8">
+<li>这时候只是可以访问，但是每次启动我们的开发板，需要重新运行一次<code>./natapp -authtoken=XXXXXXX</code>命令来启动<code>natapp</code>,且需要占用终端。这里给出两个方案，一个是后台运行，一个是开启自启动</li>
+</ol>
+<ul>
+<li><p>后台运行 ： 直接<code>nohup ./natapp -authtoken=xxxx -log=stdout &amp;</code>来运行natapp即可，如果需要退出，可以通过<code>ps -ef|grep natapp</code>来查看<code>narapp</code>进程，然后通过<code>kill -9 id</code>来关闭<code>natapp</code>，详细可以参考：<a href="https://natapp.cn/article/nohup">https://natapp.cn/article/nohup</a></p>
+</li>
+<li><p>通过脚本设置开启自启动，按照如下操作</p>
+<ol>
+<li>从网站：<a href="https://natapp.cn/article/config_ini">https://natapp.cn/article/config_ini</a> 下载config.ini文件，填写<code>authtoken</code>的值，并把该文件上传到<code>natapp</code>的目录下，即<code>/usr/local/natapp/</code>目录下</li>
+<li>可以通过直接运行<code>./natapp</code>测试运行natapp是否正常，如果正常，则下一步</li>
+<li>下载开启自启动脚本：<a href="https://github.com/natapp/natapp_autostart%EF%BC%8C%E8%BF%99%E9%87%8C%E6%88%91%E4%BB%AC%E9%80%89%E6%8B%A9%60RaspberryPi%60%E7%9B%AE%E5%BD%95%E4%B8%8B%E7%9A%84%60natapp%60%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%8C%E7%94%B1%E4%BA%8E%E5%A4%96%E8%AF%A5%E8%84%9A%E6%9C%AC%E4%B8%AD%E5%AE%9A%E4%B9%89natapp%E7%9B%AE%E5%BD%95%E4%B8%BA%60/usr/natapp%60%EF%BC%8C%E6%88%91%E4%BB%AC%E9%9C%80%E8%A6%81%E4%BF%AE%E6%94%B9%E4%B8%BA%60/usr/local/natapp/%60%EF%BC%8C%E4%BF%AE%E6%94%B9%E5%A5%BD%E5%90%8E%E6%8A%8A%E8%AF%A5%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%E6%8B%B7%E8%B4%9D%E5%88%B0%60/etc/init.d/%60%E7%9B%AE%E5%BD%95%E4%B8%8B%E3%80%82">https://github.com/natapp/natapp_autostart，这里我们选择`RaspberryPi`目录下的`natapp`脚本文件，由于外该脚本中定义natapp目录为`/usr/natapp`，我们需要修改为`/usr/local/natapp/`，修改好后把该脚本文件拷贝到`/etc/init.d/`目录下。</a></li>
+<li>给与该脚本文件755权限<code>sudo chmod 755 /etc/init.d/natapp</code></li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo chmod 755 /etc/init.d/natapp</span><br></pre></td></tr></table></figure>
+
+
+
+<ol>
+<li>运行<code>sudo /etc/init.d/natapp start</code>测试脚本启动情况,如果允许正常，则可以加入开机自动启动</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd /etc/init.d</span><br><span class="line">sudo update-rc.d natapp defaults 90</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>输入<code>sudo reboot</code>尝试重启设备，然后验证服务是否启动正常，如果正常，则表示没有问题</li>
+<li>可以通过如下命令关闭对脚本进行控制</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo /etc/init.d/natapp start    #开启</span><br><span class="line">sudo /etc/init.d/natapp stop     #关闭</span><br><span class="line">sudo /etc/init.d/natapp restart  #重启</span><br><span class="line"></span><br><span class="line">cd /etc/init.d</span><br><span class="line">sudo update-rc.d natapp defaults 90    #加入开机启动</span><br><span class="line">sudo update-rc.d -f natapp remove  #取消开机启动</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="9">
+<li>到这里，在本地开发板上架设博客，并绑定自己域名实现远程访问的功能就实现了。如果采用这种方式，你只需要有一个可以允许linux的开发板，一个备案的域名，额外，natapp添加一个备案域名费用1元，外加可能需要一个月9元内网穿透的隧道费用。就可以实现部署一个自己域名的网站或者博客了。</li>
+</ol>
+]]></content>
+      <categories>
+        <category>Web前端</category>
+        <category>hexo博客系统</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>Linux</tag>
+        <tag>宝塔面板</tag>
+        <tag>内网穿透</tag>
+      </tags>
+  </entry>
+</search>
