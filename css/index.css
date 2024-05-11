@@ -9662,6 +9662,9 @@ h1.page-title + .tag-cloud-list {
   -ms-transform: rotate(0);
   transform: rotate(0);
 }
+#aside-content .card-categories .card-category-list > .parent > .child {
+  display: none;
+}
 #aside-content .card-webinfo .item-headline {
   display: none;
 }
