@@ -1,57 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>hexo博客使用的一些常见问题（一）：外站图片显示，站内链接，嵌入B站视频</title>
-    <url>/Web/hexo%E5%8D%9A%E5%AE%A2%E4%BD%BF%E7%94%A8%E7%9A%84%E4%B8%80%E4%BA%9B%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%A4%96%E7%AB%99%E5%9B%BE%E7%89%87%E6%98%BE%E7%A4%BA%EF%BC%8C%E7%AB%99%E5%86%85%E9%93%BE%E6%8E%A5%EF%BC%8C%E5%B5%8C%E5%85%A5B%E7%AB%99%E8%A7%86%E9%A2%91/</url>
-    <content><![CDATA[<h3 id="1、关于网站使用外网图片无法显示的问题。"><a href="#1、关于网站使用外网图片无法显示的问题。" class="headerlink" title="1、关于网站使用外网图片无法显示的问题。"></a>1、关于网站使用外网图片无法显示的问题。</h3><ol>
-<li>如果只需要文章能够正常显示，只需要在文章前面最前方加上如下语句即可：</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot; /&gt;</span><br></pre></td></tr></table></figure>
-
-<p>​		该方法参考这篇文章的说法：<a href="https://www.cnblogs.com/selier/p/9570650.html%EF%BC%8C">https://www.cnblogs.com/selier/p/9570650.html，</a> 大致的原理是：</p>
-<blockquote>
-<p>​		一般浏览器向服务器请求一个资源（如图片）时，通常会包括一个<code>Referer</code>头部，它包含了发起请求的页面的URL。这有助于服务器理解请求的来源。</p>
-<p>​		而有些图片网站为了防止其它网站盗链其资源（比如我是直接吧图片上传到gitee中，然后再文章中加载）。如果<code>Referer</code>头部显示图片请求来自于非授权的域名，服务器可能拒绝请求。</p>
-<p>​		所以该条语句的意思是：告诉浏览器不要发送<code>Referer</code>头部给服务器。这样，图床服务器就无法判断请求是否来自于非授权的域，因而可能“默认”允许请求。</p>
-</blockquote>
-<p>​		当然如果不想每次创建文章的时候都手动添加该语句，可以尝试把该语句添加到hexo博客更目录下的<code>scaffolds/post.md</code>文件中，该文件是创建文章的模板文件，此时我们通过hexo n “文章题目”的时候会自动添加该语句。</p>
-<ol start="2">
-<li><p>我在实际的建立博客的时候，可能由图床文件，并不仅仅用在文章中，可能还希望应用到各种页面中，比如主页头像，其他网页内容，这个时候通过向文章头部添加这条语句的方法就不行了，这是我们可以采用hexo的<code>注入器（Injector）</code>往所有的博客页面头部注入该条语句，以实现全网的图片访问。具体做法如下:</p>
-<ol>
-<li>在hexo博客根目录下添加<code>scripts</code>文件夹，在文件夹中创建<code>injector.js</code>文件，在该文件中添加如下语句：</li>
-</ol>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">hexo.<span class="property">extend</span>.<span class="property">injector</span>.<span class="title function_">register</span>(<span class="string">&#x27;head_begin&#x27;</span>, <span class="string">&#x27;&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;&#x27;</span>, <span class="string">&#x27;default&#x27;</span>);</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>允许<code>hexo cl</code>（清除缓冲）, <code>hexo g</code>（重新生成静态文件）, <code>hexo s</code>(本地启动服务查看效果), <code>hexo d</code>（部署到服务器），来实现网站部署，此时就可以正确的显示了。</li>
-</ol>
-</li>
-</ol>
-<h3 id="2、-关于博客内部链接的问题。"><a href="#2、-关于博客内部链接的问题。" class="headerlink" title="2、 关于博客内部链接的问题。"></a>2、 关于博客内部链接的问题。</h3><ol>
-<li>把<code>permalink</code>修改为<code>:title/</code></li>
-</ol>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># URL</span></span><br><span class="line"><span class="comment">## Set your site url here. For example, if you use GitHub Page, set url as &#x27;https://username.github.io/project&#x27;</span></span><br><span class="line"><span class="attr">url:</span> <span class="string">http://senysunny.com</span></span><br><span class="line"><span class="attr">permalink:</span> <span class="string">:title/</span> <span class="comment"># :year/:month/:day/:title/</span></span><br><span class="line"><span class="attr">permalink_defaults:</span></span><br><span class="line"><span class="attr">pretty_urls:</span></span><br><span class="line">  <span class="attr">trailing_index:</span> <span class="literal">true</span> <span class="comment"># Set to false to remove trailing &#x27;index.html&#x27; from permalinks</span></span><br><span class="line">  <span class="attr">trailing_html:</span> <span class="literal">true</span> <span class="comment"># Set to false to remove trailing &#x27;.html&#x27; from permalinks</span></span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>文章直接做链接，按照<code>/目录/文章名称/</code>作为链接内容即可，会自动链接到<code>网址//目录/文章名称/</code>对应的网页中</li>
-</ol>
-<h3 id="3、-在博客中嵌入视频（比如B站视频）"><a href="#3、-在博客中嵌入视频（比如B站视频）" class="headerlink" title="3、 在博客中嵌入视频（比如B站视频）"></a>3、 在博客中嵌入视频（比如B站视频）</h3><ol>
-<li>直接在markdown中使用<code>&lt;iframe&gt;</code>标签，在标签中添加视频的网址，即可嵌入视频，如下图<iframe  width="100%" height="450" src="//player.bilibili.com/player.html?aid=279747615&bvid=BV1cc411m72m&cid=1365009247&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe></li>
-<li>视频的网址，比如B站的视频，可以在视频下方的分享按钮，有一个嵌入代码，直接复制代码即可，如果嵌入到markdown中，视频比较小，可以在<code>iframe</code>中添加<code>width</code>和<code>height</code>属性，设置视频的宽度和高度，如下所示</li>
-</ol>
-<pre><code class="yaml">&lt;iframe  width=&quot;100%&quot; height=&quot;450&quot; src=&quot;//player.bilibili.com/player.html?aid=279747615&amp;bvid=BV1cc411m72m&amp;cid=1365009247&amp;p=1&quot; scrolling=&quot;no&quot; border=&quot;0&quot; frameborder=&quot;no&quot; framespacing=&quot;0&quot; allowfullscreen=&quot;true&quot;&gt; &lt;/iframe&gt;
-</code></pre>
-]]></content>
-      <categories>
-        <category>Web前端</category>
-        <category>hexo博客系统</category>
-      </categories>
-      <tags>
-        <tag>hexo</tag>
-        <tag>bilibili</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>ESP32学习笔记（一）：ESP-IDF配合VSCode的一些方法和技巧</title>
     <url>/Embedded/ESP32%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9AESP-IDF%E9%85%8D%E5%90%88VSCode%E7%9A%84%E4%B8%80%E4%BA%9B%E6%96%B9%E6%B3%95%E5%92%8C%E6%8A%80%E5%B7%A7/</url>
     <content><![CDATA[<h3 id="1、idf的常用基本命令"><a href="#1、idf的常用基本命令" class="headerlink" title="1、idf的常用基本命令"></a>1、idf的常用基本命令</h3><h4 id="1-查看芯片信息：esptool-py-p-COM4-flash-id"><a href="#1-查看芯片信息：esptool-py-p-COM4-flash-id" class="headerlink" title="(1). 查看芯片信息：esptool.py -p COM4 flash_id"></a>(1). 查看芯片信息：<code>esptool.py -p COM4 flash_id</code></h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">esptool.py -p COM4 flash_id</span><br></pre></td></tr></table></figure>
@@ -274,6 +223,57 @@
         <tag>esp32</tag>
         <tag>esp-idf</tag>
         <tag>vscode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo博客使用的一些常见问题（一）：外站图片显示，站内链接，嵌入B站视频</title>
+    <url>/Web/hexo%E5%8D%9A%E5%AE%A2%E4%BD%BF%E7%94%A8%E7%9A%84%E4%B8%80%E4%BA%9B%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%A4%96%E7%AB%99%E5%9B%BE%E7%89%87%E6%98%BE%E7%A4%BA%EF%BC%8C%E7%AB%99%E5%86%85%E9%93%BE%E6%8E%A5%EF%BC%8C%E5%B5%8C%E5%85%A5B%E7%AB%99%E8%A7%86%E9%A2%91/</url>
+    <content><![CDATA[<h3 id="1、关于网站使用外网图片无法显示的问题。"><a href="#1、关于网站使用外网图片无法显示的问题。" class="headerlink" title="1、关于网站使用外网图片无法显示的问题。"></a>1、关于网站使用外网图片无法显示的问题。</h3><ol>
+<li>如果只需要文章能够正常显示，只需要在文章前面最前方加上如下语句即可：</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot; /&gt;</span><br></pre></td></tr></table></figure>
+
+<p>​		该方法参考这篇文章的说法：<a href="https://www.cnblogs.com/selier/p/9570650.html%EF%BC%8C">https://www.cnblogs.com/selier/p/9570650.html，</a> 大致的原理是：</p>
+<blockquote>
+<p>​		一般浏览器向服务器请求一个资源（如图片）时，通常会包括一个<code>Referer</code>头部，它包含了发起请求的页面的URL。这有助于服务器理解请求的来源。</p>
+<p>​		而有些图片网站为了防止其它网站盗链其资源（比如我是直接吧图片上传到gitee中，然后再文章中加载）。如果<code>Referer</code>头部显示图片请求来自于非授权的域名，服务器可能拒绝请求。</p>
+<p>​		所以该条语句的意思是：告诉浏览器不要发送<code>Referer</code>头部给服务器。这样，图床服务器就无法判断请求是否来自于非授权的域，因而可能“默认”允许请求。</p>
+</blockquote>
+<p>​		当然如果不想每次创建文章的时候都手动添加该语句，可以尝试把该语句添加到hexo博客更目录下的<code>scaffolds/post.md</code>文件中，该文件是创建文章的模板文件，此时我们通过hexo n “文章题目”的时候会自动添加该语句。</p>
+<ol start="2">
+<li><p>我在实际的建立博客的时候，可能由图床文件，并不仅仅用在文章中，可能还希望应用到各种页面中，比如主页头像，其他网页内容，这个时候通过向文章头部添加这条语句的方法就不行了，这是我们可以采用hexo的<code>注入器（Injector）</code>往所有的博客页面头部注入该条语句，以实现全网的图片访问。具体做法如下:</p>
+<ol>
+<li>在hexo博客根目录下添加<code>scripts</code>文件夹，在文件夹中创建<code>injector.js</code>文件，在该文件中添加如下语句：</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">hexo.<span class="property">extend</span>.<span class="property">injector</span>.<span class="title function_">register</span>(<span class="string">&#x27;head_begin&#x27;</span>, <span class="string">&#x27;&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;&#x27;</span>, <span class="string">&#x27;default&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>允许<code>hexo cl</code>（清除缓冲）, <code>hexo g</code>（重新生成静态文件）, <code>hexo s</code>(本地启动服务查看效果), <code>hexo d</code>（部署到服务器），来实现网站部署，此时就可以正确的显示了。</li>
+</ol>
+</li>
+</ol>
+<h3 id="2、-关于博客内部链接的问题。"><a href="#2、-关于博客内部链接的问题。" class="headerlink" title="2、 关于博客内部链接的问题。"></a>2、 关于博客内部链接的问题。</h3><ol>
+<li>把<code>permalink</code>修改为<code>:title/</code></li>
+</ol>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># URL</span></span><br><span class="line"><span class="comment">## Set your site url here. For example, if you use GitHub Page, set url as &#x27;https://username.github.io/project&#x27;</span></span><br><span class="line"><span class="attr">url:</span> <span class="string">http://senysunny.com</span></span><br><span class="line"><span class="attr">permalink:</span> <span class="string">:title/</span> <span class="comment"># :year/:month/:day/:title/</span></span><br><span class="line"><span class="attr">permalink_defaults:</span></span><br><span class="line"><span class="attr">pretty_urls:</span></span><br><span class="line">  <span class="attr">trailing_index:</span> <span class="literal">true</span> <span class="comment"># Set to false to remove trailing &#x27;index.html&#x27; from permalinks</span></span><br><span class="line">  <span class="attr">trailing_html:</span> <span class="literal">true</span> <span class="comment"># Set to false to remove trailing &#x27;.html&#x27; from permalinks</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>文章直接做链接，按照<code>/目录/文章名称/</code>作为链接内容即可，会自动链接到<code>网址//目录/文章名称/</code>对应的网页中</li>
+</ol>
+<h3 id="3、-在博客中嵌入视频（比如B站视频）"><a href="#3、-在博客中嵌入视频（比如B站视频）" class="headerlink" title="3、 在博客中嵌入视频（比如B站视频）"></a>3、 在博客中嵌入视频（比如B站视频）</h3><ol>
+<li>直接在markdown中使用<code>&lt;iframe&gt;</code>标签，在标签中添加视频的网址，即可嵌入视频，如下图<iframe  width="100%" height="450" src="//player.bilibili.com/player.html?aid=279747615&bvid=BV1cc411m72m&cid=1365009247&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe></li>
+<li>视频的网址，比如B站的视频，可以在视频下方的分享按钮，有一个嵌入代码，直接复制代码即可，如果嵌入到markdown中，视频比较小，可以在<code>iframe</code>中添加<code>width</code>和<code>height</code>属性，设置视频的宽度和高度，如下所示</li>
+</ol>
+<pre><code class="yaml">&lt;iframe  width=&quot;100%&quot; height=&quot;450&quot; src=&quot;//player.bilibili.com/player.html?aid=279747615&amp;bvid=BV1cc411m72m&amp;cid=1365009247&amp;p=1&quot; scrolling=&quot;no&quot; border=&quot;0&quot; frameborder=&quot;no&quot; framespacing=&quot;0&quot; allowfullscreen=&quot;true&quot;&gt; &lt;/iframe&gt;
+</code></pre>
+]]></content>
+      <categories>
+        <category>Web前端</category>
+        <category>hexo博客系统</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>bilibili</tag>
       </tags>
   </entry>
   <entry>
