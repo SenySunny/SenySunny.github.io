@@ -1,6 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>git学习笔记（一）：git客户端基本使用方法</title>
+    <url>/Program/git%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9Agit%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/</url>
+    <content><![CDATA[<h3 id="git的常用基本指令"><a href="#git的常用基本指令" class="headerlink" title="git的常用基本指令"></a>git的常用基本指令</h3><p>​		下面是一些git常用的基本指令集，这里只是简单罗列一下，方便参考：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">配置git基本信息</span></span><br><span class="line">git config --global user.name &quot;Your Name&quot;</span><br><span class="line">git config --global user.email &quot;youremail@example.com&quot;</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">git仓库初始化</span></span><br><span class="line">git init</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">git克隆仓库</span></span><br><span class="line">git clone https://gitee.com/SenySunny/pikapython.git</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">检查当前的工作目录状态（哪些文件被修改了但还没提交）</span></span><br><span class="line">git status</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">添加文件，用.表示添加所有文件</span></span><br><span class="line">git add filename</span><br><span class="line">git add .</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将暂存区的更改提交到本地仓库。通常附带一条消息说明这次提交的内容。</span></span><br><span class="line">git commit -m &quot;Commit message&quot;</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将本地的更改推送到远程仓库，如果是推送到主仓库可以直接用git push来推送</span></span><br><span class="line">git push origin main</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">从远程仓库获取最新版本并合并到本地仓库。</span></span><br><span class="line">git pull</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看提交历史，按上下键查看<span class="built_in">log</span>，按q退出<span class="built_in">log</span>模式，或者用git --no-pager <span class="built_in">log</span>直接一次打印所有<span class="built_in">log</span>(尽量少用)</span></span><br><span class="line">git log</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看未暂存的文件更新了哪些内容。</span></span><br><span class="line">git diff</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">如果你想查看系统、全局和本地仓库的所有配置，你可以使用以下命令</span></span><br><span class="line">git config --list</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看特定的配置项</span></span><br><span class="line">git config user.email</span><br><span class="line">git config user.name</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看系统级配置（对所有用户有效）：</span></span><br><span class="line">git config --system --list</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看全局级配置（对当前用户有效）：</span></span><br><span class="line">git config --global --list</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看本地级配置（只对当前仓库有效）：</span></span><br><span class="line">git config --local --list</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">同步更新仓库下的分仓库的内容</span></span><br><span class="line">git submodule update --init --recursive</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="git分支管理与版本维护总结"><a href="#git分支管理与版本维护总结" class="headerlink" title="git分支管理与版本维护总结"></a>git分支管理与版本维护总结</h3><p>​		这里需要特别说明一下；分支管理一般用于在允许你在主开发线上分离一个动态开发线路，主要用来进行新的功能开发，bug调试等工作，主要目的是为了在新功能开发，或者调试bug的同时，不影响主线。分支可以随着新的提交而更新。</p>
+<p>​		常用的分支管理指令如下：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git branch               		# 列出所有本地分支</span><br><span class="line">git branch -a            		# 列出所有分支（本地和远程）</span><br><span class="line">git branch new-branch    		# 创建新分支</span><br><span class="line">git checkout new-branch  		# 切换到新分支</span><br><span class="line">git checkout -b new-branch		# 创建并切换分支</span><br><span class="line">git checkout main				# 切换回主线进行开发</span><br></pre></td></tr></table></figure>
+
+<p>​		而版本管理，我们一般用tag指令来处理，Tag通常用来标记特定的点，可以理解为Tag是对某一时刻的提交（commit）的引用。一般用来做版本发布，当软件开发到一个特定节点时，我们可以用tag指令来发布版本。</p>
+<p>​		tag常用指令如下：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git tag -a v1.3 -m &quot;Release version 1.3&quot;</span><br><span class="line">git push origin v1.3</span><br></pre></td></tr></table></figure>
+
+<p>​		一般软件版本为x.x.x三组数据组成，第一个为主版本，第二个版本为功能更新版本，第三个为功能修复和完善的版本。也就是说正常情况下，我们发布1.3版本，后续我们回继续对1.3版本进行维护和优化，创建1.3.x版本。如果要增加或者改变功能，我们回同步创建1.4版本。这样就可以实现对多个版本的同步和维护（一般主版本会在产品有重大更新，或者比较大的重构，导致可能会出现兼容性问题的时候，会更新主版本）。</p>
+<p>​		我们现在假设，一款软件，我们已经开发到可以发布1.3版本了。我们会采用tag方式创建和发布1.3版本。一般这个时候，我们同步创建一个分支。用于后续修复和完善该版本。我们操作如下：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git checkout main							# 切换主线</span><br><span class="line">git tag -a v1.3 -m &quot;Release version 1.3&quot;	# 发布v1.3版本</span><br><span class="line">git push origin v1.3						# 推送v1.3版本到远程仓库</span><br><span class="line">git checkout -b release/v1.3 v1.3			# 从v1.3版本的节点创建分支，并切换到该分支</span><br></pre></td></tr></table></figure>
+
+<p>​		此时如果我们要同步更新主线分支和v1.3分支的话，可以如下操作</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git checkout main							# 切换主线</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">给主线分支开发新功能等操作</span></span><br><span class="line">git checkout release/v1.3					# 切换到v1.3的分支</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">此处可以进行修复和完善v1.3的代码</span></span><br></pre></td></tr></table></figure>
+
+<p>​		如果我们希望将对1.3版本的完善和修复同步到主线，有以下两种操作方法：</p>
+<ol>
+<li>从release&#x2F;v1.3的分支合并修复到main分支</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git checkout main							# 切换主线</span><br><span class="line">git merge release/v1.3						# 合并分支到主线分支</span><br></pre></td></tr></table></figure>
+
+<p>​		这种方法将把1.3维护分支的所有更改都合并到 <code>main</code> 分支，适用于所有更改都需要合并的情况。</p>
+<ol start="2">
+<li>Cherry-pick 特定的提交，如果我们只是希望把某个特定的修复合并到主线分支，则可以通过git log查看到该修复操作的哈希值内容。然后通过如下操作：</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git checkout main							# 切换主线</span><br><span class="line">git cherry-pick &lt;commit-hash&gt;				# 将特定的提交合并到主线</span><br></pre></td></tr></table></figure>
+
+<p>​		不管是那种操作，我们都需要使用push把它提交到远程仓库</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git push origin main						# 如果确定目前处于主线仓库，则直接用git push也可以</span><br></pre></td></tr></table></figure>
+
+<p>​		如果我们认为对1.3版本的修复和完善工作已经到了一个阶段，我们可以发布1.3.1版本，此时我们可以如下操作：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git checkout release/v1.3					# 切换到v1.3的分支,确保我们目前处在1.3分支当中</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">如果已经在1.3分支中，则不需要checkout命令</span></span><br><span class="line">git push origin release/v1.3				# 确保分支已经推送更新到远程仓库</span><br><span class="line">git tag -a v1.3.1 -m &quot;Release version 1.3.1&quot;# 发布v1.3.1版本 	</span><br><span class="line">git push origin v1.3.1						# 推送v1.3.1版本到远程仓库</span><br></pre></td></tr></table></figure>
+
+<p>​		当然我们也可以继续基于release&#x2F;v1.3的分支进行操作，后续可以发布1.3.2~1.3.x的版本。同时可以基于main分支，来发布1.4版本，或者发布1.4版本之后，继续创建release&#x2F;v1.4的分支内容，用来修复和维护1.4版本的内容。</p>
+<p>​		用如上操作，我们基本上可以使用git来维护软件的各个版本内容了。</p>
+<h3 id="git中关于二进制文件或者其他非文本类大文件处理方法参考"><a href="#git中关于二进制文件或者其他非文本类大文件处理方法参考" class="headerlink" title="git中关于二进制文件或者其他非文本类大文件处理方法参考"></a>git中关于二进制文件或者其他非文本类大文件处理方法参考</h3><ol>
+<li>直接用附件上传的方式，把二进制或者其他大文件压缩或者直接作为文件上传到gitee的附件当中去，点击gitee仓库的统计，下面有附件，点击添加附件，然后把“复制链接地址”，把地址或者地址的快捷方式作为文件提供到仓储当中，这样用户就可以通过地址或者快捷方式直接实现二进制或者大文件的下载。</li>
+</ol>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405131549940.png" alt="附件"></p>
+<ol start="2">
+<li><p>采用Git LFS，但是貌似目前并不是所有的git远程仓库都支持LFS功能，比如gitee的个人版本不支持，只有付费企业版本支持。貌似github&#x2F;gitlab&#x2F;bitbucket都是支持LFS的。所以在使用LFS的时候，请确保git的服务器是否支持GIT LFS，否则可能会导致LFS无效。这里对Git LFS做个简单的介绍</p>
+<blockquote>
+<p>在创建或者上传大文件时：</p>
+<ol>
+<li>在仓库中输入<code>git lfs install</code>初始化lfs,如果系统没有lfs插件，git会自动下载lfs插件，并进行初始化。</li>
+<li>在现有仓库中使用lfs，你需要指定哪些文件被作为大文件。如下操作：</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git init</span><br><span class="line">git lfs track &quot;*.psd&quot;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>为了确保仓库的lfs大文件已经被绑定，可以确保<code>.gitattributes</code> 文件被添加到仓库中</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git add .gitattributes</span><br><span class="line">git commit -m &quot;Set Git LFS for psd files&quot;</span><br></pre></td></tr></table></figure>
+
+<p>​		此时，Git LFS来跟踪所有的<code>.psd</code>文件。你可以指定任何文件类型或具体文件。这会创建或修改<code>.gitattributes</code>文件，包含关于哪些文件应由Git LFS跟踪的规则。</p>
+<ol start="4">
+<li>和正常一样使用git即可</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>克隆或者拉取具有lfs的仓库时，如下操作</p>
+<ol>
+<li>和正常一样下载<code>git clone &lt;repository-url&gt;</code>或者拉取<code>git pull origin main</code>文件即可。如果发现大文件没有被同步，可以尝试用<code>git lfs pull</code>单独拉取一下大文件。</li>
+<li>另外可以通过<code>git lfs ls-files</code>来查看哪些文件时由LFS管理的文件。<ol>
+<li>如果LFS的对象存储很大，可以尝试使用<code>git lfs prune</code>来同步和清理大文件，这将删除本地存储中的旧版本LFS对象，从而节省空间。</li>
+</ol>
+</li>
+</ol>
+</blockquote>
+<p>​		可以通过<code>git lfs track</code>来查看哪些文件类型被绑定到lfs大文件存储上了。通过<code>git lfs track &quot;*.psd&quot;</code>来取消某种类型文件的追踪（记得修改完成之后需要push）。</p>
+</li>
+<li><p>对于一些特别大的文件，或者不经常更改的大型二进制文件，考虑将它们存储在其他地方（如云存储服务），只在Git仓库中保存必要的链接或引用。这个方法和第一个方法基本相同，只是需要自己创建或者寻找第三方的云存储服务而已。</p>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>编程语言</category>
+        <category>git</category>
+      </categories>
+      <tags>
+        <tag>git</tag>
+        <tag>github</tag>
+        <tag>版本管理</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>ESP32学习笔记（一）：ESP-IDF配合VSCode的一些方法和技巧</title>
     <url>/Embedded/ESP32%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9AESP-IDF%E9%85%8D%E5%90%88VSCode%E7%9A%84%E4%B8%80%E4%BA%9B%E6%96%B9%E6%B3%95%E5%92%8C%E6%8A%80%E5%B7%A7/</url>
     <content><![CDATA[<h3 id="1、idf的常用基本命令"><a href="#1、idf的常用基本命令" class="headerlink" title="1、idf的常用基本命令"></a>1、idf的常用基本命令</h3><h4 id="1-查看芯片信息：esptool-py-p-COM4-flash-id"><a href="#1-查看芯片信息：esptool-py-p-COM4-flash-id" class="headerlink" title="(1). 查看芯片信息：esptool.py -p COM4 flash_id"></a>(1). 查看芯片信息：<code>esptool.py -p COM4 flash_id</code></h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">esptool.py -p COM4 flash_id</span><br></pre></td></tr></table></figure>
@@ -226,98 +318,6 @@
         <tag>esp32</tag>
         <tag>esp-idf</tag>
         <tag>vscode</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>git学习笔记（一）：git客户端基本使用方法</title>
-    <url>/Program/git%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9Agit%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/</url>
-    <content><![CDATA[<h3 id="git的常用基本指令"><a href="#git的常用基本指令" class="headerlink" title="git的常用基本指令"></a>git的常用基本指令</h3><p>​		下面是一些git常用的基本指令集，这里只是简单罗列一下，方便参考：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">配置git基本信息</span></span><br><span class="line">git config --global user.name &quot;Your Name&quot;</span><br><span class="line">git config --global user.email &quot;youremail@example.com&quot;</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">git仓库初始化</span></span><br><span class="line">git init</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">git克隆仓库</span></span><br><span class="line">git clone https://gitee.com/SenySunny/pikapython.git</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">检查当前的工作目录状态（哪些文件被修改了但还没提交）</span></span><br><span class="line">git status</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">添加文件，用.表示添加所有文件</span></span><br><span class="line">git add filename</span><br><span class="line">git add .</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将暂存区的更改提交到本地仓库。通常附带一条消息说明这次提交的内容。</span></span><br><span class="line">git commit -m &quot;Commit message&quot;</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将本地的更改推送到远程仓库，如果是推送到主仓库可以直接用git push来推送</span></span><br><span class="line">git push origin main</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">从远程仓库获取最新版本并合并到本地仓库。</span></span><br><span class="line">git pull</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看提交历史，按上下键查看<span class="built_in">log</span>，按q退出<span class="built_in">log</span>模式，或者用git --no-pager <span class="built_in">log</span>直接一次打印所有<span class="built_in">log</span>(尽量少用)</span></span><br><span class="line">git log</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看未暂存的文件更新了哪些内容。</span></span><br><span class="line">git diff</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">如果你想查看系统、全局和本地仓库的所有配置，你可以使用以下命令</span></span><br><span class="line">git config --list</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看特定的配置项</span></span><br><span class="line">git config user.email</span><br><span class="line">git config user.name</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看系统级配置（对所有用户有效）：</span></span><br><span class="line">git config --system --list</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看全局级配置（对当前用户有效）：</span></span><br><span class="line">git config --global --list</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看本地级配置（只对当前仓库有效）：</span></span><br><span class="line">git config --local --list</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">同步更新仓库下的分仓库的内容</span></span><br><span class="line">git submodule update --init --recursive</span><br></pre></td></tr></table></figure>
-
-
-<h3 id="git分支管理与版本维护总结"><a href="#git分支管理与版本维护总结" class="headerlink" title="git分支管理与版本维护总结"></a>git分支管理与版本维护总结</h3><p>​		这里需要特别说明一下；分支管理一般用于在允许你在主开发线上分离一个动态开发线路，主要用来进行新的功能开发，bug调试等工作，主要目的是为了在新功能开发，或者调试bug的同时，不影响主线。分支可以随着新的提交而更新。</p>
-<p>​		常用的分支管理指令如下：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git branch               		# 列出所有本地分支</span><br><span class="line">git branch -a            		# 列出所有分支（本地和远程）</span><br><span class="line">git branch new-branch    		# 创建新分支</span><br><span class="line">git checkout new-branch  		# 切换到新分支</span><br><span class="line">git checkout -b new-branch		# 创建并切换分支</span><br><span class="line">git checkout main				# 切换回主线进行开发</span><br></pre></td></tr></table></figure>
-
-<p>​		而版本管理，我们一般用tag指令来处理，Tag通常用来标记特定的点，可以理解为Tag是对某一时刻的提交（commit）的引用。一般用来做版本发布，当软件开发到一个特定节点时，我们可以用tag指令来发布版本。</p>
-<p>​		tag常用指令如下：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git tag -a v1.3 -m &quot;Release version 1.3&quot;</span><br><span class="line">git push origin v1.3</span><br></pre></td></tr></table></figure>
-
-<p>​		一般软件版本为x.x.x三组数据组成，第一个为主版本，第二个版本为功能更新版本，第三个为功能修复和完善的版本。也就是说正常情况下，我们发布1.3版本，后续我们回继续对1.3版本进行维护和优化，创建1.3.x版本。如果要增加或者改变功能，我们回同步创建1.4版本。这样就可以实现对多个版本的同步和维护（一般主版本会在产品有重大更新，或者比较大的重构，导致可能会出现兼容性问题的时候，会更新主版本）。</p>
-<p>​		我们现在假设，一款软件，我们已经开发到可以发布1.3版本了。我们会采用tag方式创建和发布1.3版本。一般这个时候，我们同步创建一个分支。用于后续修复和完善该版本。我们操作如下：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git checkout main							# 切换主线</span><br><span class="line">git tag -a v1.3 -m &quot;Release version 1.3&quot;	# 发布v1.3版本</span><br><span class="line">git push origin v1.3						# 推送v1.3版本到远程仓库</span><br><span class="line">git checkout -b release/v1.3 v1.3			# 从v1.3版本的节点创建分支，并切换到该分支</span><br></pre></td></tr></table></figure>
-
-<p>​		此时如果我们要同步更新主线分支和v1.3分支的话，可以如下操作</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git checkout main							# 切换主线</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">给主线分支开发新功能等操作</span></span><br><span class="line">git checkout release/v1.3					# 切换到v1.3的分支</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">此处可以进行修复和完善v1.3的代码</span></span><br></pre></td></tr></table></figure>
-
-<p>​		如果我们希望将对1.3版本的完善和修复同步到主线，有以下两种操作方法：</p>
-<ol>
-<li>从release&#x2F;v1.3的分支合并修复到main分支</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git checkout main							# 切换主线</span><br><span class="line">git merge release/v1.3						# 合并分支到主线分支</span><br></pre></td></tr></table></figure>
-
-<p>​		这种方法将把1.3维护分支的所有更改都合并到 <code>main</code> 分支，适用于所有更改都需要合并的情况。</p>
-<ol start="2">
-<li>Cherry-pick 特定的提交，如果我们只是希望把某个特定的修复合并到主线分支，则可以通过git log查看到该修复操作的哈希值内容。然后通过如下操作：</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git checkout main							# 切换主线</span><br><span class="line">git cherry-pick &lt;commit-hash&gt;				# 将特定的提交合并到主线</span><br></pre></td></tr></table></figure>
-
-<p>​		不管是那种操作，我们都需要使用push把它提交到远程仓库</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git push origin main						# 如果确定目前处于主线仓库，则直接用git push也可以</span><br></pre></td></tr></table></figure>
-
-<p>​		如果我们认为对1.3版本的修复和完善工作已经到了一个阶段，我们可以发布1.3.1版本，此时我们可以如下操作：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git checkout release/v1.3					# 切换到v1.3的分支,确保我们目前处在1.3分支当中</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">如果已经在1.3分支中，则不需要checkout命令</span></span><br><span class="line">git push origin release/v1.3				# 确保分支已经推送更新到远程仓库</span><br><span class="line">git tag -a v1.3.1 -m &quot;Release version 1.3.1&quot;# 发布v1.3.1版本 	</span><br><span class="line">git push origin v1.3.1						# 推送v1.3.1版本到远程仓库</span><br></pre></td></tr></table></figure>
-
-<p>​		当然我们也可以继续基于release&#x2F;v1.3的分支进行操作，后续可以发布1.3.2~1.3.x的版本。同时可以基于main分支，来发布1.4版本，或者发布1.4版本之后，继续创建release&#x2F;v1.4的分支内容，用来修复和维护1.4版本的内容。</p>
-<p>​		用如上操作，我们基本上可以使用git来维护软件的各个版本内容了。</p>
-<h3 id="git中关于二进制文件或者其他非文本类大文件处理方法参考"><a href="#git中关于二进制文件或者其他非文本类大文件处理方法参考" class="headerlink" title="git中关于二进制文件或者其他非文本类大文件处理方法参考"></a>git中关于二进制文件或者其他非文本类大文件处理方法参考</h3><ol>
-<li>直接用附件上传的方式，把二进制或者其他大文件压缩或者直接作为文件上传到gitee的附件当中去，点击gitee仓库的统计，下面有附件，点击添加附件，然后把“复制链接地址”，把地址或者地址的快捷方式作为文件提供到仓储当中，这样用户就可以通过地址或者快捷方式直接实现二进制或者大文件的下载。</li>
-</ol>
-<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405131549940.png" alt="附件"></p>
-<ol start="2">
-<li><p>采用Git LFS，但是貌似目前并不是所有的git远程仓库都支持LFS功能，比如gitee的个人版本不支持，只有付费企业版本支持。貌似github&#x2F;gitlab&#x2F;bitbucket都是支持LFS的。所以在使用LFS的时候，请确保git的服务器是否支持GIT LFS，否则可能会导致LFS无效。这里对Git LFS做个简单的介绍</p>
-<blockquote>
-<p>在创建或者上传大文件时：</p>
-<ol>
-<li>在仓库中输入<code>git lfs install</code>初始化lfs,如果系统没有lfs插件，git会自动下载lfs插件，并进行初始化。</li>
-<li>在现有仓库中使用lfs，你需要指定哪些文件被作为大文件。如下操作：</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git init</span><br><span class="line">git lfs track &quot;*.psd&quot;</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>为了确保仓库的lfs大文件已经被绑定，可以确保<code>.gitattributes</code> 文件被添加到仓库中</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git add .gitattributes</span><br><span class="line">git commit -m &quot;Set Git LFS for psd files&quot;</span><br></pre></td></tr></table></figure>
-
-<p>​		此时，Git LFS来跟踪所有的<code>.psd</code>文件。你可以指定任何文件类型或具体文件。这会创建或修改<code>.gitattributes</code>文件，包含关于哪些文件应由Git LFS跟踪的规则。</p>
-<ol start="4">
-<li>和正常一样使用git即可</li>
-</ol>
-</blockquote>
-<blockquote>
-<p>克隆或者拉取具有lfs的仓库时，如下操作</p>
-<ol>
-<li>和正常一样下载<code>git clone &lt;repository-url&gt;</code>或者拉取<code>git pull origin main</code>文件即可。如果发现大文件没有被同步，可以尝试用<code>git lfs pull</code>单独拉取一下大文件。</li>
-<li>另外可以通过<code>git lfs ls-files</code>来查看哪些文件时由LFS管理的文件。<ol>
-<li>如果LFS的对象存储很大，可以尝试使用<code>git lfs prune</code>来同步和清理大文件，这将删除本地存储中的旧版本LFS对象，从而节省空间。</li>
-</ol>
-</li>
-</ol>
-</blockquote>
-<p>​		可以通过<code>git lfs track</code>来查看哪些文件类型被绑定到lfs大文件存储上了。通过<code>git lfs track &quot;*.psd&quot;</code>来取消某种类型文件的追踪（记得修改完成之后需要push）。</p>
-</li>
-<li><p>对于一些特别大的文件，或者不经常更改的大型二进制文件，考虑将它们存储在其他地方（如云存储服务），只在Git仓库中保存必要的链接或引用。这个方法和第一个方法基本相同，只是需要自己创建或者寻找第三方的云存储服务而已。</p>
-</li>
-</ol>
-]]></content>
-      <categories>
-        <category>编程语言</category>
-        <category>git</category>
-      </categories>
-      <tags>
-        <tag>git</tag>
-        <tag>github</tag>
-        <tag>版本管理</tag>
       </tags>
   </entry>
   <entry>
