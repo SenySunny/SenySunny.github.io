@@ -2,7 +2,7 @@
 <search>
   <entry>
     <title>modbus_rt：本人编写的纯C实现的跨平台modbus协议通信库</title>
-    <url>/posts/modbus_0001.html</url>
+    <url>/modbus_0001.html</url>
     <content><![CDATA[<p>该项目的演示视频，详见：</p>
 <p>​	GitHub仓库： <a href="https://github.com/SenySunny/modbus_rt.git">https://github.com/SenySunny/modbus_rt.git</a> </p>
 <p>​	Gitee仓库： <a href="https://gitee.com/SenySunny/modbus_rt.git">https://gitee.com/SenySunny/modbus_rt.git</a></p>
@@ -311,7 +311,7 @@
   </entry>
   <entry>
     <title>git学习笔记（一）：git客户端基本使用方法</title>
-    <url>/posts/3967.html</url>
+    <url>/3967.html</url>
     <content><![CDATA[<h3 id="1、git的常用基本指令"><a href="#1、git的常用基本指令" class="headerlink" title="1、git的常用基本指令"></a>1、git的常用基本指令</h3><p>​		下面是一些git常用的基本指令集，这里只是简单罗列一下，方便参考：</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">配置git基本信息</span></span><br><span class="line">git config --global user.name &quot;Your Name&quot;</span><br><span class="line">git config --global user.email &quot;youremail@example.com&quot;</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">git仓库初始化</span></span><br><span class="line">git init</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">git克隆仓库</span></span><br><span class="line">git clone https://gitee.com/SenySunny/pikapython.git</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">检查当前的工作目录状态（哪些文件被修改了但还没提交）</span></span><br><span class="line">git status</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">添加文件，用.表示添加所有文件</span></span><br><span class="line">git add filename</span><br><span class="line">git add .</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将暂存区的更改提交到本地仓库。通常附带一条消息说明这次提交的内容。</span></span><br><span class="line">git commit -m &quot;Commit message&quot;</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将本地的更改推送到远程仓库，如果是推送到主仓库可以直接用git push来推送</span></span><br><span class="line">git push origin main</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">从远程仓库获取最新版本并合并到本地仓库。</span></span><br><span class="line">git pull</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看提交历史，按上下键查看<span class="built_in">log</span>，按q退出<span class="built_in">log</span>模式，或者用git --no-pager <span class="built_in">log</span>直接一次打印所有<span class="built_in">log</span>(尽量少用)</span></span><br><span class="line">git log</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看未暂存的文件更新了哪些内容。</span></span><br><span class="line">git diff</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">如果你想查看系统、全局和本地仓库的所有配置，你可以使用以下命令</span></span><br><span class="line">git config --list</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看特定的配置项</span></span><br><span class="line">git config user.email</span><br><span class="line">git config user.name</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看系统级配置（对所有用户有效）：</span></span><br><span class="line">git config --system --list</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看全局级配置（对当前用户有效）：</span></span><br><span class="line">git config --global --list</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看本地级配置（只对当前仓库有效）：</span></span><br><span class="line">git config --local --list</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">同步更新仓库下的分仓库的内容</span></span><br><span class="line">git submodule update --init --recursive</span><br></pre></td></tr></table></figure>
 
@@ -402,8 +402,203 @@
       </tags>
   </entry>
   <entry>
+    <title>hexo博客使用的一些常见问题（一）：外站图片显示，站内链接，嵌入B站视频</title>
+    <url>/hexo_0005.html</url>
+    <content><![CDATA[<h3 id="1、关于网站使用外网图片无法显示的问题。"><a href="#1、关于网站使用外网图片无法显示的问题。" class="headerlink" title="1、关于网站使用外网图片无法显示的问题。"></a>1、关于网站使用外网图片无法显示的问题。</h3><ol>
+<li>如果只需要文章能够正常显示，只需要在文章前面最前方加上如下语句即可：</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot; /&gt;</span><br></pre></td></tr></table></figure>
+
+<p>​		该方法参考这篇文章的说法：<a href="https://www.cnblogs.com/selier/p/9570650.html%EF%BC%8C">https://www.cnblogs.com/selier/p/9570650.html，</a> 大致的原理是：</p>
+<blockquote>
+<p>​		一般浏览器向服务器请求一个资源（如图片）时，通常会包括一个<code>Referer</code>头部，它包含了发起请求的页面的URL。这有助于服务器理解请求的来源。</p>
+<p>​		而有些图片网站为了防止其它网站盗链其资源（比如我是直接吧图片上传到gitee中，然后再文章中加载）。如果<code>Referer</code>头部显示图片请求来自于非授权的域名，服务器可能拒绝请求。</p>
+<p>​		所以该条语句的意思是：告诉浏览器不要发送<code>Referer</code>头部给服务器。这样，图床服务器就无法判断请求是否来自于非授权的域，因而可能“默认”允许请求。</p>
+</blockquote>
+<p>​		当然如果不想每次创建文章的时候都手动添加该语句，可以尝试把该语句添加到hexo博客更目录下的<code>scaffolds/post.md</code>文件中，该文件是创建文章的模板文件，此时我们通过hexo n “文章题目”的时候会自动添加该语句。</p>
+<ol start="2">
+<li><p>我在实际的建立博客的时候，可能由图床文件，并不仅仅用在文章中，可能还希望应用到各种页面中，比如主页头像，其他网页内容，这个时候通过向文章头部添加这条语句的方法就不行了，这是我们可以采用hexo的<code>注入器（Injector）</code>往所有的博客页面头部注入该条语句，以实现全网的图片访问。具体做法如下:</p>
+<ol>
+<li>在hexo博客根目录下添加<code>scripts</code>文件夹，在文件夹中创建<code>injector.js</code>文件，在该文件中添加如下语句：</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">hexo.<span class="property">extend</span>.<span class="property">injector</span>.<span class="title function_">register</span>(<span class="string">&#x27;head_begin&#x27;</span>, <span class="string">&#x27;&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;&#x27;</span>, <span class="string">&#x27;default&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>允许<code>hexo cl</code>（清除缓冲）, <code>hexo g</code>（重新生成静态文件）, <code>hexo s</code>(本地启动服务查看效果), <code>hexo d</code>（部署到服务器），来实现网站部署，此时就可以正确的显示了。</li>
+</ol>
+</li>
+</ol>
+<h3 id="2、-关于博客内部链接的问题。"><a href="#2、-关于博客内部链接的问题。" class="headerlink" title="2、 关于博客内部链接的问题。"></a>2、 关于博客内部链接的问题。</h3><ol>
+<li>把<code>permalink</code>修改为<code>:title/</code></li>
+</ol>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># URL</span></span><br><span class="line"><span class="comment">## Set your site url here. For example, if you use GitHub Page, set url as &#x27;https://username.github.io/project&#x27;</span></span><br><span class="line"><span class="attr">url:</span> <span class="string">http://senysunny.com</span></span><br><span class="line"><span class="attr">permalink:</span> <span class="string">:title/</span> <span class="comment"># :year/:month/:day/:title/</span></span><br><span class="line"><span class="attr">permalink_defaults:</span></span><br><span class="line"><span class="attr">pretty_urls:</span></span><br><span class="line">  <span class="attr">trailing_index:</span> <span class="literal">true</span> <span class="comment"># Set to false to remove trailing &#x27;index.html&#x27; from permalinks</span></span><br><span class="line">  <span class="attr">trailing_html:</span> <span class="literal">true</span> <span class="comment"># Set to false to remove trailing &#x27;.html&#x27; from permalinks</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>文章直接做链接，按照<code>/目录/文章名称/</code>作为链接内容即可，会自动链接到<code>网址//目录/文章名称/</code>对应的网页中</li>
+</ol>
+<h3 id="3、-在博客中嵌入视频（比如B站视频）"><a href="#3、-在博客中嵌入视频（比如B站视频）" class="headerlink" title="3、 在博客中嵌入视频（比如B站视频）"></a>3、 在博客中嵌入视频（比如B站视频）</h3><ol>
+<li>直接在markdown中使用<code>&lt;iframe&gt;</code>标签，在标签中添加视频的网址，即可嵌入视频，如下图<iframe  width="100%" height="450" src="//player.bilibili.com/player.html?aid=279747615&bvid=BV1cc411m72m&cid=1365009247&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe></li>
+<li>视频的网址，比如B站的视频，可以在视频下方的分享按钮，有一个嵌入代码，直接复制代码即可，如果嵌入到markdown中，视频比较小，可以在<code>iframe</code>中添加<code>width</code>和<code>height</code>属性，设置视频的宽度和高度，如下所示</li>
+</ol>
+<pre><code class="yaml">&lt;iframe  width=&quot;100%&quot; height=&quot;450&quot; src=&quot;//player.bilibili.com/player.html?aid=279747615&amp;bvid=BV1cc411m72m&amp;cid=1365009247&amp;p=1&quot; scrolling=&quot;no&quot; border=&quot;0&quot; frameborder=&quot;no&quot; framespacing=&quot;0&quot; allowfullscreen=&quot;true&quot;&gt; &lt;/iframe&gt;
+</code></pre>
+]]></content>
+      <categories>
+        <category>Web前端</category>
+        <category>hexo博客系统</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>bilibili</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo博客搭建（一）：在PC上搭建Hexo博客系统，并设置博客主题</title>
+    <url>/hexo_0001.html</url>
+    <content><![CDATA[<blockquote>
+<p>​		本文主要讲解如何搭建hexo博客网站，并直接部署在github上，实现通过<code>xxx.github.io</code>来访问博客，同时针对云服务器的用户，可以把Hexo博客同步部署到服务器上，通过宝塔Linux面板架设网站，并实现域名解析和绑定。针对没有云服务器的用户，也给出了直接部署在个人的Linux终端（比如：树莓派或者其他Linux开发板，软路由，NAS等）的方案和思路，并给出通过内网穿透方法实现通过自主域名访问博客的方法。最终实现可以通过<code>xxx.github.io</code>和自主域名访问博客网页。</p>
+<p>​		这里不对Hexo博客的特性做说明，详细的Hexo相关的内容，可以参考Hexo官方网站：<a href="https://hexo.io/zh-cn/">https://hexo.io/zh-cn/</a></p>
+<p>​		这里用宝塔面板主要因为：一方面宝塔面板免去了Nginx的相关配置，可以直接用可视化操作来部署网页；另外一方面，一台Linux服务器可以同属部署多个网站，可以统一用宝塔面板统一管理。也方便该服务器不仅可以用来部署网站，还可以同时作为其他左右使用（比如可以用来做远程代码调试，内网穿透服务等）。</p>
+<p>​		本文主要分四个章节来讲解：</p>
+<ul>
+<li><p>一：<a href="/Web/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%9C%A8PC%E4%B8%8A%E6%90%AD%E5%BB%BAHexo%E5%8D%9A%E5%AE%A2%E7%B3%BB%E7%BB%9F%EF%BC%8C%E5%B9%B6%E8%AE%BE%E7%BD%AE%E5%8D%9A%E5%AE%A2%E4%B8%BB%E9%A2%98/">讲解如何在PC机上搭建Hexo博客，并设置博客主题</a>；</p>
+</li>
+<li><p>二：<a href="/Web/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E6%8A%8Ahexo%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2%E5%88%B0github%E7%BD%91%E9%A1%B5%E6%89%98%E7%AE%A1%EF%BC%8C%E5%AE%9E%E7%8E%B0%E9%80%9A%E8%BF%87%E7%B1%BB%E4%BC%BCxxx-github-io%E6%9D%A5%E8%AE%BF%E9%97%AE%E5%8D%9A%E5%AE%A2/">如何把Hexo搭建的博客同步到github的网页托管服务上，实现以<code>xxx.github.io</code>(其中<code>xxx</code>为你的github用户名)访问</a>；</p>
+</li>
+<li><p>三： <a href="/Web/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E9%83%A8%E7%BD%B2%E4%BA%91%E7%AB%AFLinux%E6%9C%8D%E5%8A%A1%E5%99%A8%EF%BC%8C%E6%90%AD%E5%BB%BA%E5%AE%9D%E5%A1%94Linux%E9%9D%A2%E6%9D%BF%EF%BC%8C%E5%AE%9E%E7%8E%B0%E8%BF%9C%E7%A8%8B%E6%88%96%E5%9F%9F%E5%90%8D%E8%AE%BF%E9%97%AE/">如果你有一个具有公网IP的云服务器和已经备案的域名，如何把hexo同时部署到服务器上，实现自主域名的访问</a>；</p>
+</li>
+<li><p>四：<a href="/Web/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E6%9C%AC%E5%9C%B0Linux%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2%EF%BC%8C%E6%90%AD%E5%BB%BA%E5%AE%9D%E5%A1%94Linux%E9%9D%A2%E6%9D%BF%EF%BC%8C%E9%80%9A%E8%BF%87%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F%E5%AE%9E%E7%8E%B0%E5%9F%9F%E5%90%8D%E8%AE%BF%E9%97%AE/">如何把博客部署到本地的Linux服务器（树莓派或者其他Linux开发板，软路由，NAS等）上，通过内网穿透服务和自主域名绑定实现实现自主域名的访问</a>。</p>
+</li>
+</ul>
+<p>​		一般情况下，自主域名需要做域名解析，所以，它只能访问你的云服务器或者你本地的Linux服务器，二选一即可，把hexo博客部署在Linux服务器上的操作在第三章节的前面两个部分。</p>
+</blockquote>
+<h2 id="一、在PC上搭建Hexo博客，并设置博客主题"><a href="#一、在PC上搭建Hexo博客，并设置博客主题" class="headerlink" title="一、在PC上搭建Hexo博客，并设置博客主题"></a>一、在PC上搭建Hexo博客，并设置博客主题</h2><blockquote>
+<p>​		设计到的工具和软件：</p>
+<ul>
+<li><p>Node.js (windows，这里安装的是v18.20.2 LTS版本): 	 <a href="https://nodejs.org/en/download">https://nodejs.org/en/download</a></p>
+</li>
+<li><p><code>NodeSource</code> 的github网址： <a href="https://github.com/nodesource/distributions">https://github.com/nodesource/distributions</a></p>
+</li>
+<li><p>git：<a href="https://git-scm.com/">https://git-scm.com/</a></p>
+</li>
+<li><p>Hexo博客系统： <a href="https://hexo.io/zh-cn/">https://hexo.io/zh-cn/</a></p>
+</li>
+<li><p>安知鱼博客主题（一款基于Hexo-Butterfly修改的Hexo主题）：<a href="https://docs.anheyu.com/">https://docs.anheyu.com/</a></p>
+</li>
+<li><p>vscode(编辑文本使用，有需要可以安装)：<a href="https://code.visualstudio.com/">https://code.visualstudio.com/</a></p>
+</li>
+<li><p>Typora文档编辑器（markdown编辑器，89元终身）：<a href="https://typoraio.cn/">https://typoraio.cn/</a></p>
+<p>​		Typora和vscode仅仅是用来作为文章编辑和代码编辑使用，理论上有很多选择，vscode本身也支持markdown编辑功能（通过插件），这里只是给出本人使用的工具而已。关于vscode的安装和使用，可以网络搜索方法，正常情况下直接安装安装包即可，安装后可以安装一个<code>简体中文</code>插件，以方便使用，这里就不赘述了。</p>
+</li>
+</ul>
+</blockquote>
+<h3 id="1、-PC机安装hexo博客"><a href="#1、-PC机安装hexo博客" class="headerlink" title="1、 PC机安装hexo博客"></a>1、 PC机安装hexo博客</h3><ol>
+<li>针对windows和MAC系统下：Node.js和git直接下载对应的安装包安装即可。安装之后在终端中（CMD终端和PowerShell终端都可以）输入以下命令，确保软件都正确安装：</li>
+</ol>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">node <span class="literal">-v</span></span><br><span class="line">npm <span class="literal">-v</span></span><br><span class="line">git <span class="literal">--version</span></span><br></pre></td></tr></table></figure>
+
+<p>​		如果你的是Linux系统（注意：这里的安装hexo博客系统的指的是你的个人电脑，你后续写文章用的电脑，一般情况下这个电脑为windows和mac为主，这里只是提供一个在Linux上安装Node.js的方法），很多Linux系统的源提供的node.js的版本都过于老旧，所以一般Linux系统我们建议用<code>NodeSource</code> 来安装，<code>NodeSource</code> 的官方github的地址在上面说明已经提供，这里假如我们的PC机是Ubuntu，我们需要安装的node版本为v18.20.2 LTS版本，则在终端中输入如下内容 (其他系统在<code>NodeSource</code> 的github网址都有提高安装方法)：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash - &amp;&amp; sudo apt-get install -y nodejs</span><br></pre></td></tr></table></figure>
+
+<p>​		git则只需要用标准的包管理器安装即可，ubuntu的安装指令如下：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo apt install git</span><br></pre></td></tr></table></figure>
+
+<p>​		安装完成之后和windows与MAC一样在终端中输入以下指令查看是否正确安装以及其版本：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">node -v</span><br><span class="line">npm -v</span><br><span class="line">git --version</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>​		如果担心网络问题，后续用npm下载和更新插件导致失败，可以把npm的源修改为国内的源(本文选择的是淘宝npm的镜像)：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm config set registry https://registry.npmmirror.com</span><br></pre></td></tr></table></figure>
+
+<p>​		当然，我们也可以通过如下语句，把镜像源修改为官方的镜像源：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm config set registry http://www.npmjs.org</span><br></pre></td></tr></table></figure>
+
+<p>​		或者只是临时把镜像源修改为淘宝镜像源：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm --registry https://registry.npmmirror.com install node-red-contrib-composer@latest</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>​		</p>
+<ol start="2">
+<li>建立一个文件夹，用来存储博客，比如，我的博客放在的目录为<code>E:\00_blog_senysunny\senysunny</code>，可以直接用vscode打开该目录，开启一个终端，输入<code>npm install hexo-cli -g</code>安装Hexo，安装后，可以在终端界面输入<code>hexo -v</code>查看安装情况：</li>
+</ol>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">npm install hexo<span class="literal">-cli</span> <span class="literal">-g</span></span><br><span class="line">hexo <span class="literal">-v</span></span><br></pre></td></tr></table></figure>
+
+<p>​		有正确打印hexo的版本信息，例如<code>hexo-cli: 4.3.2</code>则表示安装完成。</p>
+<ol start="3">
+<li>输入<code>hexo init</code>初始化博客，然后输入<code>npm install</code>安装hexo相关依赖</li>
+</ol>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">hexo init</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>输入<code>hexo g</code>和<code>hexo s</code>，分别式生成静态网页和启动hexo本地服务器的命令缩写，其全称是<code>hexo generate</code>和<code>hexo server</code></li>
+</ol>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">hexo g</span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>此时，你就可以在浏览器打开<code>http://localhost:4000/</code>看到创建的网站了。</li>
+</ol>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405082319800.png" alt="hexo1"></p>
+<ol start="6">
+<li>测试没有问题，我们可以在终端中按<code>ctrl + c</code>关闭本地服务。为了后续可以把博客同步到github，以及自己的云服务器，可以先安装一个hexo自动部署发布工具。</li>
+</ol>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">npm install hexo<span class="literal">-deployer-git</span> <span class="literal">--save</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2、安装anzhiyu博客主题"><a href="#2、安装anzhiyu博客主题" class="headerlink" title="2、安装anzhiyu博客主题"></a>2、安装anzhiyu博客主题</h3><blockquote>
+<pre><code>             ​		博客已经安装好，但是博客美观还是不行，这里开始给博客安装一个主题，这里安装的是安知鱼的主题，它本身也是基于Butterfly主题修改的。当然，你也可以选择其他主题，不同主题可以参考主题的安装设置文档，这里给出Butterfly和anzhiyu主题的中文文档，可以供参考。实际上我们按照文档一步一步来即可。后续也可以根据文档自己优化自己的博客内容。
+         
+             Butterfly主题文档中文版： https://butterfly.js.org/posts/21cfbf15/
+         
+             安知鱼主题文档中文版： https://docs.anheyu.com/initall.html
+</code></pre>
+</blockquote>
+<ol>
+<li>输入<code>npm i hexo-theme-anzhiyu</code>安装安知鱼博客主题，并且安装pug 和 stylus 渲染插件</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm i hexo-theme-anzhiyu</span><br><span class="line">npm install hexo-renderer-pug hexo-renderer-stylus --save</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>此时，在博客的目录下会有<code>node_modules\hexo-theme-anzhiyu</code>文件夹，表示已经安装好了主题，我们把该目录下的<code>_config.yml</code>复制到根目录，并修改为<code>_config.anzhiyu.yml</code>（注意根目录下本身就有一个<code>_config.yml</code>两个文件不一样），此时根目录下会有<code>_config.yml</code>和<code>_config.anzhiyu.yml</code>两个文件。</li>
+</ol>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405082358531.png" alt="hexo2"></p>
+<ol start="3">
+<li>把根目录下的<code>_config.yml</code>的主题修改成<code>anzhiyu</code>，这里顺带把博客的名称、语言、时区等信息一并修改了，如下（下面的内容并不是<code>_config.yml</code>所有内容，只展示了修改的部分,即<code># Site</code>部分和<code># Extensions</code> 部分）：</li>
+</ol>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="type">![hexo3](E:/00_blog_senysunny/img/hexo3.png)</span><span class="type">![hexo3](E:/00_blog_senysunny/img/hexo3.png)#</span> <span class="string">Site</span></span><br><span class="line"><span class="attr">title:</span> <span class="string">SenySunny</span></span><br><span class="line"><span class="attr">subtitle:</span> <span class="string">&#x27;SenySunny的技术笔记&#x27;</span></span><br><span class="line"><span class="attr">description:</span> <span class="string">&#x27;SenySunny的技术笔记&#x27;</span></span><br><span class="line"><span class="attr">keywords:</span> <span class="string">SenySunny</span></span><br><span class="line"><span class="attr">author:</span> <span class="string">Seny</span> <span class="string">Lee</span></span><br><span class="line"><span class="attr">language:</span> <span class="string">zh-CN</span></span><br><span class="line"><span class="attr">timezone:</span> <span class="string">Asia/Shanghai</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Extensions</span></span><br><span class="line"><span class="comment">## Plugins: https://hexo.io/plugins/</span></span><br><span class="line"><span class="comment">## Themes: https://hexo.io/themes/</span></span><br><span class="line"><span class="attr">theme:</span> <span class="string">anzhiyu</span></span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>通过<code>hexo cl</code>来清除缓存（其为<code>hexo clean</code>的缩写），再通过<code>hexo g</code>和<code>hexo s</code>来重新生成静态网页和启动hexo本地服务器，再次打开<code>http://localhost:4000/</code>可以看到主题已经修改了。</li>
+</ol>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405090009771.png" alt="hexo3"></p>
+<ol start="5">
+<li>更多的hexo命令可以详细参考：<a href="https://hexo.io/zh-cn/docs/commands">https://hexo.io/zh-cn/docs/commands</a></li>
+</ol>
+<h3 id="3、安装博客文章加密插件"><a href="#3、安装博客文章加密插件" class="headerlink" title="3、安装博客文章加密插件"></a>3、安装博客文章加密插件</h3><blockquote>
+<p>​	本节是属于个人额外补充的内容，如果你写的部分文章，希望再一定时间内暂时加密隐藏，或者说只允许知道访问密码的人观看，可以尝试给博客文件加密，这里用到了一个hexo的encrypt插件，其github的地址为：<a href="https://github.com/D0n9X1n/hexo-blog-encrypt%E3%80%82%E5%8F%AF%E4%BB%A5%E5%8F%82%E8%80%83%EF%BC%8C%E8%BF%99%E9%87%8C%E4%BB%85%E4%BB%85%E5%81%9A%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D%E3%80%82">https://github.com/D0n9X1n/hexo-blog-encrypt。可以参考，这里仅仅做简单介绍。</a></p>
+</blockquote>
+<ol>
+<li>直接输入<code>npm install --save hexo-blog-encrypt</code>安装插件，如果本地服务没有退出，按<code>CTRL + C</code>关闭服务。</li>
+</ol>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">npm install <span class="literal">--save</span> hexo<span class="literal">-blog-encrypt</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>此时，你只需要再文章的头部添加<code> &quot;password&quot;</code>字段即可实现文章的加密，比如下面就是把<code>hello world</code>文章加密，密码为：<code>hello</code>：</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: Hello World</span><br><span class="line">date: 2016-03-30 21:18:02</span><br><span class="line">password: hello</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>更多的其他功能，可以参考<code>hexo-blog-encrypt</code>的官方文档，官方有提高中文文档，地址已经再本节开头给出。</li>
+</ol>
+]]></content>
+      <categories>
+        <category>Web前端</category>
+        <category>hexo博客系统</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>ESP32学习笔记（一）：ESP-IDF配合VSCode的一些方法和技巧</title>
-    <url>/posts/esp32_0001.html</url>
+    <url>/esp32_0001.html</url>
     <content><![CDATA[<h3 id="1、idf的常用基本命令"><a href="#1、idf的常用基本命令" class="headerlink" title="1、idf的常用基本命令"></a>1、idf的常用基本命令</h3><h4 id="1-查看芯片信息：esptool-py-p-COM4-flash-id"><a href="#1-查看芯片信息：esptool-py-p-COM4-flash-id" class="headerlink" title="(1). 查看芯片信息：esptool.py -p COM4 flash_id"></a>(1). 查看芯片信息：<code>esptool.py -p COM4 flash_id</code></h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">esptool.py -p COM4 flash_id</span><br></pre></td></tr></table></figure>
 
 <h4 id="2-选择芯片命令：idf-py-set-target-esp32"><a href="#2-选择芯片命令：idf-py-set-target-esp32" class="headerlink" title="(2). 选择芯片命令：idf.py set-target esp32"></a>(2). 选择芯片命令：<code>idf.py set-target esp32</code></h4><p>​		详细的命令格式为：<code>idf.py set-target [OPTIONS] &#123;esp32|esp32s2|esp32c3|esp32s3|esp32c2|esp32c6|esp32h2|linux&#125;</code></p>
@@ -630,203 +825,8 @@
       </tags>
   </entry>
   <entry>
-    <title>hexo博客使用的一些常见问题（一）：外站图片显示，站内链接，嵌入B站视频</title>
-    <url>/posts/hexo_0005.html</url>
-    <content><![CDATA[<h3 id="1、关于网站使用外网图片无法显示的问题。"><a href="#1、关于网站使用外网图片无法显示的问题。" class="headerlink" title="1、关于网站使用外网图片无法显示的问题。"></a>1、关于网站使用外网图片无法显示的问题。</h3><ol>
-<li>如果只需要文章能够正常显示，只需要在文章前面最前方加上如下语句即可：</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot; /&gt;</span><br></pre></td></tr></table></figure>
-
-<p>​		该方法参考这篇文章的说法：<a href="https://www.cnblogs.com/selier/p/9570650.html%EF%BC%8C">https://www.cnblogs.com/selier/p/9570650.html，</a> 大致的原理是：</p>
-<blockquote>
-<p>​		一般浏览器向服务器请求一个资源（如图片）时，通常会包括一个<code>Referer</code>头部，它包含了发起请求的页面的URL。这有助于服务器理解请求的来源。</p>
-<p>​		而有些图片网站为了防止其它网站盗链其资源（比如我是直接吧图片上传到gitee中，然后再文章中加载）。如果<code>Referer</code>头部显示图片请求来自于非授权的域名，服务器可能拒绝请求。</p>
-<p>​		所以该条语句的意思是：告诉浏览器不要发送<code>Referer</code>头部给服务器。这样，图床服务器就无法判断请求是否来自于非授权的域，因而可能“默认”允许请求。</p>
-</blockquote>
-<p>​		当然如果不想每次创建文章的时候都手动添加该语句，可以尝试把该语句添加到hexo博客更目录下的<code>scaffolds/post.md</code>文件中，该文件是创建文章的模板文件，此时我们通过hexo n “文章题目”的时候会自动添加该语句。</p>
-<ol start="2">
-<li><p>我在实际的建立博客的时候，可能由图床文件，并不仅仅用在文章中，可能还希望应用到各种页面中，比如主页头像，其他网页内容，这个时候通过向文章头部添加这条语句的方法就不行了，这是我们可以采用hexo的<code>注入器（Injector）</code>往所有的博客页面头部注入该条语句，以实现全网的图片访问。具体做法如下:</p>
-<ol>
-<li>在hexo博客根目录下添加<code>scripts</code>文件夹，在文件夹中创建<code>injector.js</code>文件，在该文件中添加如下语句：</li>
-</ol>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">hexo.<span class="property">extend</span>.<span class="property">injector</span>.<span class="title function_">register</span>(<span class="string">&#x27;head_begin&#x27;</span>, <span class="string">&#x27;&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;&#x27;</span>, <span class="string">&#x27;default&#x27;</span>);</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>允许<code>hexo cl</code>（清除缓冲）, <code>hexo g</code>（重新生成静态文件）, <code>hexo s</code>(本地启动服务查看效果), <code>hexo d</code>（部署到服务器），来实现网站部署，此时就可以正确的显示了。</li>
-</ol>
-</li>
-</ol>
-<h3 id="2、-关于博客内部链接的问题。"><a href="#2、-关于博客内部链接的问题。" class="headerlink" title="2、 关于博客内部链接的问题。"></a>2、 关于博客内部链接的问题。</h3><ol>
-<li>把<code>permalink</code>修改为<code>:title/</code></li>
-</ol>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># URL</span></span><br><span class="line"><span class="comment">## Set your site url here. For example, if you use GitHub Page, set url as &#x27;https://username.github.io/project&#x27;</span></span><br><span class="line"><span class="attr">url:</span> <span class="string">http://senysunny.com</span></span><br><span class="line"><span class="attr">permalink:</span> <span class="string">:title/</span> <span class="comment"># :year/:month/:day/:title/</span></span><br><span class="line"><span class="attr">permalink_defaults:</span></span><br><span class="line"><span class="attr">pretty_urls:</span></span><br><span class="line">  <span class="attr">trailing_index:</span> <span class="literal">true</span> <span class="comment"># Set to false to remove trailing &#x27;index.html&#x27; from permalinks</span></span><br><span class="line">  <span class="attr">trailing_html:</span> <span class="literal">true</span> <span class="comment"># Set to false to remove trailing &#x27;.html&#x27; from permalinks</span></span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>文章直接做链接，按照<code>/目录/文章名称/</code>作为链接内容即可，会自动链接到<code>网址//目录/文章名称/</code>对应的网页中</li>
-</ol>
-<h3 id="3、-在博客中嵌入视频（比如B站视频）"><a href="#3、-在博客中嵌入视频（比如B站视频）" class="headerlink" title="3、 在博客中嵌入视频（比如B站视频）"></a>3、 在博客中嵌入视频（比如B站视频）</h3><ol>
-<li>直接在markdown中使用<code>&lt;iframe&gt;</code>标签，在标签中添加视频的网址，即可嵌入视频，如下图<iframe  width="100%" height="450" src="//player.bilibili.com/player.html?aid=279747615&bvid=BV1cc411m72m&cid=1365009247&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe></li>
-<li>视频的网址，比如B站的视频，可以在视频下方的分享按钮，有一个嵌入代码，直接复制代码即可，如果嵌入到markdown中，视频比较小，可以在<code>iframe</code>中添加<code>width</code>和<code>height</code>属性，设置视频的宽度和高度，如下所示</li>
-</ol>
-<pre><code class="yaml">&lt;iframe  width=&quot;100%&quot; height=&quot;450&quot; src=&quot;//player.bilibili.com/player.html?aid=279747615&amp;bvid=BV1cc411m72m&amp;cid=1365009247&amp;p=1&quot; scrolling=&quot;no&quot; border=&quot;0&quot; frameborder=&quot;no&quot; framespacing=&quot;0&quot; allowfullscreen=&quot;true&quot;&gt; &lt;/iframe&gt;
-</code></pre>
-]]></content>
-      <categories>
-        <category>Web前端</category>
-        <category>hexo博客系统</category>
-      </categories>
-      <tags>
-        <tag>hexo</tag>
-        <tag>bilibili</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>hexo博客搭建（一）：在PC上搭建Hexo博客系统，并设置博客主题</title>
-    <url>/posts/hexo_0001.html</url>
-    <content><![CDATA[<blockquote>
-<p>​		本文主要讲解如何搭建hexo博客网站，并直接部署在github上，实现通过<code>xxx.github.io</code>来访问博客，同时针对云服务器的用户，可以把Hexo博客同步部署到服务器上，通过宝塔Linux面板架设网站，并实现域名解析和绑定。针对没有云服务器的用户，也给出了直接部署在个人的Linux终端（比如：树莓派或者其他Linux开发板，软路由，NAS等）的方案和思路，并给出通过内网穿透方法实现通过自主域名访问博客的方法。最终实现可以通过<code>xxx.github.io</code>和自主域名访问博客网页。</p>
-<p>​		这里不对Hexo博客的特性做说明，详细的Hexo相关的内容，可以参考Hexo官方网站：<a href="https://hexo.io/zh-cn/">https://hexo.io/zh-cn/</a></p>
-<p>​		这里用宝塔面板主要因为：一方面宝塔面板免去了Nginx的相关配置，可以直接用可视化操作来部署网页；另外一方面，一台Linux服务器可以同属部署多个网站，可以统一用宝塔面板统一管理。也方便该服务器不仅可以用来部署网站，还可以同时作为其他左右使用（比如可以用来做远程代码调试，内网穿透服务等）。</p>
-<p>​		本文主要分四个章节来讲解：</p>
-<ul>
-<li><p>一：<a href="/Web/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%9C%A8PC%E4%B8%8A%E6%90%AD%E5%BB%BAHexo%E5%8D%9A%E5%AE%A2%E7%B3%BB%E7%BB%9F%EF%BC%8C%E5%B9%B6%E8%AE%BE%E7%BD%AE%E5%8D%9A%E5%AE%A2%E4%B8%BB%E9%A2%98/">讲解如何在PC机上搭建Hexo博客，并设置博客主题</a>；</p>
-</li>
-<li><p>二：<a href="/Web/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E6%8A%8Ahexo%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2%E5%88%B0github%E7%BD%91%E9%A1%B5%E6%89%98%E7%AE%A1%EF%BC%8C%E5%AE%9E%E7%8E%B0%E9%80%9A%E8%BF%87%E7%B1%BB%E4%BC%BCxxx-github-io%E6%9D%A5%E8%AE%BF%E9%97%AE%E5%8D%9A%E5%AE%A2/">如何把Hexo搭建的博客同步到github的网页托管服务上，实现以<code>xxx.github.io</code>(其中<code>xxx</code>为你的github用户名)访问</a>；</p>
-</li>
-<li><p>三： <a href="/Web/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E9%83%A8%E7%BD%B2%E4%BA%91%E7%AB%AFLinux%E6%9C%8D%E5%8A%A1%E5%99%A8%EF%BC%8C%E6%90%AD%E5%BB%BA%E5%AE%9D%E5%A1%94Linux%E9%9D%A2%E6%9D%BF%EF%BC%8C%E5%AE%9E%E7%8E%B0%E8%BF%9C%E7%A8%8B%E6%88%96%E5%9F%9F%E5%90%8D%E8%AE%BF%E9%97%AE/">如果你有一个具有公网IP的云服务器和已经备案的域名，如何把hexo同时部署到服务器上，实现自主域名的访问</a>；</p>
-</li>
-<li><p>四：<a href="/Web/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E6%9C%AC%E5%9C%B0Linux%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2%EF%BC%8C%E6%90%AD%E5%BB%BA%E5%AE%9D%E5%A1%94Linux%E9%9D%A2%E6%9D%BF%EF%BC%8C%E9%80%9A%E8%BF%87%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F%E5%AE%9E%E7%8E%B0%E5%9F%9F%E5%90%8D%E8%AE%BF%E9%97%AE/">如何把博客部署到本地的Linux服务器（树莓派或者其他Linux开发板，软路由，NAS等）上，通过内网穿透服务和自主域名绑定实现实现自主域名的访问</a>。</p>
-</li>
-</ul>
-<p>​		一般情况下，自主域名需要做域名解析，所以，它只能访问你的云服务器或者你本地的Linux服务器，二选一即可，把hexo博客部署在Linux服务器上的操作在第三章节的前面两个部分。</p>
-</blockquote>
-<h2 id="一、在PC上搭建Hexo博客，并设置博客主题"><a href="#一、在PC上搭建Hexo博客，并设置博客主题" class="headerlink" title="一、在PC上搭建Hexo博客，并设置博客主题"></a>一、在PC上搭建Hexo博客，并设置博客主题</h2><blockquote>
-<p>​		设计到的工具和软件：</p>
-<ul>
-<li><p>Node.js (windows，这里安装的是v18.20.2 LTS版本): 	 <a href="https://nodejs.org/en/download">https://nodejs.org/en/download</a></p>
-</li>
-<li><p><code>NodeSource</code> 的github网址： <a href="https://github.com/nodesource/distributions">https://github.com/nodesource/distributions</a></p>
-</li>
-<li><p>git：<a href="https://git-scm.com/">https://git-scm.com/</a></p>
-</li>
-<li><p>Hexo博客系统： <a href="https://hexo.io/zh-cn/">https://hexo.io/zh-cn/</a></p>
-</li>
-<li><p>安知鱼博客主题（一款基于Hexo-Butterfly修改的Hexo主题）：<a href="https://docs.anheyu.com/">https://docs.anheyu.com/</a></p>
-</li>
-<li><p>vscode(编辑文本使用，有需要可以安装)：<a href="https://code.visualstudio.com/">https://code.visualstudio.com/</a></p>
-</li>
-<li><p>Typora文档编辑器（markdown编辑器，89元终身）：<a href="https://typoraio.cn/">https://typoraio.cn/</a></p>
-<p>​		Typora和vscode仅仅是用来作为文章编辑和代码编辑使用，理论上有很多选择，vscode本身也支持markdown编辑功能（通过插件），这里只是给出本人使用的工具而已。关于vscode的安装和使用，可以网络搜索方法，正常情况下直接安装安装包即可，安装后可以安装一个<code>简体中文</code>插件，以方便使用，这里就不赘述了。</p>
-</li>
-</ul>
-</blockquote>
-<h3 id="1、-PC机安装hexo博客"><a href="#1、-PC机安装hexo博客" class="headerlink" title="1、 PC机安装hexo博客"></a>1、 PC机安装hexo博客</h3><ol>
-<li>针对windows和MAC系统下：Node.js和git直接下载对应的安装包安装即可。安装之后在终端中（CMD终端和PowerShell终端都可以）输入以下命令，确保软件都正确安装：</li>
-</ol>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">node <span class="literal">-v</span></span><br><span class="line">npm <span class="literal">-v</span></span><br><span class="line">git <span class="literal">--version</span></span><br></pre></td></tr></table></figure>
-
-<p>​		如果你的是Linux系统（注意：这里的安装hexo博客系统的指的是你的个人电脑，你后续写文章用的电脑，一般情况下这个电脑为windows和mac为主，这里只是提供一个在Linux上安装Node.js的方法），很多Linux系统的源提供的node.js的版本都过于老旧，所以一般Linux系统我们建议用<code>NodeSource</code> 来安装，<code>NodeSource</code> 的官方github的地址在上面说明已经提供，这里假如我们的PC机是Ubuntu，我们需要安装的node版本为v18.20.2 LTS版本，则在终端中输入如下内容 (其他系统在<code>NodeSource</code> 的github网址都有提高安装方法)：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash - &amp;&amp; sudo apt-get install -y nodejs</span><br></pre></td></tr></table></figure>
-
-<p>​		git则只需要用标准的包管理器安装即可，ubuntu的安装指令如下：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo apt install git</span><br></pre></td></tr></table></figure>
-
-<p>​		安装完成之后和windows与MAC一样在终端中输入以下指令查看是否正确安装以及其版本：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">node -v</span><br><span class="line">npm -v</span><br><span class="line">git --version</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>​		如果担心网络问题，后续用npm下载和更新插件导致失败，可以把npm的源修改为国内的源(本文选择的是淘宝npm的镜像)：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm config set registry https://registry.npmmirror.com</span><br></pre></td></tr></table></figure>
-
-<p>​		当然，我们也可以通过如下语句，把镜像源修改为官方的镜像源：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm config set registry http://www.npmjs.org</span><br></pre></td></tr></table></figure>
-
-<p>​		或者只是临时把镜像源修改为淘宝镜像源：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm --registry https://registry.npmmirror.com install node-red-contrib-composer@latest</span><br></pre></td></tr></table></figure>
-</blockquote>
-<p>​		</p>
-<ol start="2">
-<li>建立一个文件夹，用来存储博客，比如，我的博客放在的目录为<code>E:\00_blog_senysunny\senysunny</code>，可以直接用vscode打开该目录，开启一个终端，输入<code>npm install hexo-cli -g</code>安装Hexo，安装后，可以在终端界面输入<code>hexo -v</code>查看安装情况：</li>
-</ol>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">npm install hexo<span class="literal">-cli</span> <span class="literal">-g</span></span><br><span class="line">hexo <span class="literal">-v</span></span><br></pre></td></tr></table></figure>
-
-<p>​		有正确打印hexo的版本信息，例如<code>hexo-cli: 4.3.2</code>则表示安装完成。</p>
-<ol start="3">
-<li>输入<code>hexo init</code>初始化博客，然后输入<code>npm install</code>安装hexo相关依赖</li>
-</ol>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">hexo init</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li>输入<code>hexo g</code>和<code>hexo s</code>，分别式生成静态网页和启动hexo本地服务器的命令缩写，其全称是<code>hexo generate</code>和<code>hexo server</code></li>
-</ol>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">hexo g</span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
-
-<ol start="5">
-<li>此时，你就可以在浏览器打开<code>http://localhost:4000/</code>看到创建的网站了。</li>
-</ol>
-<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405082319800.png" alt="hexo1"></p>
-<ol start="6">
-<li>测试没有问题，我们可以在终端中按<code>ctrl + c</code>关闭本地服务。为了后续可以把博客同步到github，以及自己的云服务器，可以先安装一个hexo自动部署发布工具。</li>
-</ol>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">npm install hexo<span class="literal">-deployer-git</span> <span class="literal">--save</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="2、安装anzhiyu博客主题"><a href="#2、安装anzhiyu博客主题" class="headerlink" title="2、安装anzhiyu博客主题"></a>2、安装anzhiyu博客主题</h3><blockquote>
-<pre><code>             ​		博客已经安装好，但是博客美观还是不行，这里开始给博客安装一个主题，这里安装的是安知鱼的主题，它本身也是基于Butterfly主题修改的。当然，你也可以选择其他主题，不同主题可以参考主题的安装设置文档，这里给出Butterfly和anzhiyu主题的中文文档，可以供参考。实际上我们按照文档一步一步来即可。后续也可以根据文档自己优化自己的博客内容。
-         
-             Butterfly主题文档中文版： https://butterfly.js.org/posts/21cfbf15/
-         
-             安知鱼主题文档中文版： https://docs.anheyu.com/initall.html
-</code></pre>
-</blockquote>
-<ol>
-<li>输入<code>npm i hexo-theme-anzhiyu</code>安装安知鱼博客主题，并且安装pug 和 stylus 渲染插件</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm i hexo-theme-anzhiyu</span><br><span class="line">npm install hexo-renderer-pug hexo-renderer-stylus --save</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>此时，在博客的目录下会有<code>node_modules\hexo-theme-anzhiyu</code>文件夹，表示已经安装好了主题，我们把该目录下的<code>_config.yml</code>复制到根目录，并修改为<code>_config.anzhiyu.yml</code>（注意根目录下本身就有一个<code>_config.yml</code>两个文件不一样），此时根目录下会有<code>_config.yml</code>和<code>_config.anzhiyu.yml</code>两个文件。</li>
-</ol>
-<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405082358531.png" alt="hexo2"></p>
-<ol start="3">
-<li>把根目录下的<code>_config.yml</code>的主题修改成<code>anzhiyu</code>，这里顺带把博客的名称、语言、时区等信息一并修改了，如下（下面的内容并不是<code>_config.yml</code>所有内容，只展示了修改的部分,即<code># Site</code>部分和<code># Extensions</code> 部分）：</li>
-</ol>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="type">![hexo3](E:/00_blog_senysunny/img/hexo3.png)</span><span class="type">![hexo3](E:/00_blog_senysunny/img/hexo3.png)#</span> <span class="string">Site</span></span><br><span class="line"><span class="attr">title:</span> <span class="string">SenySunny</span></span><br><span class="line"><span class="attr">subtitle:</span> <span class="string">&#x27;SenySunny的技术笔记&#x27;</span></span><br><span class="line"><span class="attr">description:</span> <span class="string">&#x27;SenySunny的技术笔记&#x27;</span></span><br><span class="line"><span class="attr">keywords:</span> <span class="string">SenySunny</span></span><br><span class="line"><span class="attr">author:</span> <span class="string">Seny</span> <span class="string">Lee</span></span><br><span class="line"><span class="attr">language:</span> <span class="string">zh-CN</span></span><br><span class="line"><span class="attr">timezone:</span> <span class="string">Asia/Shanghai</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Extensions</span></span><br><span class="line"><span class="comment">## Plugins: https://hexo.io/plugins/</span></span><br><span class="line"><span class="comment">## Themes: https://hexo.io/themes/</span></span><br><span class="line"><span class="attr">theme:</span> <span class="string">anzhiyu</span></span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li>通过<code>hexo cl</code>来清除缓存（其为<code>hexo clean</code>的缩写），再通过<code>hexo g</code>和<code>hexo s</code>来重新生成静态网页和启动hexo本地服务器，再次打开<code>http://localhost:4000/</code>可以看到主题已经修改了。</li>
-</ol>
-<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405090009771.png" alt="hexo3"></p>
-<ol start="5">
-<li>更多的hexo命令可以详细参考：<a href="https://hexo.io/zh-cn/docs/commands">https://hexo.io/zh-cn/docs/commands</a></li>
-</ol>
-<h3 id="3、安装博客文章加密插件"><a href="#3、安装博客文章加密插件" class="headerlink" title="3、安装博客文章加密插件"></a>3、安装博客文章加密插件</h3><blockquote>
-<p>​	本节是属于个人额外补充的内容，如果你写的部分文章，希望再一定时间内暂时加密隐藏，或者说只允许知道访问密码的人观看，可以尝试给博客文件加密，这里用到了一个hexo的encrypt插件，其github的地址为：<a href="https://github.com/D0n9X1n/hexo-blog-encrypt%E3%80%82%E5%8F%AF%E4%BB%A5%E5%8F%82%E8%80%83%EF%BC%8C%E8%BF%99%E9%87%8C%E4%BB%85%E4%BB%85%E5%81%9A%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D%E3%80%82">https://github.com/D0n9X1n/hexo-blog-encrypt。可以参考，这里仅仅做简单介绍。</a></p>
-</blockquote>
-<ol>
-<li>直接输入<code>npm install --save hexo-blog-encrypt</code>安装插件，如果本地服务没有退出，按<code>CTRL + C</code>关闭服务。</li>
-</ol>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">npm install <span class="literal">--save</span> hexo<span class="literal">-blog-encrypt</span></span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>此时，你只需要再文章的头部添加<code> &quot;password&quot;</code>字段即可实现文章的加密，比如下面就是把<code>hello world</code>文章加密，密码为：<code>hello</code>：</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: Hello World</span><br><span class="line">date: 2016-03-30 21:18:02</span><br><span class="line">password: hello</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>更多的其他功能，可以参考<code>hexo-blog-encrypt</code>的官方文档，官方有提高中文文档，地址已经再本节开头给出。</li>
-</ol>
-]]></content>
-      <categories>
-        <category>Web前端</category>
-        <category>hexo博客系统</category>
-      </categories>
-      <tags>
-        <tag>hexo</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>hexo博客搭建（三）：部署云端Linux服务器，搭建宝塔Linux面板，实现远程或域名访问。</title>
-    <url>/posts/hexo_0003.html</url>
+    <url>/hexo_0003.html</url>
     <content><![CDATA[<blockquote>
 <p>​		本文主要讲解如何搭建hexo博客网站，并直接部署在github上，实现通过<code>xxx.github.io</code>来访问博客，同时针对云服务器的用户，可以把Hexo博客同步部署到服务器上，通过宝塔Linux面板架设网站，并实现域名解析和绑定。针对没有云服务器的用户，也给出了直接部署在个人的Linux终端（比如：树莓派或者其他Linux开发板，软路由，NAS等）的方案和思路，并给出通过内网穿透方法实现通过自主域名访问博客的方法。最终实现可以通过<code>xxx.github.io</code>和自主域名访问博客网页。</p>
 <p>​		这里不对Hexo博客的特性做说明，详细的Hexo相关的内容，可以参考Hexo官方网站：<a href="https://hexo.io/zh-cn/">https://hexo.io/zh-cn/</a></p>
@@ -1068,7 +1068,7 @@
   </entry>
   <entry>
     <title>hexo博客搭建（二）：把hexo博客部署到github网页托管，实现通过类似xxx.github.io来访问博客</title>
-    <url>/posts/hexo_0002.html</url>
+    <url>/hexo_0002.html</url>
     <content><![CDATA[<blockquote>
 <p>​		本文主要讲解如何搭建hexo博客网站，并直接部署在github上，实现通过<code>xxx.github.io</code>来访问博客，同时针对云服务器的用户，可以把Hexo博客同步部署到服务器上，通过宝塔Linux面板架设网站，并实现域名解析和绑定。针对没有云服务器的用户，也给出了直接部署在个人的Linux终端（比如：树莓派或者其他Linux开发板，软路由，NAS等）的方案和思路，并给出通过内网穿透方法实现通过自主域名访问博客的方法。最终实现可以通过<code>xxx.github.io</code>和自主域名访问博客网页。</p>
 <p>​		这里不对Hexo博客的特性做说明，详细的Hexo相关的内容，可以参考Hexo官方网站：<a href="https://hexo.io/zh-cn/">https://hexo.io/zh-cn/</a></p>
@@ -1150,7 +1150,7 @@
   </entry>
   <entry>
     <title>hexo博客搭建（四）：本地Linux系统部署，搭建宝塔Linux面板，通过内网传统实现域名访问</title>
-    <url>/posts/hexo_0004.html</url>
+    <url>/hexo_0004.html</url>
     <content><![CDATA[<blockquote>
 <p>​		本文主要讲解如何搭建hexo博客网站，并直接部署在github上，实现通过<code>xxx.github.io</code>来访问博客，同时针对云服务器的用户，可以把Hexo博客同步部署到服务器上，通过宝塔Linux面板架设网站，并实现域名解析和绑定。针对没有云服务器的用户，也给出了直接部署在个人的Linux终端（比如：树莓派或者其他Linux开发板，软路由，NAS等）的方案和思路，并给出通过内网穿透方法实现通过自主域名访问博客的方法。最终实现可以通过<code>xxx.github.io</code>和自主域名访问博客网页。</p>
 <p>​		这里不对Hexo博客的特性做说明，详细的Hexo相关的内容，可以参考Hexo官方网站：<a href="https://hexo.io/zh-cn/">https://hexo.io/zh-cn/</a></p>
