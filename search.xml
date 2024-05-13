@@ -1,8 +1,287 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>ESP32学习笔记（一）：ESP-IDF配合VSCode的一些方法和技巧</title>
+    <url>/posts/esp32_0001.html</url>
+    <content><![CDATA[<h3 id="1、idf的常用基本命令"><a href="#1、idf的常用基本命令" class="headerlink" title="1、idf的常用基本命令"></a>1、idf的常用基本命令</h3><h4 id="1-查看芯片信息：esptool-py-p-COM4-flash-id"><a href="#1-查看芯片信息：esptool-py-p-COM4-flash-id" class="headerlink" title="(1). 查看芯片信息：esptool.py -p COM4 flash_id"></a>(1). 查看芯片信息：<code>esptool.py -p COM4 flash_id</code></h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">esptool.py -p COM4 flash_id</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-选择芯片命令：idf-py-set-target-esp32"><a href="#2-选择芯片命令：idf-py-set-target-esp32" class="headerlink" title="(2). 选择芯片命令：idf.py set-target esp32"></a>(2). 选择芯片命令：<code>idf.py set-target esp32</code></h4><p>​		详细的命令格式为：<code>idf.py set-target [OPTIONS] &#123;esp32|esp32s2|esp32c3|esp32s3|esp32c2|esp32c6|esp32h2|linux&#125;</code></p>
+<p>​    	所以我们如果选择ESP32S3，则可以：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">idf.py set-target esp32s3</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-编译命令：idf-py-build"><a href="#3-编译命令：idf-py-build" class="headerlink" title="(3). 编译命令：idf.py build"></a>(3). 编译命令：<code>idf.py build</code></h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">idf.py build</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-配置命令：-idf-py-menuconfig"><a href="#4-配置命令：-idf-py-menuconfig" class="headerlink" title="(4). 配置命令： idf.py menuconfig"></a>(4). 配置命令： <code>idf.py menuconfig</code></h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">idf.py menuconfig</span><br></pre></td></tr></table></figure>
+
+<h4 id="6-下载命令：-idf-py-p-COM3-flash"><a href="#6-下载命令：-idf-py-p-COM3-flash" class="headerlink" title="(6). 下载命令： idf.py -p COM3 flash"></a>(6). 下载命令： <code>idf.py -p COM3 flash</code></h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">idf.py -p COM3 flash</span><br></pre></td></tr></table></figure>
+
+<h4 id="7-console调试命令：-idf-py-p-COM3-monitor"><a href="#7-console调试命令：-idf-py-p-COM3-monitor" class="headerlink" title="(7). console调试命令： idf.py -p COM3 monitor"></a>(7). console调试命令： <code>idf.py -p COM3 monitor</code></h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">idf.py -p COM3 monitor</span><br></pre></td></tr></table></figure>
+
+<h4 id="8-退出调试模式：-ctrl"><a href="#8-退出调试模式：-ctrl" class="headerlink" title="(8). 退出调试模式： ctrl + ]"></a>(8). 退出调试模式： <code>ctrl + ]</code></h4><h4 id="9-更新esptool：-pip-install-upgrade-esptool"><a href="#9-更新esptool：-pip-install-upgrade-esptool" class="headerlink" title="(9).更新esptool： pip install --upgrade esptool"></a>(9).更新esptool： <code>pip install --upgrade esptool</code></h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">pip install --upgrade esptool</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="10-关于idf版本相关内容"><a href="#10-关于idf版本相关内容" class="headerlink" title="(10). 关于idf版本相关内容"></a>(10). 关于idf版本相关内容</h4><p><a href="https://docs.espressif.com/projects/esp-idf/zh_CN/v5.1.3/esp32s3/versions.html">https://docs.espressif.com/projects/esp-idf/zh_CN/v5.1.3/esp32s3/versions.html</a></p>
+<p>可以通过如下代码来下载idf的源码：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd $IDF_PATH</span><br><span class="line">git fetch</span><br><span class="line">git checkout vX.Y.Z</span><br><span class="line">git submodule update --init --recursive</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="2、idf和-vscode的一些说明和细节"><a href="#2、idf和-vscode的一些说明和细节" class="headerlink" title="2、idf和 vscode的一些说明和细节"></a>2、idf和 vscode的一些说明和细节</h3><h4 id="1-ESP-IDF-CMD和-ESP-IDF-PowerShell终端快捷方式"><a href="#1-ESP-IDF-CMD和-ESP-IDF-PowerShell终端快捷方式" class="headerlink" title="(1).  ESP-IDF CMD和 ESP-IDF PowerShell终端快捷方式"></a>(1).  ESP-IDF CMD和 ESP-IDF PowerShell终端快捷方式</h4><h5 id="1-终端快捷方式的解释"><a href="#1-终端快捷方式的解释" class="headerlink" title="1.  终端快捷方式的解释"></a>1.  终端快捷方式的解释</h5><ol>
+<li><p>cmd的目标内容：<code>C:\WINDOWS\system32\cmd.exe /k &quot;&quot;D:\Espressif\idf_cmd_init.bat&quot; esp-idf-cc72132cd64ef413a5557253e3adc170&quot;</code></p>
+</li>
+<li><p>PowerShell的目标内容： <code>C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Bypass -NoExit -File &quot;D:\Espressif/Initialize-Idf.ps1&quot; -IdfId esp-idf-cc72132cd64ef413a5557253e3adc170</code></p>
+</li>
+<li><p>它们的起始位置：<code>D:\Espressif\frameworks\esp-idf-v5.1\</code></p>
+<p>   本质上idf就是创建了一个Python的虚拟环境，并针对该环境配置了环境变量，配置环境变量的内容可以详解idf安装目录下的<code>idf_cmd_init.bat</code>(针对cmd)和<code>Initialize-Idf.ps1</code>(针对powershell)。</p>
+<p> 而&#x2F;k是cmd的参数，表示”保持命令行窗口打开”,表示在执行完idf_cmd_init.bat保持终端窗口打开，这样可以确保创建的虚拟环境在在终端中有效，也就是关闭了终端，虚拟环境就关闭了，环境变量也随之无效。</p>
+<p> <code>esp-idf-cc72132cd64ef413a5557253e3adc170</code>是idf软件的id，用来表示该idf软件，其在软件安装目录下的<code>esp_idf.json</code>中定义，为<code>idfSelectedId</code>的值。<code>esp_idf.json</code>文件内容如下：</p>
+</li>
+</ol>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;$schema&quot;</span><span class="punctuation">:</span> <span class="string">&quot;http://json-schema.org/schema#&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;$id&quot;</span><span class="punctuation">:</span> <span class="string">&quot;http://dl.espressif.com/dl/schemas/esp_idf&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;_comment&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Configuration file for ESP-IDF Eclipse plugin.&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;_warning&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Use / or \\ when specifying path. Single backslash is not allowed by JSON format.&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;gitPath&quot;</span><span class="punctuation">:</span> <span class="string">&quot;D:/Espressif/tools/idf-git/2.39.2/cmd/git.exe&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;idfToolsPath&quot;</span><span class="punctuation">:</span> <span class="string">&quot;D:\\Espressif&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;idfSelectedId&quot;</span><span class="punctuation">:</span> <span class="string">&quot;esp-idf-cc72132cd64ef413a5557253e3adc170&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;idfInstalled&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;esp-idf-cc72132cd64ef413a5557253e3adc170&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;version&quot;</span><span class="punctuation">:</span> <span class="string">&quot;5.1&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;python&quot;</span><span class="punctuation">:</span> <span class="string">&quot;D:/Espressif/python_env/idf5.1_py3.11_env/Scripts/python.exe&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;path&quot;</span><span class="punctuation">:</span> <span class="string">&quot;D:/Espressif/frameworks/esp-idf-v5.1/&quot;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>​    <code>-ExecutionPolicy Bypass</code>目的是关闭powershell的安全策略，这是由于PowerShell有一个安全特性，可以限制未经签名的脚本的执行，所以需要配置Bypass选项，用来允许执行任何脚本，无视这些安全限制，以确保可以运行Initialize-Idf.ps1脚本。</p>
+<p>​    <code>-NoExit</code>与cmd终端中的<code>/k</code>作用一样，指示PowerShell在脚本执行完毕后不要关闭窗口，允许用户在同一窗口继续执行更多命令。</p>
+<p>​    <code>-File &quot;D:\Espressif/Initialize-Idf.ps1&quot; </code>表示运行该脚本，用于设置ESP-IDF开发环境，与cmd终端的<code>idf_cmd_init.bat</code>作用相同，详细可以看批处理和脚本的内容<br>​    <code>-IdfId esp-idf-cc72132cd64ef413a5557253e3adc170</code>则表示在执行<code>Initialize-Idf.ps1</code>脚本时，给脚本中的IdfId变量复制为<code>esp-idf-cc72132cd64ef413a5557253e3adc170</code>这个值。<br>​    通过以上解释，我们大致理解了idf-env工具的作用了。这意味着，实际上，我们可以在任何终端窗口，输入如下内容就可以进行idf的使用：</p>
+<h5 id="2-一种多版本安装方法："><a href="#2-一种多版本安装方法：" class="headerlink" title="2. 一种多版本安装方法："></a>2. 一种多版本安装方法：</h5><p>   根据前面的终端的解释，所以我这边进行一种多版本idf的安装方法，我首先给电脑安装一个默认版本的idf，这里选择了idf v5.1版本（至于原因，后面有讲），我是安装在<code>D:\Espressif</code>目录下，然后再<code>Espressif</code>目录下又创建了几个其他版本的idf，直接取名版本号如下图：</p>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405111823712.png" alt="idf安装"></p>
+<p>   这个时候每安装完成一个版本，可以把该版本的终端快捷方式复制出来，放在桌面的一个文件夹内，这里我取名idf,就可以实现多有版本的终端编译功能。最后所有版本的快捷方式如下：</p>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405111823623.png" alt="idf快捷方式"></p>
+<blockquote>
+<p>   这里需要注意两点：</p>
+<ol>
+<li><p>安装其他版本的时候，有可能导致，目录下<code>esp_idf.json</code>文件对应的目录内容改变，我记得好像是<code>&quot;gitPath&quot;</code>变量的值会修改，可以修改为对应版本的idf的目录，详细json的值可以参考第一节对快捷方式的解释内容。</p>
+</li>
+<li><p>安装可能会再用户环境变量中添加名称为<code>IDF_TOOLS_PATH</code>的环境变量，默认是安装最后一个版本的idf的目录，比如<code>D:\Espressif\v5_1_3</code>,这里可以直接把该环境变量删除掉。否则可能会导致终端快捷方式运行出错（快捷方式运行的时候会首先读取<code>IDF_TOOLS_PATH</code>的值，如果有，则默认定义该值为软件目录，没有则会自动创建批处理文件的目录为<code>IDF_TOOLS_PATH</code>）这里给出<code>idf_cmd_init.bat</code>这部分的定义如下：</p>
+</li>
+</ol>
+   <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="string">&quot;%IDF_TOOLS_PATH%&quot;</span> == <span class="string">&quot;&quot;</span> (</span><br><span class="line"> <span class="built_in">set</span> IDF_TOOLS_PATH=%~dp0</span><br><span class="line"> <span class="built_in">echo</span> IDF_TOOLS_PATH not <span class="built_in">set</span>. Setting to %~dp0</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>   此时VScode中默认绑定默认版本的idf。其他版本的编译有两种思路：</p>
+<p>   一种是直接再vscode中打开终端，然后输入语句来设置对应版本的idf的环境变量和配置，然后用idf的指令进行编译下载和调试；</p>
+<p>   另外一种方式是，针对每种版本的idf创建一个vscode工作区参数设置文件，直接把该文件复制到需要运行的idf工程中，此时，vscode会自动设置idf的工作区目录，并使用特定版本的idf来编译和下载程序。这个方法参考了B站UP主“<a href="https://space.bilibili.com/34165842">第九个下弦月</a>”的一个视频内容提供的 vscode 工作区的概念，详细视频地址为：<a href="https://www.bilibili.com/video/BV1bj421Z7z4/?spm_id_from=333.337.search-card.all.click&vd_source=50e88259c3b06cefc86b0480e57ce888">https://www.bilibili.com/video/BV1bj421Z7z4/?spm_id_from=333.337.search-card.all.click&amp;vd_source=50e88259c3b06cefc86b0480e57ce888</a></p>
+<h5 id="3-终端环境变量配置语句："><a href="#3-终端环境变量配置语句：" class="headerlink" title="3. 终端环境变量配置语句："></a>3. 终端环境变量配置语句：</h5><p>   首先是默认版本，我的是v5.1，直接再vscode终端中输入如下语句（一个采用cmd，一个采用powershell），既可再改终端之后，使用针对该版本的idf命令，实现编译和下载等功能：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cmd /k &quot;&quot;D:\Espressif\idf_cmd_init.bat&quot; esp-idf-cc72132cd64ef413a5557253e3adc170&quot;</span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">powershell <span class="literal">-ExecutionPolicy</span> Bypass <span class="literal">-NoExit</span> <span class="operator">-File</span> <span class="string">&quot;D:\Espressif/Initialize-Idf.ps1&quot;</span> <span class="literal">-IdfId</span> esp<span class="literal">-idf-cc72132cd64ef413a5557253e3adc170</span></span><br></pre></td></tr></table></figure>
+
+<p>   如果是V5.1.3版本，id号不一样，用改语句：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cmd /k &quot;&quot;D:\Espressif\v5_1_3\idf_cmd_init.bat&quot; esp-idf-2f332dae01e5300d41bb5887948c6ac3&quot;</span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">powershell <span class="literal">-ExecutionPolicy</span> Bypass <span class="literal">-NoExit</span> <span class="operator">-File</span> <span class="string">&quot;D:\Espressif\v5_1_3/Initialize-Idf.ps1&quot;</span> <span class="literal">-IdfId</span> esp<span class="literal">-idf-2f332dae01e5300d41bb5887948c6ac3</span></span><br></pre></td></tr></table></figure>
+<p>   如果是V5.2.1版本，id号不一样，用改语句：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cmd /k &quot;&quot;D:\Espressif\v5_2_1\idf_cmd_init.bat&quot; esp-idf-f2854e5176bb04b11fdfe329dc6d2d14&quot;</span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">powershell <span class="literal">-ExecutionPolicy</span> Bypass <span class="literal">-NoExit</span> <span class="operator">-File</span> <span class="string">&quot;D:\Espressif\v5_2_1/Initialize-Idf.ps1&quot;</span> <span class="literal">-IdfId</span> esp<span class="literal">-idf-f2854e5176bb04b11fdfe329dc6d2d14</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>   注意：安装位置不同，这个生成的码也不同，应该是根据版本号，安装位置等信息生成的唯一识别码。</p>
+</blockquote>
+<h5 id="4-vscode-工作区配置文件"><a href="#4-vscode-工作区配置文件" class="headerlink" title="4. vscode 工作区配置文件"></a>4. vscode 工作区配置文件</h5><p>   如果不希望再vscode中用终端来编译和下载文件，而是希望直接用vscode下方的快捷键来操作，而且可以实现在一台电脑上随时切换不同版本的idf工程，可以针对每个版本创建一个 vscode 工作区配置文件，把该文件复制到工程目录下，文件后缀需要为：<code>xxx.code-workspace</code>,比如，下面是我针对v5.2.1版本创建的文件，取名为<code>idf_5.2.1.code-workspace</code>内容如下：</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;folders&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;path&quot;</span><span class="punctuation">:</span> <span class="string">&quot;.&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;settings&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;idf.espIdfPathWin&quot;</span><span class="punctuation">:</span> <span class="string">&quot;D:\\Espressif\\v5_2_1\\frameworks\\esp-idf-v5.2.1&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;idf.pythonBinPathWin&quot;</span><span class="punctuation">:</span> <span class="string">&quot;D:\\Espressif\\v5_2_1\\python_env\\idf5.2_py3.11_env\\Scripts\\python.exe&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;idf.toolsPathWin&quot;</span><span class="punctuation">:</span> <span class="string">&quot;D:\\Espressif\\v5_2_1&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;idf.customExtraPaths&quot;</span><span class="punctuation">:</span> <span class="string">&quot;D:\\Espressif\\v5_2_1\\tools\\xtensa-esp-elf-gdb\\12.1_20231023\\xtensa-esp-elf-gdb\\bin;D:\\Espressif\\v5_2_1\\tools\\riscv32-esp-elf-gdb\\12.1_20231023\\riscv32-esp-elf-gdb\\bin;D:\\Espressif\\v5_2_1\\tools\\xtensa-esp-elf\\esp-13.2.0_20230928\\xtensa-esp-elf\\bin;D:\\Espressif\\v5_2_1\\tools\\riscv32-esp-elf\\esp-13.2.0_20230928\\riscv32-esp-elf\\bin;D:\\Espressif\\v5_2_1\\tools\\esp32ulp-elf\\2.35_20220830\\esp32ulp-elf\\bin;D:\\Espressif\\v5_2_1\\tools\\cmake\\3.24.0\\bin;D:\\Espressif\\v5_2_1\\tools\\openocd-esp32\\v0.12.0-esp32-20230921\\openocd-esp32\\bin;D:\\Espressif\\v5_2_1\\tools\\ninja\\1.11.1;D:\\Espressif\\v5_2_1\\tools\\idf-exe\\1.0.3;D:\\Espressif\\v5_2_1\\tools\\ccache\\4.8\\ccache-4.8-windows-x86_64;D:\\Espressif\\v5_2_1\\tools\\dfu-util\\0.11\\dfu-util-0.11-win64;D:\\Espressif\\v5_2_1\\tools\\esp-rom-elfs\\20230320&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;idf.customExtraVars&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;OPENOCD_SCRIPTS&quot;</span><span class="punctuation">:</span> <span class="string">&quot;D:\\Espressif\\v5_2_1\\tools\\openocd-esp32\\v0.12.0-esp32-20230921/openocd-esp32/share/openocd/scripts&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;IDF_CCACHE_ENABLE&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;ESP_ROM_ELF_DIR&quot;</span><span class="punctuation">:</span> <span class="string">&quot;D:\\Espressif\\v5_2_1\\tools\\esp-rom-elfs\\20230320/&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;idf.gitPathWin&quot;</span><span class="punctuation">:</span> <span class="string">&quot;D:\\Espressif\\v5_2_1\\tools\\idf-git\\2.43.0\\cmd\\git.exe&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>   可以看到，其实它操作和终端配置环境变量差不多，就是设置idf工具的目录地址而已。其他版本可以参考这个来设置，这里不多赘述。需要做好的配置文件，可以直接到如下地址下载：<a href="https://gitee.com/SenySunny/picture/tree/master/idf_code-workspace">https://gitee.com/SenySunny/picture/tree/master/idf_code-workspace</a> </p>
+<p>   另外，经部分电脑<code>xxx.code-workspace</code>文件并不会生效，针对这种情况，请直接把<code>&quot;settings&quot;</code>的内容（即所有的<code>idf.xxx</code>相关的软件目录选项）复制到<code>.vscode</code>目录下的<code>settings.json</code>文件中，然后重新打开工程目录。</p>
+</blockquote>
+<h4 id="2-vscode中的idf工程代码跳转问题"><a href="#2-vscode中的idf工程代码跳转问题" class="headerlink" title="(2).  vscode中的idf工程代码跳转问题"></a>(2).  vscode中的idf工程代码跳转问题</h4><p>   在vscode中建立idf工程，或者直接从idf中复制<code>example</code>例程创建工程修改时，默认情况下我们点击使用的idf中的api函数是无法跳转到idf目录下，可以通过如下手段，实现代码的跳转（默认是按下<code>Ctrl</code>+鼠标左击实现跳转）——注意需要vscode已经安装idf插件和<code>C/C++</code>插件。</p>
+<p>   默认打开一个工程内的C文件，会在vscode的右下方出现win32的按钮图标（注意如下没有出现，可以尝试最大化vscode窗口），点击按钮，在弹出的选项栏中选择”编辑配置(JSON)”(也可以直接按住<code>Ctrl+P</code>按钮，在弹出的输入框输入<code>&gt; 编辑配置(JSON)</code>，效果一样)，此时，会自动为工程添加c_cpp_properties.json文件（在<code>.vscode</code>目录下）。</p>
+<p>   在c_cpp_properties.json文件文件中的”configurations”属性添加一行代：<code>码&quot;compileCommands&quot;: &quot;$&#123;workspaceFolder&#125;/build/compile_commands.json&quot;</code>， 注意json格式，需要在前面一行添加逗号，在正常添加之后的c_cpp_properties.json文件内容如下(不同环境下可能有所不同，只需要注意添加compileCommands属性即可)：</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;configurations&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Win32&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;includePath&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">                <span class="string">&quot;$&#123;workspaceFolder&#125;/**&quot;</span></span><br><span class="line">            <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;defines&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">                <span class="string">&quot;_DEBUG&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="string">&quot;UNICODE&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="string">&quot;_UNICODE&quot;</span></span><br><span class="line">            <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;windowsSdkVersion&quot;</span><span class="punctuation">:</span> <span class="string">&quot;10.0.22621.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;compilerPath&quot;</span><span class="punctuation">:</span> <span class="string">&quot;cl.exe&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;cStandard&quot;</span><span class="punctuation">:</span> <span class="string">&quot;c17&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;cppStandard&quot;</span><span class="punctuation">:</span> <span class="string">&quot;c++17&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;intelliSenseMode&quot;</span><span class="punctuation">:</span> <span class="string">&quot;windows-msvc-x64&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;compileCommands&quot;</span><span class="punctuation">:</span> <span class="string">&quot;$&#123;workspaceFolder&#125;/build/compile_commands.json&quot;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;version&quot;</span><span class="punctuation">:</span> <span class="number">4</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>   此时在进行编译之后，会在build目录下产生一个compile_commands.json文件，此时，便可以按住ctrl键，鼠标点击特定函数，即使函数是在idf的内部，也可以实现跳转。</p>
+<h4 id="3-在下载或者其他使用串口的时候，出现无法打开串口的情况解决办法（被占用）"><a href="#3-在下载或者其他使用串口的时候，出现无法打开串口的情况解决办法（被占用）" class="headerlink" title="(3). 在下载或者其他使用串口的时候，出现无法打开串口的情况解决办法（被占用）"></a>(3). 在下载或者其他使用串口的时候，出现无法打开串口的情况解决办法（被占用）</h4><p>  由于idf的操作都是在终端中进行的操作，如果它把串口占用了，可能会导致再次使用串口，出现无法打开串口的情况，此时可能会不清楚是哪个进程占用了串口的情况，导致无法使用串口（很多时候，即使把掉USB线，再插入也没有用，因为线程本身支持断线再插入的时候自动重新打开），可以通过如下方法来解除串口的占用。</p>
+<ol>
+<li><p>打开注册表，在系统的左下角软件搜索栏输入“regedit”，或者右击右下角windows图标选择“运行”， 输入regedit，都可以打开注册表</p>
+</li>
+<li><p>打开如下注册表选项<code>“计算机\HKEY_LOCAL_MACHINE\HARDWARE\DEVICEMAP\SERIALCOMM”</code>,在里面找到无法打开的注册表，如下图，我电脑是COM4</p>
+</li>
+</ol>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405111754694.png" alt="regedit_COMM"></p>
+<ol start="3">
+<li>复制它的名称，我的电脑为<code>\Device\USBSER000</code>.打开电脑资源管理器，选择“性能”选项卡， 点击下方的“打开资源监视器”，选择“CPU”，在关联的句柄中输入串口设备的名称，点击刷新，就可以看到占用串口的应用程序，选中右击，选择“结束进程”即可，此时，串口就又可以使用了,按照下图顺序操作即可。</li>
+</ol>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405111755363.png" alt="regedit_COMM2"></p>
+<h4 id="4-关于USB-Serial-JTAG的一些问题（目前发现在v5-1中可以正常打印，其他版本可以用于log打印，但是直接用于stdin和stdout貌似有bug）"><a href="#4-关于USB-Serial-JTAG的一些问题（目前发现在v5-1中可以正常打印，其他版本可以用于log打印，但是直接用于stdin和stdout貌似有bug）" class="headerlink" title="(4). 关于USB-Serial-JTAG的一些问题（目前发现在v5.1中可以正常打印，其他版本可以用于log打印，但是直接用于stdin和stdout貌似有bug）"></a>(4). 关于USB-Serial-JTAG的一些问题（目前发现在v5.1中可以正常打印，其他版本可以用于log打印，但是直接用于stdin和stdout貌似有bug）</h4><p>​		目前发现USB-Serial-JTAG，在打印的时候，会有缓冲机制，也就是只有当收到\n字符（或者超时相关）的时候才会进行打印和输入，而且不管是绑定esp_vfs虚拟文件系统还是通过<code>fflush(stdout);</code>强制刷新输出缓冲流都没有用，这部分的内容可以参考： <a href="https://docs.espressif.com/projects/esp-idf/zh_CN/v5.2.1/esp32s3/api-guides/usb-serial-jtag-console.html">https://docs.espressif.com/projects/esp-idf/zh_CN/v5.2.1/esp32s3/api-guides/usb-serial-jtag-console.html</a> （无关版本问题，在5.1版本也一样）和 <a href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32s3/api-guides/usb-serial-jtag-console.html">https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32s3/api-guides/usb-serial-jtag-console.html</a> ，在文章中是这样说明的：</p>
+<p>​		对于从 ESP32-S3 发送到 PC 终端的数据（例如 stdout、日志），ESP32-S3 会先写入一个小型内部缓冲区。如果该缓冲区达到最大容量（例如没有连接 PC 终端），ESP32-S3 会进行一次等待，时长约 50 ms。在此期间，PC 终端可以请求数据，但可能会导致应用程序出现非常短暂的暂停。</p>
+<p>​		对于从 PC 终端发送到 ESP32-S3 的数据（如控制台命令），许多 PC 终端会等待 ESP32-S3 接收字节后，再允许发送更多数据。这与使用 USB 转串口 (URAT) 桥接芯片不同，URAT 桥接芯片始终接收字节，并将其发送到（可能未在监听）的 ESP32-S3。</p>
+<p>​		在极少数情况下，从 ESP32-S3 发送到主机的数据可能会“阻塞”在主机内存中。继续发送数据即可“取消阻塞”，但如果应用程序未继续发送数据，则需要手动将这些数据刷新到主机。能否继续发送数据取决于驱动程序，默认配置的非阻塞驱动程序和 VFS 实现会在换行后自动刷新，而基于中断的阻塞驱动程序会在发送缓冲区变空时自动刷新。</p>
+<p>​		目前发现在5.1版本中通过设置usb_serial_jtag缓冲区，然后绑定esp_vfs。然后用<code>usb_serial_jtag_read_bytes</code>和<code>usb_serial_jtag_write_bytes</code>来替代<code>getchar</code>和<code>putchar</code>貌似在部分环境下有效（也可以使用putchar+fflush(stdout)），但是我测试在5.1.3版本中无效。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//初始化usb_serial_jtag缓冲区，并绑定esp_vfs</span></span><br><span class="line"><span class="type">usb_serial_jtag_driver_config_t</span> usb_serial_jtag_config = &#123;</span><br><span class="line">      .rx_buffer_size = <span class="number">1024</span> * <span class="number">8</span>, .tx_buffer_size = <span class="number">1024</span> * <span class="number">2</span>&#125;;</span><br><span class="line">usb_serial_jtag_driver_install(&amp;usb_serial_jtag_config);</span><br><span class="line">esp_vfs_usb_serial_jtag_use_driver();</span><br><span class="line"></span><br><span class="line"><span class="comment">//输入采用如下形式</span></span><br><span class="line"><span class="type">char</span> <span class="title function_">platform_getchar</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">    <span class="type">char</span> buff[<span class="number">1</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="keyword">if</span> (usb_serial_jtag_read_bytes(buff, <span class="number">1</span>, <span class="number">100</span>) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> buff[<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line">    vTaskDelay(<span class="number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//输出采用如下形式</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">platform_putchar</span><span class="params">(<span class="type">char</span> ch)</span> &#123;</span><br><span class="line">  usb_serial_jtag_write_bytes(&amp;ch, <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">  <span class="comment">//也可以使用如下两条语句替代代码</span></span><br><span class="line">  <span class="comment">//putchar(ch);</span></span><br><span class="line">  <span class="comment">//fflush(stdout);</span></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>​		如果直接绑定console做标准输入输出，<code>printf</code>或者<code>putchar</code>都会直接进行usb的缓冲区，直到接收到<code>\n</code>字符（部分版本超时之后也会）之后才会一并通过usb_serial_jtag输出。</p>
+<blockquote>
+<p>​		所以目前发现如果希望使用USB-Serial-JTAG即作为下载程序，又充当一个标准串口来使用，目前最好用v5.1版本，如果不是充当标准串口，而支持用作log打印或者不介意数据缓冲问题的情况下，可以采用任意版本的idf。</p>
+</blockquote>
+<h3 id="3、idf的工程和工具补充"><a href="#3、idf的工程和工具补充" class="headerlink" title="3、idf的工程和工具补充"></a>3、idf的工程和工具补充</h3><h4 id="1-一些常见的menuconfig配置问题"><a href="#1-一些常见的menuconfig配置问题" class="headerlink" title="(1). 一些常见的menuconfig配置问题"></a>(1). 一些常见的menuconfig配置问题</h4><p>​		idf的工程 配置是通过menuconfig来实现的，menuconfig是一种工程代码管理工具，可以通过图形化配置界面，对工程的信息进行配置，这里对一些经常使用的menuconfig配置做一个说明</p>
+<h5 id="1-Flash大小和CPU频率"><a href="#1-Flash大小和CPU频率" class="headerlink" title="1. Flash大小和CPU频率"></a>1. Flash大小和CPU频率</h5><p>​		比如ESP32-S3默认的flash大小是2M，CPU工作频率为160MHz这个可以修改成你的flash大小和频率如下：</p>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405111800041.png" alt="menuconfig_flash"></p>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405111800676.png" alt="menuconfig_cpu"></p>
+<h5 id="2-修改主线程app-main的栈大小"><a href="#2-修改主线程app-main的栈大小" class="headerlink" title="2. 修改主线程app_main的栈大小"></a>2. 修改主线程app_main的栈大小</h5><p>​		当程序比较大时，可能会导致主线程堆栈太小，可以设置高一些。否则可能会给出<code>***ERROR*** A stack overflow in task main has been detected.</code>的报错信息。</p>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405111800096.png" alt="menuconfig_main_stack"></p>
+<h5 id="3-flash分区表"><a href="#3-flash分区表" class="headerlink" title="3. flash分区表"></a>3. flash分区表</h5><p>​		esp-idf默认分区表如下，只占用了系统1M+64K的空间：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Name,   Type, SubType, Offset,  Size, Flags</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Note: <span class="keyword">if</span> you have increased the bootloader size, make sure to update the offsets to avoid overlap</span></span><br><span class="line">nvs,      data, nvs,     0x9000,        0x6000,</span><br><span class="line">phy_init, data, phy,     0xf000,        0x1000,</span><br><span class="line">factory,  app,  factory, 0x10000,		1M,</span><br></pre></td></tr></table></figure>
+
+<p>​		而程序稍微大一些，空间就可能不够，所以一般项目大一些情况，我们会自定义分区表，可以直接在工程下创建<code>partitions.csv</code>文件，然后再menuconfig中选择自己创建的分区表信息，如下：</p>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405111800774.png" alt="menuconfig_partition"></p>
+<p>​		具体分区表<code>partitions.csv</code>的内容可以参考		</p>
+<h5 id="4-PSRAM的开启和使用"><a href="#4-PSRAM的开启和使用" class="headerlink" title="4. PSRAM的开启和使用"></a>4. PSRAM的开启和使用</h5><h5 id="5-指定默认console输出通道"><a href="#5-指定默认console输出通道" class="headerlink" title="5. 指定默认console输出通道"></a>5. 指定默认console输出通道</h5><p>​		这里面有几个值可以选择：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Default:UART0: 		选择系统默认底串口0作为log是输出。</span><br><span class="line">USB CDC:			选择USB CDC设备作为输出，基于TinyUSB</span><br><span class="line">USB serial/JTAG:	选择系统底USB转串口/JTAG接口作为输出。</span><br><span class="line">Custom:UART:		选择系统指定串口作为输出，可以选择UART0/UART1</span><br><span class="line">None:				关闭输出通道，注意，如果这里关闭，但是实际有prinf，可能会报错，</span><br><span class="line">					如果只是希望关闭log,可以参考6，关闭log</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405111801417.png" alt="menuconfig_console"></p>
+<h5 id="6-设置log输出模式"><a href="#6-设置log输出模式" class="headerlink" title="6. 设置log输出模式"></a>6. 设置log输出模式</h5><p>​		log输出包括两个部分底输出，一个式Bootloader config底log输出，也就是系统启动底时候Bootloader代码底log输出，一个代码的log输出，一般情况下我们只需要设置代码底log输出即可，Bootloader的log输出对我们代码几乎没有影响，还可以方便看到一些代码的配置信息，所以一般不需要设置，保持默认就好。这里把两个都给出来</p>
+<p>​		Bootloader的log输出设置：</p>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405111802038.png" alt="boot_log"></p>
+<p>​		代码的log输出设置：</p>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405111802970.png" alt="app_log"></p>
+<h4 id="2-关于Kconfig-projbuild和sdkconfig-defaults"><a href="#2-关于Kconfig-projbuild和sdkconfig-defaults" class="headerlink" title="(2). 关于Kconfig.projbuild和sdkconfig.defaults"></a>(2). 关于Kconfig.projbuild和sdkconfig.defaults</h4><p>​		Kconfig.projbuild本质上是一个配置menuconfig的配置文件，可以同来配置和增加menuconfig相关的配置信息。</p>
+<p>​		关于Kconfig更多的信息可以参考如下图片：</p>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405111803239.png" alt="Kconfig_i"></p>
+<p>​		而sdkconfig.defaults可以定义一些默认的配置选项，即给menuconfig配置中的一些参数进行设定，这样可以使得我们不需要通过menuconfig交互式界面对设备信息进行配置，直接通过文本的形式进行配置（前提是我们已经知道了配置的名称和内容）。</p>
+<p>​		实际上，我们在执行idf.py menuconfig的时候，会自动根据menuconfig中的定义，加载sdkconfig.defaults的内容，进行配置。所以如果sdkconfig.defaults中的定义已经存在，则会自动进行menuconfig的配置。</p>
+<h4 id="3-组件管理-managed-components与components-与官方组件管理工具：-https-components-espressif-com"><a href="#3-组件管理-managed-components与components-与官方组件管理工具：-https-components-espressif-com" class="headerlink" title="(3). 组件管理(managed_components与components)与官方组件管理工具： https://components.espressif.com/"></a>(3). 组件管理(<code>managed_components</code>与<code>components</code>)与官方组件管理工具： <a href="https://components.espressif.com/">https://components.espressif.com/</a></h4><p>​		idf的组件分为三种：idf官方组件， 第三方组件， 自定义组件，它们分别在“idf的frameworks库的components目录”， 工程的<code>managed_components</code>目录， 工程的<code>components</code>目录下，这里对这三个组件做个简单介绍</p>
+<p>​		第一种为：idf官方组件，它跟随idf的发布而更新，在idf的frameworks库的components目录下，比如5.1版本的官方组件都在如下目录中</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">frameworks\esp-idf-v5.1\components</span><br></pre></td></tr></table></figure>
+
+<p>​		第二种为：第三方组件：一般指的是在官方组件管理工具： <a href="https://components.espressif.com/">https://components.espressif.com/</a> 中可以搜索到的组件库，乐鑫有一个网络组件管理工具网站，在idf中也构建了组件管理工具。官方和某些第三方发布的组件可以在这里搜索到。它可以通过idf_component.yml来管理，一般情况下，在组件库的界面中会提供下载组件的方法如下图：</p>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405111803465.png" alt="components"></p>
+<p>​		更新完成之后组件库会自动添加到工程的<code>managed_components</code>目录下方。该组件在每次编译的时候会自动同步，以确保组件内容没有被修改，所以一般不允许修改组件的内容。</p>
+<p>​		第三种为：自定义组件，自定义组件库，我们一般放在工程目录的<code>components</code>目录下，用户可以自行修改，另外如果我们要对一些第三方组件进行修改定制，可以线同步到&#96;&#96;managed_components<code>目录，然后我们在剪贴到</code>components&#96;&#96;&#96;目录下，再进行编辑使用。</p>
+<h4 id="4-组件配置文件idf-component-yml-和组件信息文件dependencies-lock"><a href="#4-组件配置文件idf-component-yml-和组件信息文件dependencies-lock" class="headerlink" title="(4). 组件配置文件idf_component.yml 和组件信息文件dependencies.lock"></a>(4). 组件配置文件idf_component.yml 和组件信息文件dependencies.lock</h4><p>​		<code>idf_component.yml</code>文件是一个YAML格式的文件，用于定义组件的元数据和依赖关系。这个文件通常位于组件的根目录下，作用包括：</p>
+<ul>
+<li><strong>定义依赖项</strong>：它列出了当前组件依赖的其他组件或库，包括这些依赖的版本信息。这有助于确保项目中使用的是兼容的组件版本。</li>
+<li><strong>指定组件属性</strong>：比如组件的描述、维护者信息、许可证信息等。</li>
+<li><strong>配置选项</strong>：提供对组件内部设置的配置，如使能或禁用特定的功能。</li>
+</ul>
+<p>​		<code>dependencies.lock</code>文件是一个自动生成的文件，通常在执行项目配置过程（如运行<code>idf.py reconfigure</code>或首次构建项目时）生成。它的主要作用是：</p>
+<ul>
+<li><strong>锁定依赖版本</strong>：文件中详细记录了项目解析依赖时所确定的具体版本号。这确保了项目的再现性，即不同的开发者或在不同的环境中构建项目时，都将使用相同版本的依赖，避免由于依赖版本变化导致的问题。</li>
+<li><strong>依赖解析的结果</strong>：这个文件是项目依赖解析过程的直接产物，它包含了所有必需的、已解析的依赖组件及其版本，确保了构建系统能够获取和使用正确的组件版本。</li>
+</ul>
+<p><code>idf_component.yml</code>和<code>dependencies.lock</code>的区别</p>
+<ul>
+<li><strong>用途差异</strong>：<code>idf_component.yml</code>用于声明依赖和组件配置，而<code>dependencies.lock</code>用于锁定这些依赖的具体版本，确保构建的一致性。</li>
+<li><strong>更新机制</strong>：<code>idf_component.yml</code>由开发者手动更新，以匹配组件需求和属性；<code>dependencies.lock</code>通常在依赖关系有变化或首次解析依赖时自动更新。</li>
+<li><strong>目标用户</strong>：<code>idf_component.yml</code>面向项目和组件开发者，他们需要在这个文件中指定和管理组件的依赖关系；而<code>dependencies.lock</code>主要是给构建系统使用，以保证项目的构建环境和条件的一致性。</li>
+</ul>
+<p>​		<code>idf_component.yml</code>文件内容大致如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dependencies:</span><br><span class="line">  espressif/esp_lcd_touch_ft5x06: <span class="string">&quot;^1.0.6&quot;</span></span><br><span class="line">  idf: <span class="string">&quot;&gt;=4.4&quot;</span></span><br><span class="line">  lvgl/lvgl: <span class="string">&quot;~8.3.0&quot;</span></span><br><span class="line">  espressif/zlib: <span class="string">&quot;^1.3.0&quot;</span></span><br><span class="line">  espressif/es8311: <span class="string">&quot;^1.0.0&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>​		<code>dependencies.lock</code>文件内容大致如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dependencies:</span><br><span class="line">  espressif/es8311:</span><br><span class="line">    component_hash: eacbe7cb7f6993eb0f439121a56663cdfbf95925e7ddf5d2ed5aa640bed476fd</span><br><span class="line">    <span class="built_in">source</span>:</span><br><span class="line">      service_url: https://api.components.espressif.com/</span><br><span class="line">      <span class="built_in">type</span>: service</span><br><span class="line">    version: 1.0.0</span><br><span class="line">  espressif/esp_lcd_touch:</span><br><span class="line">    component_hash: d4d8f2dc33205797169a97a02e0d89a8982f59fe0509129b54422052b8522f59</span><br><span class="line">    <span class="built_in">source</span>:</span><br><span class="line">      service_url: https://api.components.espressif.com/</span><br><span class="line">      <span class="built_in">type</span>: service</span><br><span class="line">    version: 1.1.1</span><br><span class="line">  espressif/esp_lcd_touch_ft5x06:</span><br><span class="line">    component_hash: 97759953d9436a365e9427078c5b04ecce4e6a50f50cf62c68cd6bfa229b812c</span><br><span class="line">    <span class="built_in">source</span>:</span><br><span class="line">      service_url: https://api.components.espressif.com/</span><br><span class="line">      <span class="built_in">type</span>: service</span><br><span class="line">    version: 1.0.6</span><br><span class="line">  espressif/zlib:</span><br><span class="line">    component_hash: 999ec50086ac1c82b8321d8f540dc9fd10f5622948b935558aa16b4b66e95d9d</span><br><span class="line">    <span class="built_in">source</span>:</span><br><span class="line">      service_url: https://api.components.espressif.com/</span><br><span class="line">      <span class="built_in">type</span>: service</span><br><span class="line">    version: 1.3.0</span><br><span class="line">  idf:</span><br><span class="line">    component_hash: null</span><br><span class="line">    <span class="built_in">source</span>:</span><br><span class="line">      <span class="built_in">type</span>: idf</span><br><span class="line">    version: 5.1.0</span><br><span class="line">  lvgl/lvgl:</span><br><span class="line">    component_hash: 948bff879a345149b83065535bbc4a026ce9f47498a22881e432a264b9098015</span><br><span class="line">    <span class="built_in">source</span>:</span><br><span class="line">      service_url: https://api.components.espressif.com/</span><br><span class="line">      <span class="built_in">type</span>: service</span><br><span class="line">    version: 8.3.11</span><br><span class="line">manifest_hash: b2c9ad493b01235aaa12d62f4d6922fb1ee3203b34b14257305de16c9838f577</span><br><span class="line">target: esp32c3</span><br><span class="line">version: 1.0.0</span><br></pre></td></tr></table></figure>
+
+<p>​		下面是几个常用的针对<code>idf_component.yml</code>组件描述符</p>
+<h5 id="1-Caret-允许版本在当前主版本号范围内更新。"><a href="#1-Caret-允许版本在当前主版本号范围内更新。" class="headerlink" title="1.  ^ (Caret): 允许版本在当前主版本号范围内更新。"></a>1.  <strong>^ (Caret)</strong>: 允许版本在当前主版本号范围内更新。</h5><blockquote>
+<p>​		例如，<code>^1.0.6</code>允许使用1.0.6以上到2.0.0以下的版本。</p>
+</blockquote>
+<h5 id="2-Tilde-允许次要版本的更新，如果指定了次版本，则只更新补丁版本。"><a href="#2-Tilde-允许次要版本的更新，如果指定了次版本，则只更新补丁版本。" class="headerlink" title="2. ~ (Tilde): 允许次要版本的更新，如果指定了次版本，则只更新补丁版本。"></a>2. <strong>~ (Tilde)</strong>: 允许次要版本的更新，如果指定了次版本，则只更新补丁版本。</h5><blockquote>
+<p>​		例如，<code>~8.3.0</code>可以更新到8.3.x的任何版本，但不超过8.4.0。</p>
+</blockquote>
+<h5 id="3-Greater-Than-or-Equal-To-指定版本必须大于或等于特定版本。"><a href="#3-Greater-Than-or-Equal-To-指定版本必须大于或等于特定版本。" class="headerlink" title="3. &gt;&#x3D; (Greater Than or Equal To): 指定版本必须大于或等于特定版本。"></a>3. <strong>&gt;&#x3D; (Greater Than or Equal To)</strong>: 指定版本必须大于或等于特定版本。</h5><blockquote>
+<p>​		例如，<code>&gt;=4.4</code>表示版本必须是4.4或更高。</p>
+</blockquote>
+<h4 id="5-idf中Cmake配置的一些关键词"><a href="#5-idf中Cmake配置的一些关键词" class="headerlink" title="(5). idf中Cmake配置的一些关键词"></a>(5). idf中Cmake配置的一些关键词</h4><h5 id="1-屏蔽一些不必要的警告"><a href="#1-屏蔽一些不必要的警告" class="headerlink" title="1. 屏蔽一些不必要的警告"></a>1. 屏蔽一些不必要的警告</h5><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">set</span>(CMAKE_C_FLAGS <span class="string">&quot;$&#123;CMAKE_C_FLAGS&#125; -Wno-char-subscripts -Wno-maybe-uninitialized&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<ol>
+<li><code>set</code>: 这是CMake的命令，用于设置或修改变量的值。</li>
+<li><code>CMAKE_C_FLAGS</code>: 这是一个CMake变量，代表用于C语言编译器的编译选项。</li>
+<li><code>&quot;$&#123;CMAKE_C_FLAGS&#125;&quot;</code>: 这部分是变量替换，意思是取出<code>CMAKE_C_FLAGS</code>变量当前的值。</li>
+<li><code>-Wno-char-subscripts</code> 和 <code>-Wno-maybe-uninitialized</code> 是具体添加到<code>CMAKE_C_FLAGS</code>变量中的编译器选项：<ul>
+<li><code>-Wno-char-subscripts</code>：这个选项用来禁止编译器发出警告，当数组下标是char类型时。通常这种情况下，char类型的下标会被隐式转换为整型，某些情况下可能会引发问题或警告。</li>
+<li><code>-Wno-maybe-uninitialized</code>：这个选项用来禁止编译器发出警告，当变量可能未初始化时。这可以防止编译器对可能未初始化的使用发出警告，尽管这样做有时可能隐藏实际的编程错误。</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<h5 id="2-自动扫描文件夹下的C文件自动添加（循环扫描目录以及子目录下的所有c文件）"><a href="#2-自动扫描文件夹下的C文件自动添加（循环扫描目录以及子目录下的所有c文件）" class="headerlink" title="2. 自动扫描文件夹下的C文件自动添加（循环扫描目录以及子目录下的所有c文件）"></a>2. 自动扫描文件夹下的C文件自动添加（循环扫描目录以及子目录下的所有c文件）</h5><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">file</span>(GLOB_RECURSE SOURCES *.c)</span><br><span class="line">idf_component_register(SRCS <span class="variable">$&#123;SOURCES&#125;</span>)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意，这可能导致增加或者删除文件，但是cmake并没有发现，导致其没有被编译仅二进制文件的可能性，所以这种情况下，建议增加或者删除文件的时候，可以先clean一下项目，然后再重新编译。</p>
+<p>​		另一个常用的实践是尽量避免在配置文件中使用GLOB来指定源文件。可以考虑明确列出所有源文件，虽然这增加了维护成本，但可以提高项目的可预测性。</p>
+</blockquote>
+<h5 id="3-静态库编译到二进制系统中关键字：WHOLE-ARCHIVE"><a href="#3-静态库编译到二进制系统中关键字：WHOLE-ARCHIVE" class="headerlink" title="3. 静态库编译到二进制系统中关键字：WHOLE_ARCHIVE"></a>3. 静态库编译到二进制系统中关键字：WHOLE_ARCHIVE</h5><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">file</span>(GLOB_RECURSE SOURCES *.c)</span><br><span class="line">idf_component_register(SRCS <span class="variable">$&#123;SOURCES&#125;</span></span><br><span class="line">                    WHOLE_ARCHIVE</span><br><span class="line">                    INCLUDE_DIRS <span class="string">&quot;.&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这个意思是，有些函数，即使没有被系统调用（比如被main函数，或者中断函数，或者其他函数调用），这些函数仍然需要被编译到二进制文件中，这样做的目的是，一些脚本解析器，本身系统不会调用该函数，但是系统会执行来自外部的命令，或者文件系统中的脚本代码，根据脚本代码的执行情况会产生调用函数的可能性，如果不包含此关键字可能导致，该函数并未被编译到二进制文件中，而导致系统执行失败。</p>
+</blockquote>
+<h5 id="4-组件依赖关键字：REQUIRES"><a href="#4-组件依赖关键字：REQUIRES" class="headerlink" title="4. 组件依赖关键字：REQUIRES"></a>4. 组件依赖关键字：REQUIRES</h5><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">file</span>(GLOB_RECURSE SOURCES *.c)</span><br><span class="line">idf_component_register(SRCS <span class="variable">$&#123;SOURCES&#125;</span></span><br><span class="line">                    WHOLE_ARCHIVE</span><br><span class="line">                    INCLUDE_DIRS <span class="string">&quot;.&quot;</span></span><br><span class="line">                    REQUIRES</span><br><span class="line">                	driver</span><br><span class="line">                	fatfs)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>REQUIRES关键字描述的是代码对一些其他组件库的依赖关系，也就是说，这部分代码可能需要依赖一些其他组件库一起运行（包括官方组件，第三方组件，自定义组件）如果没有相关的组件，可能会导致编译失败，加上这个组件库之后，系统会把需要的组件库一起添加到系统的编译选项里面进行编译。</p>
+</blockquote>
+<h5 id="5-添加预处理器定义"><a href="#5-添加预处理器定义" class="headerlink" title="5. 添加预处理器定义"></a>5. 添加预处理器定义</h5><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="comment"># add macro</span></span><br><span class="line">idf_build_set_property(</span><br><span class="line">    COMPILE_DEFINITIONS <span class="string">&quot;-DPIKA_CONFIG_ENABLE&quot;</span> APPEND)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这会将<code>PIKA_CONFIG_ENABLE</code>定义添加到当前目标的编译定义中。</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>嵌入式</category>
+        <category>ESP32学习笔记</category>
+      </categories>
+      <tags>
+        <tag>esp32</tag>
+        <tag>esp-idf</tag>
+        <tag>vscode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo博客使用的一些常见问题（一）：外站图片显示，站内链接，嵌入B站视频</title>
+    <url>/posts/hexo_0005.html</url>
+    <content><![CDATA[<h3 id="1、关于网站使用外网图片无法显示的问题。"><a href="#1、关于网站使用外网图片无法显示的问题。" class="headerlink" title="1、关于网站使用外网图片无法显示的问题。"></a>1、关于网站使用外网图片无法显示的问题。</h3><ol>
+<li>如果只需要文章能够正常显示，只需要在文章前面最前方加上如下语句即可：</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot; /&gt;</span><br></pre></td></tr></table></figure>
+
+<p>​		该方法参考这篇文章的说法：<a href="https://www.cnblogs.com/selier/p/9570650.html%EF%BC%8C">https://www.cnblogs.com/selier/p/9570650.html，</a> 大致的原理是：</p>
+<blockquote>
+<p>​		一般浏览器向服务器请求一个资源（如图片）时，通常会包括一个<code>Referer</code>头部，它包含了发起请求的页面的URL。这有助于服务器理解请求的来源。</p>
+<p>​		而有些图片网站为了防止其它网站盗链其资源（比如我是直接吧图片上传到gitee中，然后再文章中加载）。如果<code>Referer</code>头部显示图片请求来自于非授权的域名，服务器可能拒绝请求。</p>
+<p>​		所以该条语句的意思是：告诉浏览器不要发送<code>Referer</code>头部给服务器。这样，图床服务器就无法判断请求是否来自于非授权的域，因而可能“默认”允许请求。</p>
+</blockquote>
+<p>​		当然如果不想每次创建文章的时候都手动添加该语句，可以尝试把该语句添加到hexo博客更目录下的<code>scaffolds/post.md</code>文件中，该文件是创建文章的模板文件，此时我们通过hexo n “文章题目”的时候会自动添加该语句。</p>
+<ol start="2">
+<li><p>我在实际的建立博客的时候，可能由图床文件，并不仅仅用在文章中，可能还希望应用到各种页面中，比如主页头像，其他网页内容，这个时候通过向文章头部添加这条语句的方法就不行了，这是我们可以采用hexo的<code>注入器（Injector）</code>往所有的博客页面头部注入该条语句，以实现全网的图片访问。具体做法如下:</p>
+<ol>
+<li>在hexo博客根目录下添加<code>scripts</code>文件夹，在文件夹中创建<code>injector.js</code>文件，在该文件中添加如下语句：</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">hexo.<span class="property">extend</span>.<span class="property">injector</span>.<span class="title function_">register</span>(<span class="string">&#x27;head_begin&#x27;</span>, <span class="string">&#x27;&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;&#x27;</span>, <span class="string">&#x27;default&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>允许<code>hexo cl</code>（清除缓冲）, <code>hexo g</code>（重新生成静态文件）, <code>hexo s</code>(本地启动服务查看效果), <code>hexo d</code>（部署到服务器），来实现网站部署，此时就可以正确的显示了。</li>
+</ol>
+</li>
+</ol>
+<h3 id="2、-关于博客内部链接的问题。"><a href="#2、-关于博客内部链接的问题。" class="headerlink" title="2、 关于博客内部链接的问题。"></a>2、 关于博客内部链接的问题。</h3><ol>
+<li>把<code>permalink</code>修改为<code>:title/</code></li>
+</ol>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># URL</span></span><br><span class="line"><span class="comment">## Set your site url here. For example, if you use GitHub Page, set url as &#x27;https://username.github.io/project&#x27;</span></span><br><span class="line"><span class="attr">url:</span> <span class="string">http://senysunny.com</span></span><br><span class="line"><span class="attr">permalink:</span> <span class="string">:title/</span> <span class="comment"># :year/:month/:day/:title/</span></span><br><span class="line"><span class="attr">permalink_defaults:</span></span><br><span class="line"><span class="attr">pretty_urls:</span></span><br><span class="line">  <span class="attr">trailing_index:</span> <span class="literal">true</span> <span class="comment"># Set to false to remove trailing &#x27;index.html&#x27; from permalinks</span></span><br><span class="line">  <span class="attr">trailing_html:</span> <span class="literal">true</span> <span class="comment"># Set to false to remove trailing &#x27;.html&#x27; from permalinks</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>文章直接做链接，按照<code>/目录/文章名称/</code>作为链接内容即可，会自动链接到<code>网址//目录/文章名称/</code>对应的网页中</li>
+</ol>
+<h3 id="3、-在博客中嵌入视频（比如B站视频）"><a href="#3、-在博客中嵌入视频（比如B站视频）" class="headerlink" title="3、 在博客中嵌入视频（比如B站视频）"></a>3、 在博客中嵌入视频（比如B站视频）</h3><ol>
+<li>直接在markdown中使用<code>&lt;iframe&gt;</code>标签，在标签中添加视频的网址，即可嵌入视频，如下图<iframe  width="100%" height="450" src="//player.bilibili.com/player.html?aid=279747615&bvid=BV1cc411m72m&cid=1365009247&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe></li>
+<li>视频的网址，比如B站的视频，可以在视频下方的分享按钮，有一个嵌入代码，直接复制代码即可，如果嵌入到markdown中，视频比较小，可以在<code>iframe</code>中添加<code>width</code>和<code>height</code>属性，设置视频的宽度和高度，如下所示</li>
+</ol>
+<pre><code class="yaml">&lt;iframe  width=&quot;100%&quot; height=&quot;450&quot; src=&quot;//player.bilibili.com/player.html?aid=279747615&amp;bvid=BV1cc411m72m&amp;cid=1365009247&amp;p=1&quot; scrolling=&quot;no&quot; border=&quot;0&quot; frameborder=&quot;no&quot; framespacing=&quot;0&quot; allowfullscreen=&quot;true&quot;&gt; &lt;/iframe&gt;
+</code></pre>
+]]></content>
+      <categories>
+        <category>Web前端</category>
+        <category>hexo博客系统</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>bilibili</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>modbus_rt：本人编写的纯C实现的跨平台modbus协议通信库</title>
-    <url>/articles/modbus_0001.html</url>
+    <url>/posts/modbus_0001.html</url>
     <content><![CDATA[<p>该项目的演示视频，详见：</p>
 <p>​	GitHub仓库： <a href="https://github.com/SenySunny/modbus_rt.git">https://github.com/SenySunny/modbus_rt.git</a> </p>
 <p>​	Gitee仓库： <a href="https://gitee.com/SenySunny/modbus_rt.git">https://gitee.com/SenySunny/modbus_rt.git</a></p>
@@ -310,379 +589,8 @@
       </tags>
   </entry>
   <entry>
-    <title>git学习笔记（一）：git客户端基本使用方法</title>
-    <url>/articles/3967.html</url>
-    <content><![CDATA[<h3 id="1、git的常用基本指令"><a href="#1、git的常用基本指令" class="headerlink" title="1、git的常用基本指令"></a>1、git的常用基本指令</h3><p>​		下面是一些git常用的基本指令集，这里只是简单罗列一下，方便参考：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">配置git基本信息</span></span><br><span class="line">git config --global user.name &quot;Your Name&quot;</span><br><span class="line">git config --global user.email &quot;youremail@example.com&quot;</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">git仓库初始化</span></span><br><span class="line">git init</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">git克隆仓库</span></span><br><span class="line">git clone https://gitee.com/SenySunny/pikapython.git</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">检查当前的工作目录状态（哪些文件被修改了但还没提交）</span></span><br><span class="line">git status</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">添加文件，用.表示添加所有文件</span></span><br><span class="line">git add filename</span><br><span class="line">git add .</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将暂存区的更改提交到本地仓库。通常附带一条消息说明这次提交的内容。</span></span><br><span class="line">git commit -m &quot;Commit message&quot;</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将本地的更改推送到远程仓库，如果是推送到主仓库可以直接用git push来推送</span></span><br><span class="line">git push origin main</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">从远程仓库获取最新版本并合并到本地仓库。</span></span><br><span class="line">git pull</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看提交历史，按上下键查看<span class="built_in">log</span>，按q退出<span class="built_in">log</span>模式，或者用git --no-pager <span class="built_in">log</span>直接一次打印所有<span class="built_in">log</span>(尽量少用)</span></span><br><span class="line">git log</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看未暂存的文件更新了哪些内容。</span></span><br><span class="line">git diff</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">如果你想查看系统、全局和本地仓库的所有配置，你可以使用以下命令</span></span><br><span class="line">git config --list</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看特定的配置项</span></span><br><span class="line">git config user.email</span><br><span class="line">git config user.name</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看系统级配置（对所有用户有效）：</span></span><br><span class="line">git config --system --list</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看全局级配置（对当前用户有效）：</span></span><br><span class="line">git config --global --list</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看本地级配置（只对当前仓库有效）：</span></span><br><span class="line">git config --local --list</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">同步更新仓库下的分仓库的内容</span></span><br><span class="line">git submodule update --init --recursive</span><br></pre></td></tr></table></figure>
-
-
-<h3 id="2、git分支管理与版本维护总结"><a href="#2、git分支管理与版本维护总结" class="headerlink" title="2、git分支管理与版本维护总结"></a>2、git分支管理与版本维护总结</h3><p>​		这里需要特别说明一下；分支管理一般用于在允许你在主开发线上分离一个动态开发线路，主要用来进行新的功能开发，bug调试等工作，主要目的是为了在新功能开发，或者调试bug的同时，不影响主线。分支可以随着新的提交而更新。</p>
-<p>​		常用的分支管理指令如下：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git branch               		# 列出所有本地分支</span><br><span class="line">git branch -a            		# 列出所有分支（本地和远程）</span><br><span class="line">git branch new-branch    		# 创建新分支</span><br><span class="line">git checkout new-branch  		# 切换到新分支</span><br><span class="line">git checkout -b new-branch		# 创建并切换分支</span><br><span class="line">git checkout main				# 切换回主线进行开发</span><br></pre></td></tr></table></figure>
-
-<p>​		而版本管理，我们一般用tag指令来处理，Tag通常用来标记特定的点，可以理解为Tag是对某一时刻的提交（commit）的引用。一般用来做版本发布，当软件开发到一个特定节点时，我们可以用tag指令来发布版本。</p>
-<p>​		tag常用指令如下：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git tag -a v1.3 -m &quot;Release version 1.3&quot;</span><br><span class="line">git push origin v1.3</span><br></pre></td></tr></table></figure>
-
-<p>​		一般软件版本为x.x.x三组数据组成，第一个为主版本，第二个版本为功能更新版本，第三个为功能修复和完善的版本。也就是说正常情况下，我们发布1.3版本，后续我们回继续对1.3版本进行维护和优化，创建1.3.x版本。如果要增加或者改变功能，我们回同步创建1.4版本。这样就可以实现对多个版本的同步和维护（一般主版本会在产品有重大更新，或者比较大的重构，导致可能会出现兼容性问题的时候，会更新主版本）。</p>
-<p>​		我们现在假设，一款软件，我们已经开发到可以发布1.3版本了。我们会采用tag方式创建和发布1.3版本。一般这个时候，我们同步创建一个分支。用于后续修复和完善该版本。我们操作如下：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git checkout main							# 切换主线</span><br><span class="line">git tag -a v1.3 -m &quot;Release version 1.3&quot;	# 发布v1.3版本</span><br><span class="line">git push origin v1.3						# 推送v1.3版本到远程仓库</span><br><span class="line">git checkout -b release/v1.3 v1.3			# 从v1.3版本的节点创建分支，并切换到该分支</span><br></pre></td></tr></table></figure>
-
-<p>​		此时如果我们要同步更新主线分支和v1.3分支的话，可以如下操作</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git checkout main							# 切换主线</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">给主线分支开发新功能等操作</span></span><br><span class="line">git checkout release/v1.3					# 切换到v1.3的分支</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">此处可以进行修复和完善v1.3的代码</span></span><br></pre></td></tr></table></figure>
-
-<p>​		如果我们希望将对1.3版本的完善和修复同步到主线，有以下两种操作方法：</p>
-<ol>
-<li>从release&#x2F;v1.3的分支合并修复到main分支</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git checkout main							# 切换主线</span><br><span class="line">git merge release/v1.3						# 合并分支到主线分支</span><br></pre></td></tr></table></figure>
-
-<p>​		这种方法将把1.3维护分支的所有更改都合并到 <code>main</code> 分支，适用于所有更改都需要合并的情况。</p>
-<ol start="2">
-<li>Cherry-pick 特定的提交，如果我们只是希望把某个特定的修复合并到主线分支，则可以通过git log查看到该修复操作的哈希值内容。然后通过如下操作：</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git checkout main							# 切换主线</span><br><span class="line">git cherry-pick &lt;commit-hash&gt;				# 将特定的提交合并到主线</span><br></pre></td></tr></table></figure>
-
-<p>​		不管是那种操作，我们都需要使用push把它提交到远程仓库</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git push origin main						# 如果确定目前处于主线仓库，则直接用git push也可以</span><br></pre></td></tr></table></figure>
-
-<p>​		如果我们认为对1.3版本的修复和完善工作已经到了一个阶段，我们可以发布1.3.1版本，此时我们可以如下操作：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git checkout release/v1.3					# 切换到v1.3的分支,确保我们目前处在1.3分支当中</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">如果已经在1.3分支中，则不需要checkout命令</span></span><br><span class="line">git push origin release/v1.3				# 确保分支已经推送更新到远程仓库</span><br><span class="line">git tag -a v1.3.1 -m &quot;Release version 1.3.1&quot;# 发布v1.3.1版本 	</span><br><span class="line">git push origin v1.3.1						# 推送v1.3.1版本到远程仓库</span><br></pre></td></tr></table></figure>
-
-<p>​		当然我们也可以继续基于release&#x2F;v1.3的分支进行操作，后续可以发布1.3.2~1.3.x的版本。同时可以基于main分支，来发布1.4版本，或者发布1.4版本之后，继续创建release&#x2F;v1.4的分支内容，用来修复和维护1.4版本的内容。</p>
-<p>​		用如上操作，我们基本上可以使用git来维护软件的各个版本内容了。</p>
-<h3 id="3、git中关于二进制文件或者其他非文本类大文件处理方法参考"><a href="#3、git中关于二进制文件或者其他非文本类大文件处理方法参考" class="headerlink" title="3、git中关于二进制文件或者其他非文本类大文件处理方法参考"></a>3、git中关于二进制文件或者其他非文本类大文件处理方法参考</h3><ol>
-<li>直接用附件上传的方式，把二进制或者其他大文件压缩或者直接作为文件上传到gitee的附件当中去，点击gitee仓库的统计，下面有附件，点击添加附件，然后把“复制链接地址”，把地址或者地址的快捷方式作为文件提供到仓储当中，这样用户就可以通过地址或者快捷方式直接实现二进制或者大文件的下载。</li>
-</ol>
-<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405131549940.png" alt="附件"></p>
-<ol start="2">
-<li><p>采用Git LFS，但是貌似目前并不是所有的git远程仓库都支持LFS功能，比如gitee的个人版本不支持，只有付费企业版本支持。貌似github&#x2F;gitlab&#x2F;bitbucket都是支持LFS的。所以在使用LFS的时候，请确保git的服务器是否支持GIT LFS，否则可能会导致LFS无效。这里对Git LFS做个简单的介绍</p>
-<blockquote>
-<p>在创建或者上传大文件时：</p>
-<ol>
-<li>在仓库中输入<code>git lfs install</code>初始化lfs,如果系统没有lfs插件，git会自动下载lfs插件，并进行初始化。</li>
-<li>在现有仓库中使用lfs，你需要指定哪些文件被作为大文件。如下操作：</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git init</span><br><span class="line">git lfs track &quot;*.psd&quot;</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>为了确保仓库的lfs大文件已经被绑定，可以确保<code>.gitattributes</code> 文件被添加到仓库中</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git add .gitattributes</span><br><span class="line">git commit -m &quot;Set Git LFS for psd files&quot;</span><br></pre></td></tr></table></figure>
-
-<p>​		此时，Git LFS来跟踪所有的<code>.psd</code>文件。你可以指定任何文件类型或具体文件。这会创建或修改<code>.gitattributes</code>文件，包含关于哪些文件应由Git LFS跟踪的规则。</p>
-<ol start="4">
-<li>和正常一样使用git即可</li>
-</ol>
-</blockquote>
-<blockquote>
-<p>克隆或者拉取具有lfs的仓库时，如下操作</p>
-<ol>
-<li>和正常一样下载<code>git clone &lt;repository-url&gt;</code>或者拉取<code>git pull origin main</code>文件即可。如果发现大文件没有被同步，可以尝试用<code>git lfs pull</code>单独拉取一下大文件。</li>
-<li>另外可以通过<code>git lfs ls-files</code>来查看哪些文件时由LFS管理的文件。<ol>
-<li>如果LFS的对象存储很大，可以尝试使用<code>git lfs prune</code>来同步和清理大文件，这将删除本地存储中的旧版本LFS对象，从而节省空间。</li>
-</ol>
-</li>
-</ol>
-</blockquote>
-<p>​		可以通过<code>git lfs track</code>来查看哪些文件类型被绑定到lfs大文件存储上了。通过<code>git lfs track &quot;*.psd&quot;</code>来取消某种类型文件的追踪（记得修改完成之后需要push）。</p>
-</li>
-<li><p>对于一些特别大的文件，或者不经常更改的大型二进制文件，考虑将它们存储在其他地方（如云存储服务），只在Git仓库中保存必要的链接或引用。这个方法和第一个方法基本相同，只是需要自己创建或者寻找第三方的云存储服务而已。</p>
-</li>
-</ol>
-]]></content>
-      <categories>
-        <category>编程语言</category>
-        <category>git</category>
-      </categories>
-      <tags>
-        <tag>git</tag>
-        <tag>github</tag>
-        <tag>版本管理</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>hexo博客使用的一些常见问题（一）：外站图片显示，站内链接，嵌入B站视频</title>
-    <url>/articles/hexo_0005.html</url>
-    <content><![CDATA[<h3 id="1、关于网站使用外网图片无法显示的问题。"><a href="#1、关于网站使用外网图片无法显示的问题。" class="headerlink" title="1、关于网站使用外网图片无法显示的问题。"></a>1、关于网站使用外网图片无法显示的问题。</h3><ol>
-<li>如果只需要文章能够正常显示，只需要在文章前面最前方加上如下语句即可：</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot; /&gt;</span><br></pre></td></tr></table></figure>
-
-<p>​		该方法参考这篇文章的说法：<a href="https://www.cnblogs.com/selier/p/9570650.html%EF%BC%8C">https://www.cnblogs.com/selier/p/9570650.html，</a> 大致的原理是：</p>
-<blockquote>
-<p>​		一般浏览器向服务器请求一个资源（如图片）时，通常会包括一个<code>Referer</code>头部，它包含了发起请求的页面的URL。这有助于服务器理解请求的来源。</p>
-<p>​		而有些图片网站为了防止其它网站盗链其资源（比如我是直接吧图片上传到gitee中，然后再文章中加载）。如果<code>Referer</code>头部显示图片请求来自于非授权的域名，服务器可能拒绝请求。</p>
-<p>​		所以该条语句的意思是：告诉浏览器不要发送<code>Referer</code>头部给服务器。这样，图床服务器就无法判断请求是否来自于非授权的域，因而可能“默认”允许请求。</p>
-</blockquote>
-<p>​		当然如果不想每次创建文章的时候都手动添加该语句，可以尝试把该语句添加到hexo博客更目录下的<code>scaffolds/post.md</code>文件中，该文件是创建文章的模板文件，此时我们通过hexo n “文章题目”的时候会自动添加该语句。</p>
-<ol start="2">
-<li><p>我在实际的建立博客的时候，可能由图床文件，并不仅仅用在文章中，可能还希望应用到各种页面中，比如主页头像，其他网页内容，这个时候通过向文章头部添加这条语句的方法就不行了，这是我们可以采用hexo的<code>注入器（Injector）</code>往所有的博客页面头部注入该条语句，以实现全网的图片访问。具体做法如下:</p>
-<ol>
-<li>在hexo博客根目录下添加<code>scripts</code>文件夹，在文件夹中创建<code>injector.js</code>文件，在该文件中添加如下语句：</li>
-</ol>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">hexo.<span class="property">extend</span>.<span class="property">injector</span>.<span class="title function_">register</span>(<span class="string">&#x27;head_begin&#x27;</span>, <span class="string">&#x27;&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;&#x27;</span>, <span class="string">&#x27;default&#x27;</span>);</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>允许<code>hexo cl</code>（清除缓冲）, <code>hexo g</code>（重新生成静态文件）, <code>hexo s</code>(本地启动服务查看效果), <code>hexo d</code>（部署到服务器），来实现网站部署，此时就可以正确的显示了。</li>
-</ol>
-</li>
-</ol>
-<h3 id="2、-关于博客内部链接的问题。"><a href="#2、-关于博客内部链接的问题。" class="headerlink" title="2、 关于博客内部链接的问题。"></a>2、 关于博客内部链接的问题。</h3><ol>
-<li>把<code>permalink</code>修改为<code>:title/</code></li>
-</ol>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># URL</span></span><br><span class="line"><span class="comment">## Set your site url here. For example, if you use GitHub Page, set url as &#x27;https://username.github.io/project&#x27;</span></span><br><span class="line"><span class="attr">url:</span> <span class="string">http://senysunny.com</span></span><br><span class="line"><span class="attr">permalink:</span> <span class="string">:title/</span> <span class="comment"># :year/:month/:day/:title/</span></span><br><span class="line"><span class="attr">permalink_defaults:</span></span><br><span class="line"><span class="attr">pretty_urls:</span></span><br><span class="line">  <span class="attr">trailing_index:</span> <span class="literal">true</span> <span class="comment"># Set to false to remove trailing &#x27;index.html&#x27; from permalinks</span></span><br><span class="line">  <span class="attr">trailing_html:</span> <span class="literal">true</span> <span class="comment"># Set to false to remove trailing &#x27;.html&#x27; from permalinks</span></span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>文章直接做链接，按照<code>/目录/文章名称/</code>作为链接内容即可，会自动链接到<code>网址//目录/文章名称/</code>对应的网页中</li>
-</ol>
-<h3 id="3、-在博客中嵌入视频（比如B站视频）"><a href="#3、-在博客中嵌入视频（比如B站视频）" class="headerlink" title="3、 在博客中嵌入视频（比如B站视频）"></a>3、 在博客中嵌入视频（比如B站视频）</h3><ol>
-<li>直接在markdown中使用<code>&lt;iframe&gt;</code>标签，在标签中添加视频的网址，即可嵌入视频，如下图<iframe  width="100%" height="450" src="//player.bilibili.com/player.html?aid=279747615&bvid=BV1cc411m72m&cid=1365009247&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe></li>
-<li>视频的网址，比如B站的视频，可以在视频下方的分享按钮，有一个嵌入代码，直接复制代码即可，如果嵌入到markdown中，视频比较小，可以在<code>iframe</code>中添加<code>width</code>和<code>height</code>属性，设置视频的宽度和高度，如下所示</li>
-</ol>
-<pre><code class="yaml">&lt;iframe  width=&quot;100%&quot; height=&quot;450&quot; src=&quot;//player.bilibili.com/player.html?aid=279747615&amp;bvid=BV1cc411m72m&amp;cid=1365009247&amp;p=1&quot; scrolling=&quot;no&quot; border=&quot;0&quot; frameborder=&quot;no&quot; framespacing=&quot;0&quot; allowfullscreen=&quot;true&quot;&gt; &lt;/iframe&gt;
-</code></pre>
-]]></content>
-      <categories>
-        <category>Web前端</category>
-        <category>hexo博客系统</category>
-      </categories>
-      <tags>
-        <tag>hexo</tag>
-        <tag>bilibili</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ESP32学习笔记（一）：ESP-IDF配合VSCode的一些方法和技巧</title>
-    <url>/articles/esp32_0001.html</url>
-    <content><![CDATA[<h3 id="1、idf的常用基本命令"><a href="#1、idf的常用基本命令" class="headerlink" title="1、idf的常用基本命令"></a>1、idf的常用基本命令</h3><h4 id="1-查看芯片信息：esptool-py-p-COM4-flash-id"><a href="#1-查看芯片信息：esptool-py-p-COM4-flash-id" class="headerlink" title="(1). 查看芯片信息：esptool.py -p COM4 flash_id"></a>(1). 查看芯片信息：<code>esptool.py -p COM4 flash_id</code></h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">esptool.py -p COM4 flash_id</span><br></pre></td></tr></table></figure>
-
-<h4 id="2-选择芯片命令：idf-py-set-target-esp32"><a href="#2-选择芯片命令：idf-py-set-target-esp32" class="headerlink" title="(2). 选择芯片命令：idf.py set-target esp32"></a>(2). 选择芯片命令：<code>idf.py set-target esp32</code></h4><p>​		详细的命令格式为：<code>idf.py set-target [OPTIONS] &#123;esp32|esp32s2|esp32c3|esp32s3|esp32c2|esp32c6|esp32h2|linux&#125;</code></p>
-<p>​    	所以我们如果选择ESP32S3，则可以：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">idf.py set-target esp32s3</span><br></pre></td></tr></table></figure>
-
-<h4 id="3-编译命令：idf-py-build"><a href="#3-编译命令：idf-py-build" class="headerlink" title="(3). 编译命令：idf.py build"></a>(3). 编译命令：<code>idf.py build</code></h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">idf.py build</span><br></pre></td></tr></table></figure>
-
-<h4 id="4-配置命令：-idf-py-menuconfig"><a href="#4-配置命令：-idf-py-menuconfig" class="headerlink" title="(4). 配置命令： idf.py menuconfig"></a>(4). 配置命令： <code>idf.py menuconfig</code></h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">idf.py menuconfig</span><br></pre></td></tr></table></figure>
-
-<h4 id="6-下载命令：-idf-py-p-COM3-flash"><a href="#6-下载命令：-idf-py-p-COM3-flash" class="headerlink" title="(6). 下载命令： idf.py -p COM3 flash"></a>(6). 下载命令： <code>idf.py -p COM3 flash</code></h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">idf.py -p COM3 flash</span><br></pre></td></tr></table></figure>
-
-<h4 id="7-console调试命令：-idf-py-p-COM3-monitor"><a href="#7-console调试命令：-idf-py-p-COM3-monitor" class="headerlink" title="(7). console调试命令： idf.py -p COM3 monitor"></a>(7). console调试命令： <code>idf.py -p COM3 monitor</code></h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">idf.py -p COM3 monitor</span><br></pre></td></tr></table></figure>
-
-<h4 id="8-退出调试模式：-ctrl"><a href="#8-退出调试模式：-ctrl" class="headerlink" title="(8). 退出调试模式： ctrl + ]"></a>(8). 退出调试模式： <code>ctrl + ]</code></h4><h4 id="9-更新esptool：-pip-install-upgrade-esptool"><a href="#9-更新esptool：-pip-install-upgrade-esptool" class="headerlink" title="(9).更新esptool： pip install --upgrade esptool"></a>(9).更新esptool： <code>pip install --upgrade esptool</code></h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">pip install --upgrade esptool</span><br></pre></td></tr></table></figure>
-
-
-
-<h4 id="10-关于idf版本相关内容"><a href="#10-关于idf版本相关内容" class="headerlink" title="(10). 关于idf版本相关内容"></a>(10). 关于idf版本相关内容</h4><p><a href="https://docs.espressif.com/projects/esp-idf/zh_CN/v5.1.3/esp32s3/versions.html">https://docs.espressif.com/projects/esp-idf/zh_CN/v5.1.3/esp32s3/versions.html</a></p>
-<p>可以通过如下代码来下载idf的源码：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd $IDF_PATH</span><br><span class="line">git fetch</span><br><span class="line">git checkout vX.Y.Z</span><br><span class="line">git submodule update --init --recursive</span><br></pre></td></tr></table></figure>
-
-
-<h3 id="2、idf和-vscode的一些说明和细节"><a href="#2、idf和-vscode的一些说明和细节" class="headerlink" title="2、idf和 vscode的一些说明和细节"></a>2、idf和 vscode的一些说明和细节</h3><h4 id="1-ESP-IDF-CMD和-ESP-IDF-PowerShell终端快捷方式"><a href="#1-ESP-IDF-CMD和-ESP-IDF-PowerShell终端快捷方式" class="headerlink" title="(1).  ESP-IDF CMD和 ESP-IDF PowerShell终端快捷方式"></a>(1).  ESP-IDF CMD和 ESP-IDF PowerShell终端快捷方式</h4><h5 id="1-终端快捷方式的解释"><a href="#1-终端快捷方式的解释" class="headerlink" title="1.  终端快捷方式的解释"></a>1.  终端快捷方式的解释</h5><ol>
-<li><p>cmd的目标内容：<code>C:\WINDOWS\system32\cmd.exe /k &quot;&quot;D:\Espressif\idf_cmd_init.bat&quot; esp-idf-cc72132cd64ef413a5557253e3adc170&quot;</code></p>
-</li>
-<li><p>PowerShell的目标内容： <code>C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Bypass -NoExit -File &quot;D:\Espressif/Initialize-Idf.ps1&quot; -IdfId esp-idf-cc72132cd64ef413a5557253e3adc170</code></p>
-</li>
-<li><p>它们的起始位置：<code>D:\Espressif\frameworks\esp-idf-v5.1\</code></p>
-<p>   本质上idf就是创建了一个Python的虚拟环境，并针对该环境配置了环境变量，配置环境变量的内容可以详解idf安装目录下的<code>idf_cmd_init.bat</code>(针对cmd)和<code>Initialize-Idf.ps1</code>(针对powershell)。</p>
-<p> 而&#x2F;k是cmd的参数，表示”保持命令行窗口打开”,表示在执行完idf_cmd_init.bat保持终端窗口打开，这样可以确保创建的虚拟环境在在终端中有效，也就是关闭了终端，虚拟环境就关闭了，环境变量也随之无效。</p>
-<p> <code>esp-idf-cc72132cd64ef413a5557253e3adc170</code>是idf软件的id，用来表示该idf软件，其在软件安装目录下的<code>esp_idf.json</code>中定义，为<code>idfSelectedId</code>的值。<code>esp_idf.json</code>文件内容如下：</p>
-</li>
-</ol>
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;$schema&quot;</span><span class="punctuation">:</span> <span class="string">&quot;http://json-schema.org/schema#&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;$id&quot;</span><span class="punctuation">:</span> <span class="string">&quot;http://dl.espressif.com/dl/schemas/esp_idf&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;_comment&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Configuration file for ESP-IDF Eclipse plugin.&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;_warning&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Use / or \\ when specifying path. Single backslash is not allowed by JSON format.&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;gitPath&quot;</span><span class="punctuation">:</span> <span class="string">&quot;D:/Espressif/tools/idf-git/2.39.2/cmd/git.exe&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;idfToolsPath&quot;</span><span class="punctuation">:</span> <span class="string">&quot;D:\\Espressif&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;idfSelectedId&quot;</span><span class="punctuation">:</span> <span class="string">&quot;esp-idf-cc72132cd64ef413a5557253e3adc170&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;idfInstalled&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;esp-idf-cc72132cd64ef413a5557253e3adc170&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;version&quot;</span><span class="punctuation">:</span> <span class="string">&quot;5.1&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;python&quot;</span><span class="punctuation">:</span> <span class="string">&quot;D:/Espressif/python_env/idf5.1_py3.11_env/Scripts/python.exe&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;path&quot;</span><span class="punctuation">:</span> <span class="string">&quot;D:/Espressif/frameworks/esp-idf-v5.1/&quot;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
-
-<p>​    <code>-ExecutionPolicy Bypass</code>目的是关闭powershell的安全策略，这是由于PowerShell有一个安全特性，可以限制未经签名的脚本的执行，所以需要配置Bypass选项，用来允许执行任何脚本，无视这些安全限制，以确保可以运行Initialize-Idf.ps1脚本。</p>
-<p>​    <code>-NoExit</code>与cmd终端中的<code>/k</code>作用一样，指示PowerShell在脚本执行完毕后不要关闭窗口，允许用户在同一窗口继续执行更多命令。</p>
-<p>​    <code>-File &quot;D:\Espressif/Initialize-Idf.ps1&quot; </code>表示运行该脚本，用于设置ESP-IDF开发环境，与cmd终端的<code>idf_cmd_init.bat</code>作用相同，详细可以看批处理和脚本的内容<br>​    <code>-IdfId esp-idf-cc72132cd64ef413a5557253e3adc170</code>则表示在执行<code>Initialize-Idf.ps1</code>脚本时，给脚本中的IdfId变量复制为<code>esp-idf-cc72132cd64ef413a5557253e3adc170</code>这个值。<br>​    通过以上解释，我们大致理解了idf-env工具的作用了。这意味着，实际上，我们可以在任何终端窗口，输入如下内容就可以进行idf的使用：</p>
-<h5 id="2-一种多版本安装方法："><a href="#2-一种多版本安装方法：" class="headerlink" title="2. 一种多版本安装方法："></a>2. 一种多版本安装方法：</h5><p>   根据前面的终端的解释，所以我这边进行一种多版本idf的安装方法，我首先给电脑安装一个默认版本的idf，这里选择了idf v5.1版本（至于原因，后面有讲），我是安装在<code>D:\Espressif</code>目录下，然后再<code>Espressif</code>目录下又创建了几个其他版本的idf，直接取名版本号如下图：</p>
-<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405111823712.png" alt="idf安装"></p>
-<p>   这个时候每安装完成一个版本，可以把该版本的终端快捷方式复制出来，放在桌面的一个文件夹内，这里我取名idf,就可以实现多有版本的终端编译功能。最后所有版本的快捷方式如下：</p>
-<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405111823623.png" alt="idf快捷方式"></p>
-<blockquote>
-<p>   这里需要注意两点：</p>
-<ol>
-<li><p>安装其他版本的时候，有可能导致，目录下<code>esp_idf.json</code>文件对应的目录内容改变，我记得好像是<code>&quot;gitPath&quot;</code>变量的值会修改，可以修改为对应版本的idf的目录，详细json的值可以参考第一节对快捷方式的解释内容。</p>
-</li>
-<li><p>安装可能会再用户环境变量中添加名称为<code>IDF_TOOLS_PATH</code>的环境变量，默认是安装最后一个版本的idf的目录，比如<code>D:\Espressif\v5_1_3</code>,这里可以直接把该环境变量删除掉。否则可能会导致终端快捷方式运行出错（快捷方式运行的时候会首先读取<code>IDF_TOOLS_PATH</code>的值，如果有，则默认定义该值为软件目录，没有则会自动创建批处理文件的目录为<code>IDF_TOOLS_PATH</code>）这里给出<code>idf_cmd_init.bat</code>这部分的定义如下：</p>
-</li>
-</ol>
-   <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="string">&quot;%IDF_TOOLS_PATH%&quot;</span> == <span class="string">&quot;&quot;</span> (</span><br><span class="line"> <span class="built_in">set</span> IDF_TOOLS_PATH=%~dp0</span><br><span class="line"> <span class="built_in">echo</span> IDF_TOOLS_PATH not <span class="built_in">set</span>. Setting to %~dp0</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-</blockquote>
-<p>   此时VScode中默认绑定默认版本的idf。其他版本的编译有两种思路：</p>
-<p>   一种是直接再vscode中打开终端，然后输入语句来设置对应版本的idf的环境变量和配置，然后用idf的指令进行编译下载和调试；</p>
-<p>   另外一种方式是，针对每种版本的idf创建一个vscode工作区参数设置文件，直接把该文件复制到需要运行的idf工程中，此时，vscode会自动设置idf的工作区目录，并使用特定版本的idf来编译和下载程序。这个方法参考了B站UP主“<a href="https://space.bilibili.com/34165842">第九个下弦月</a>”的一个视频内容提供的 vscode 工作区的概念，详细视频地址为：<a href="https://www.bilibili.com/video/BV1bj421Z7z4/?spm_id_from=333.337.search-card.all.click&vd_source=50e88259c3b06cefc86b0480e57ce888">https://www.bilibili.com/video/BV1bj421Z7z4/?spm_id_from=333.337.search-card.all.click&amp;vd_source=50e88259c3b06cefc86b0480e57ce888</a></p>
-<h5 id="3-终端环境变量配置语句："><a href="#3-终端环境变量配置语句：" class="headerlink" title="3. 终端环境变量配置语句："></a>3. 终端环境变量配置语句：</h5><p>   首先是默认版本，我的是v5.1，直接再vscode终端中输入如下语句（一个采用cmd，一个采用powershell），既可再改终端之后，使用针对该版本的idf命令，实现编译和下载等功能：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cmd /k &quot;&quot;D:\Espressif\idf_cmd_init.bat&quot; esp-idf-cc72132cd64ef413a5557253e3adc170&quot;</span><br></pre></td></tr></table></figure>
-
-<p>或者</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">powershell <span class="literal">-ExecutionPolicy</span> Bypass <span class="literal">-NoExit</span> <span class="operator">-File</span> <span class="string">&quot;D:\Espressif/Initialize-Idf.ps1&quot;</span> <span class="literal">-IdfId</span> esp<span class="literal">-idf-cc72132cd64ef413a5557253e3adc170</span></span><br></pre></td></tr></table></figure>
-
-<p>   如果是V5.1.3版本，id号不一样，用改语句：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cmd /k &quot;&quot;D:\Espressif\v5_1_3\idf_cmd_init.bat&quot; esp-idf-2f332dae01e5300d41bb5887948c6ac3&quot;</span><br></pre></td></tr></table></figure>
-
-<p>或者</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">powershell <span class="literal">-ExecutionPolicy</span> Bypass <span class="literal">-NoExit</span> <span class="operator">-File</span> <span class="string">&quot;D:\Espressif\v5_1_3/Initialize-Idf.ps1&quot;</span> <span class="literal">-IdfId</span> esp<span class="literal">-idf-2f332dae01e5300d41bb5887948c6ac3</span></span><br></pre></td></tr></table></figure>
-<p>   如果是V5.2.1版本，id号不一样，用改语句：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cmd /k &quot;&quot;D:\Espressif\v5_2_1\idf_cmd_init.bat&quot; esp-idf-f2854e5176bb04b11fdfe329dc6d2d14&quot;</span><br></pre></td></tr></table></figure>
-
-<p>或者</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">powershell <span class="literal">-ExecutionPolicy</span> Bypass <span class="literal">-NoExit</span> <span class="operator">-File</span> <span class="string">&quot;D:\Espressif\v5_2_1/Initialize-Idf.ps1&quot;</span> <span class="literal">-IdfId</span> esp<span class="literal">-idf-f2854e5176bb04b11fdfe329dc6d2d14</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>   注意：安装位置不同，这个生成的码也不同，应该是根据版本号，安装位置等信息生成的唯一识别码。</p>
-</blockquote>
-<h5 id="4-vscode-工作区配置文件"><a href="#4-vscode-工作区配置文件" class="headerlink" title="4. vscode 工作区配置文件"></a>4. vscode 工作区配置文件</h5><p>   如果不希望再vscode中用终端来编译和下载文件，而是希望直接用vscode下方的快捷键来操作，而且可以实现在一台电脑上随时切换不同版本的idf工程，可以针对每个版本创建一个 vscode 工作区配置文件，把该文件复制到工程目录下，文件后缀需要为：<code>xxx.code-workspace</code>,比如，下面是我针对v5.2.1版本创建的文件，取名为<code>idf_5.2.1.code-workspace</code>内容如下：</p>
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;folders&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;path&quot;</span><span class="punctuation">:</span> <span class="string">&quot;.&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;settings&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;idf.espIdfPathWin&quot;</span><span class="punctuation">:</span> <span class="string">&quot;D:\\Espressif\\v5_2_1\\frameworks\\esp-idf-v5.2.1&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;idf.pythonBinPathWin&quot;</span><span class="punctuation">:</span> <span class="string">&quot;D:\\Espressif\\v5_2_1\\python_env\\idf5.2_py3.11_env\\Scripts\\python.exe&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;idf.toolsPathWin&quot;</span><span class="punctuation">:</span> <span class="string">&quot;D:\\Espressif\\v5_2_1&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;idf.customExtraPaths&quot;</span><span class="punctuation">:</span> <span class="string">&quot;D:\\Espressif\\v5_2_1\\tools\\xtensa-esp-elf-gdb\\12.1_20231023\\xtensa-esp-elf-gdb\\bin;D:\\Espressif\\v5_2_1\\tools\\riscv32-esp-elf-gdb\\12.1_20231023\\riscv32-esp-elf-gdb\\bin;D:\\Espressif\\v5_2_1\\tools\\xtensa-esp-elf\\esp-13.2.0_20230928\\xtensa-esp-elf\\bin;D:\\Espressif\\v5_2_1\\tools\\riscv32-esp-elf\\esp-13.2.0_20230928\\riscv32-esp-elf\\bin;D:\\Espressif\\v5_2_1\\tools\\esp32ulp-elf\\2.35_20220830\\esp32ulp-elf\\bin;D:\\Espressif\\v5_2_1\\tools\\cmake\\3.24.0\\bin;D:\\Espressif\\v5_2_1\\tools\\openocd-esp32\\v0.12.0-esp32-20230921\\openocd-esp32\\bin;D:\\Espressif\\v5_2_1\\tools\\ninja\\1.11.1;D:\\Espressif\\v5_2_1\\tools\\idf-exe\\1.0.3;D:\\Espressif\\v5_2_1\\tools\\ccache\\4.8\\ccache-4.8-windows-x86_64;D:\\Espressif\\v5_2_1\\tools\\dfu-util\\0.11\\dfu-util-0.11-win64;D:\\Espressif\\v5_2_1\\tools\\esp-rom-elfs\\20230320&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;idf.customExtraVars&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;OPENOCD_SCRIPTS&quot;</span><span class="punctuation">:</span> <span class="string">&quot;D:\\Espressif\\v5_2_1\\tools\\openocd-esp32\\v0.12.0-esp32-20230921/openocd-esp32/share/openocd/scripts&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;IDF_CCACHE_ENABLE&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;ESP_ROM_ELF_DIR&quot;</span><span class="punctuation">:</span> <span class="string">&quot;D:\\Espressif\\v5_2_1\\tools\\esp-rom-elfs\\20230320/&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;idf.gitPathWin&quot;</span><span class="punctuation">:</span> <span class="string">&quot;D:\\Espressif\\v5_2_1\\tools\\idf-git\\2.43.0\\cmd\\git.exe&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>   可以看到，其实它操作和终端配置环境变量差不多，就是设置idf工具的目录地址而已。其他版本可以参考这个来设置，这里不多赘述。需要做好的配置文件，可以直接到如下地址下载：<a href="https://gitee.com/SenySunny/picture/tree/master/idf_code-workspace">https://gitee.com/SenySunny/picture/tree/master/idf_code-workspace</a> </p>
-<p>   另外，经部分电脑<code>xxx.code-workspace</code>文件并不会生效，针对这种情况，请直接把<code>&quot;settings&quot;</code>的内容（即所有的<code>idf.xxx</code>相关的软件目录选项）复制到<code>.vscode</code>目录下的<code>settings.json</code>文件中，然后重新打开工程目录。</p>
-</blockquote>
-<h4 id="2-vscode中的idf工程代码跳转问题"><a href="#2-vscode中的idf工程代码跳转问题" class="headerlink" title="(2).  vscode中的idf工程代码跳转问题"></a>(2).  vscode中的idf工程代码跳转问题</h4><p>   在vscode中建立idf工程，或者直接从idf中复制<code>example</code>例程创建工程修改时，默认情况下我们点击使用的idf中的api函数是无法跳转到idf目录下，可以通过如下手段，实现代码的跳转（默认是按下<code>Ctrl</code>+鼠标左击实现跳转）——注意需要vscode已经安装idf插件和<code>C/C++</code>插件。</p>
-<p>   默认打开一个工程内的C文件，会在vscode的右下方出现win32的按钮图标（注意如下没有出现，可以尝试最大化vscode窗口），点击按钮，在弹出的选项栏中选择”编辑配置(JSON)”(也可以直接按住<code>Ctrl+P</code>按钮，在弹出的输入框输入<code>&gt; 编辑配置(JSON)</code>，效果一样)，此时，会自动为工程添加c_cpp_properties.json文件（在<code>.vscode</code>目录下）。</p>
-<p>   在c_cpp_properties.json文件文件中的”configurations”属性添加一行代：<code>码&quot;compileCommands&quot;: &quot;$&#123;workspaceFolder&#125;/build/compile_commands.json&quot;</code>， 注意json格式，需要在前面一行添加逗号，在正常添加之后的c_cpp_properties.json文件内容如下(不同环境下可能有所不同，只需要注意添加compileCommands属性即可)：</p>
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;configurations&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Win32&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;includePath&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">                <span class="string">&quot;$&#123;workspaceFolder&#125;/**&quot;</span></span><br><span class="line">            <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;defines&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">                <span class="string">&quot;_DEBUG&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="string">&quot;UNICODE&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="string">&quot;_UNICODE&quot;</span></span><br><span class="line">            <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;windowsSdkVersion&quot;</span><span class="punctuation">:</span> <span class="string">&quot;10.0.22621.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;compilerPath&quot;</span><span class="punctuation">:</span> <span class="string">&quot;cl.exe&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;cStandard&quot;</span><span class="punctuation">:</span> <span class="string">&quot;c17&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;cppStandard&quot;</span><span class="punctuation">:</span> <span class="string">&quot;c++17&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;intelliSenseMode&quot;</span><span class="punctuation">:</span> <span class="string">&quot;windows-msvc-x64&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;compileCommands&quot;</span><span class="punctuation">:</span> <span class="string">&quot;$&#123;workspaceFolder&#125;/build/compile_commands.json&quot;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;version&quot;</span><span class="punctuation">:</span> <span class="number">4</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
-
-<p>   此时在进行编译之后，会在build目录下产生一个compile_commands.json文件，此时，便可以按住ctrl键，鼠标点击特定函数，即使函数是在idf的内部，也可以实现跳转。</p>
-<h4 id="3-在下载或者其他使用串口的时候，出现无法打开串口的情况解决办法（被占用）"><a href="#3-在下载或者其他使用串口的时候，出现无法打开串口的情况解决办法（被占用）" class="headerlink" title="(3). 在下载或者其他使用串口的时候，出现无法打开串口的情况解决办法（被占用）"></a>(3). 在下载或者其他使用串口的时候，出现无法打开串口的情况解决办法（被占用）</h4><p>  由于idf的操作都是在终端中进行的操作，如果它把串口占用了，可能会导致再次使用串口，出现无法打开串口的情况，此时可能会不清楚是哪个进程占用了串口的情况，导致无法使用串口（很多时候，即使把掉USB线，再插入也没有用，因为线程本身支持断线再插入的时候自动重新打开），可以通过如下方法来解除串口的占用。</p>
-<ol>
-<li><p>打开注册表，在系统的左下角软件搜索栏输入“regedit”，或者右击右下角windows图标选择“运行”， 输入regedit，都可以打开注册表</p>
-</li>
-<li><p>打开如下注册表选项<code>“计算机\HKEY_LOCAL_MACHINE\HARDWARE\DEVICEMAP\SERIALCOMM”</code>,在里面找到无法打开的注册表，如下图，我电脑是COM4</p>
-</li>
-</ol>
-<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405111754694.png" alt="regedit_COMM"></p>
-<ol start="3">
-<li>复制它的名称，我的电脑为<code>\Device\USBSER000</code>.打开电脑资源管理器，选择“性能”选项卡， 点击下方的“打开资源监视器”，选择“CPU”，在关联的句柄中输入串口设备的名称，点击刷新，就可以看到占用串口的应用程序，选中右击，选择“结束进程”即可，此时，串口就又可以使用了,按照下图顺序操作即可。</li>
-</ol>
-<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405111755363.png" alt="regedit_COMM2"></p>
-<h4 id="4-关于USB-Serial-JTAG的一些问题（目前发现在v5-1中可以正常打印，其他版本可以用于log打印，但是直接用于stdin和stdout貌似有bug）"><a href="#4-关于USB-Serial-JTAG的一些问题（目前发现在v5-1中可以正常打印，其他版本可以用于log打印，但是直接用于stdin和stdout貌似有bug）" class="headerlink" title="(4). 关于USB-Serial-JTAG的一些问题（目前发现在v5.1中可以正常打印，其他版本可以用于log打印，但是直接用于stdin和stdout貌似有bug）"></a>(4). 关于USB-Serial-JTAG的一些问题（目前发现在v5.1中可以正常打印，其他版本可以用于log打印，但是直接用于stdin和stdout貌似有bug）</h4><p>​		目前发现USB-Serial-JTAG，在打印的时候，会有缓冲机制，也就是只有当收到\n字符（或者超时相关）的时候才会进行打印和输入，而且不管是绑定esp_vfs虚拟文件系统还是通过<code>fflush(stdout);</code>强制刷新输出缓冲流都没有用，这部分的内容可以参考： <a href="https://docs.espressif.com/projects/esp-idf/zh_CN/v5.2.1/esp32s3/api-guides/usb-serial-jtag-console.html">https://docs.espressif.com/projects/esp-idf/zh_CN/v5.2.1/esp32s3/api-guides/usb-serial-jtag-console.html</a> （无关版本问题，在5.1版本也一样）和 <a href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32s3/api-guides/usb-serial-jtag-console.html">https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32s3/api-guides/usb-serial-jtag-console.html</a> ，在文章中是这样说明的：</p>
-<p>​		对于从 ESP32-S3 发送到 PC 终端的数据（例如 stdout、日志），ESP32-S3 会先写入一个小型内部缓冲区。如果该缓冲区达到最大容量（例如没有连接 PC 终端），ESP32-S3 会进行一次等待，时长约 50 ms。在此期间，PC 终端可以请求数据，但可能会导致应用程序出现非常短暂的暂停。</p>
-<p>​		对于从 PC 终端发送到 ESP32-S3 的数据（如控制台命令），许多 PC 终端会等待 ESP32-S3 接收字节后，再允许发送更多数据。这与使用 USB 转串口 (URAT) 桥接芯片不同，URAT 桥接芯片始终接收字节，并将其发送到（可能未在监听）的 ESP32-S3。</p>
-<p>​		在极少数情况下，从 ESP32-S3 发送到主机的数据可能会“阻塞”在主机内存中。继续发送数据即可“取消阻塞”，但如果应用程序未继续发送数据，则需要手动将这些数据刷新到主机。能否继续发送数据取决于驱动程序，默认配置的非阻塞驱动程序和 VFS 实现会在换行后自动刷新，而基于中断的阻塞驱动程序会在发送缓冲区变空时自动刷新。</p>
-<p>​		目前发现在5.1版本中通过设置usb_serial_jtag缓冲区，然后绑定esp_vfs。然后用<code>usb_serial_jtag_read_bytes</code>和<code>usb_serial_jtag_write_bytes</code>来替代<code>getchar</code>和<code>putchar</code>貌似在部分环境下有效（也可以使用putchar+fflush(stdout)），但是我测试在5.1.3版本中无效。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//初始化usb_serial_jtag缓冲区，并绑定esp_vfs</span></span><br><span class="line"><span class="type">usb_serial_jtag_driver_config_t</span> usb_serial_jtag_config = &#123;</span><br><span class="line">      .rx_buffer_size = <span class="number">1024</span> * <span class="number">8</span>, .tx_buffer_size = <span class="number">1024</span> * <span class="number">2</span>&#125;;</span><br><span class="line">usb_serial_jtag_driver_install(&amp;usb_serial_jtag_config);</span><br><span class="line">esp_vfs_usb_serial_jtag_use_driver();</span><br><span class="line"></span><br><span class="line"><span class="comment">//输入采用如下形式</span></span><br><span class="line"><span class="type">char</span> <span class="title function_">platform_getchar</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">    <span class="type">char</span> buff[<span class="number">1</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="keyword">if</span> (usb_serial_jtag_read_bytes(buff, <span class="number">1</span>, <span class="number">100</span>) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> buff[<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line">    vTaskDelay(<span class="number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//输出采用如下形式</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">platform_putchar</span><span class="params">(<span class="type">char</span> ch)</span> &#123;</span><br><span class="line">  usb_serial_jtag_write_bytes(&amp;ch, <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">  <span class="comment">//也可以使用如下两条语句替代代码</span></span><br><span class="line">  <span class="comment">//putchar(ch);</span></span><br><span class="line">  <span class="comment">//fflush(stdout);</span></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>​		如果直接绑定console做标准输入输出，<code>printf</code>或者<code>putchar</code>都会直接进行usb的缓冲区，直到接收到<code>\n</code>字符（部分版本超时之后也会）之后才会一并通过usb_serial_jtag输出。</p>
-<blockquote>
-<p>​		所以目前发现如果希望使用USB-Serial-JTAG即作为下载程序，又充当一个标准串口来使用，目前最好用v5.1版本，如果不是充当标准串口，而支持用作log打印或者不介意数据缓冲问题的情况下，可以采用任意版本的idf。</p>
-</blockquote>
-<h3 id="3、idf的工程和工具补充"><a href="#3、idf的工程和工具补充" class="headerlink" title="3、idf的工程和工具补充"></a>3、idf的工程和工具补充</h3><h4 id="1-一些常见的menuconfig配置问题"><a href="#1-一些常见的menuconfig配置问题" class="headerlink" title="(1). 一些常见的menuconfig配置问题"></a>(1). 一些常见的menuconfig配置问题</h4><p>​		idf的工程 配置是通过menuconfig来实现的，menuconfig是一种工程代码管理工具，可以通过图形化配置界面，对工程的信息进行配置，这里对一些经常使用的menuconfig配置做一个说明</p>
-<h5 id="1-Flash大小和CPU频率"><a href="#1-Flash大小和CPU频率" class="headerlink" title="1. Flash大小和CPU频率"></a>1. Flash大小和CPU频率</h5><p>​		比如ESP32-S3默认的flash大小是2M，CPU工作频率为160MHz这个可以修改成你的flash大小和频率如下：</p>
-<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405111800041.png" alt="menuconfig_flash"></p>
-<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405111800676.png" alt="menuconfig_cpu"></p>
-<h5 id="2-修改主线程app-main的栈大小"><a href="#2-修改主线程app-main的栈大小" class="headerlink" title="2. 修改主线程app_main的栈大小"></a>2. 修改主线程app_main的栈大小</h5><p>​		当程序比较大时，可能会导致主线程堆栈太小，可以设置高一些。否则可能会给出<code>***ERROR*** A stack overflow in task main has been detected.</code>的报错信息。</p>
-<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405111800096.png" alt="menuconfig_main_stack"></p>
-<h5 id="3-flash分区表"><a href="#3-flash分区表" class="headerlink" title="3. flash分区表"></a>3. flash分区表</h5><p>​		esp-idf默认分区表如下，只占用了系统1M+64K的空间：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Name,   Type, SubType, Offset,  Size, Flags</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Note: <span class="keyword">if</span> you have increased the bootloader size, make sure to update the offsets to avoid overlap</span></span><br><span class="line">nvs,      data, nvs,     0x9000,        0x6000,</span><br><span class="line">phy_init, data, phy,     0xf000,        0x1000,</span><br><span class="line">factory,  app,  factory, 0x10000,		1M,</span><br></pre></td></tr></table></figure>
-
-<p>​		而程序稍微大一些，空间就可能不够，所以一般项目大一些情况，我们会自定义分区表，可以直接在工程下创建<code>partitions.csv</code>文件，然后再menuconfig中选择自己创建的分区表信息，如下：</p>
-<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405111800774.png" alt="menuconfig_partition"></p>
-<p>​		具体分区表<code>partitions.csv</code>的内容可以参考		</p>
-<h5 id="4-PSRAM的开启和使用"><a href="#4-PSRAM的开启和使用" class="headerlink" title="4. PSRAM的开启和使用"></a>4. PSRAM的开启和使用</h5><h5 id="5-指定默认console输出通道"><a href="#5-指定默认console输出通道" class="headerlink" title="5. 指定默认console输出通道"></a>5. 指定默认console输出通道</h5><p>​		这里面有几个值可以选择：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Default:UART0: 		选择系统默认底串口0作为log是输出。</span><br><span class="line">USB CDC:			选择USB CDC设备作为输出，基于TinyUSB</span><br><span class="line">USB serial/JTAG:	选择系统底USB转串口/JTAG接口作为输出。</span><br><span class="line">Custom:UART:		选择系统指定串口作为输出，可以选择UART0/UART1</span><br><span class="line">None:				关闭输出通道，注意，如果这里关闭，但是实际有prinf，可能会报错，</span><br><span class="line">					如果只是希望关闭log,可以参考6，关闭log</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405111801417.png" alt="menuconfig_console"></p>
-<h5 id="6-设置log输出模式"><a href="#6-设置log输出模式" class="headerlink" title="6. 设置log输出模式"></a>6. 设置log输出模式</h5><p>​		log输出包括两个部分底输出，一个式Bootloader config底log输出，也就是系统启动底时候Bootloader代码底log输出，一个代码的log输出，一般情况下我们只需要设置代码底log输出即可，Bootloader的log输出对我们代码几乎没有影响，还可以方便看到一些代码的配置信息，所以一般不需要设置，保持默认就好。这里把两个都给出来</p>
-<p>​		Bootloader的log输出设置：</p>
-<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405111802038.png" alt="boot_log"></p>
-<p>​		代码的log输出设置：</p>
-<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405111802970.png" alt="app_log"></p>
-<h4 id="2-关于Kconfig-projbuild和sdkconfig-defaults"><a href="#2-关于Kconfig-projbuild和sdkconfig-defaults" class="headerlink" title="(2). 关于Kconfig.projbuild和sdkconfig.defaults"></a>(2). 关于Kconfig.projbuild和sdkconfig.defaults</h4><p>​		Kconfig.projbuild本质上是一个配置menuconfig的配置文件，可以同来配置和增加menuconfig相关的配置信息。</p>
-<p>​		关于Kconfig更多的信息可以参考如下图片：</p>
-<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405111803239.png" alt="Kconfig_i"></p>
-<p>​		而sdkconfig.defaults可以定义一些默认的配置选项，即给menuconfig配置中的一些参数进行设定，这样可以使得我们不需要通过menuconfig交互式界面对设备信息进行配置，直接通过文本的形式进行配置（前提是我们已经知道了配置的名称和内容）。</p>
-<p>​		实际上，我们在执行idf.py menuconfig的时候，会自动根据menuconfig中的定义，加载sdkconfig.defaults的内容，进行配置。所以如果sdkconfig.defaults中的定义已经存在，则会自动进行menuconfig的配置。</p>
-<h4 id="3-组件管理-managed-components与components-与官方组件管理工具：-https-components-espressif-com"><a href="#3-组件管理-managed-components与components-与官方组件管理工具：-https-components-espressif-com" class="headerlink" title="(3). 组件管理(managed_components与components)与官方组件管理工具： https://components.espressif.com/"></a>(3). 组件管理(<code>managed_components</code>与<code>components</code>)与官方组件管理工具： <a href="https://components.espressif.com/">https://components.espressif.com/</a></h4><p>​		idf的组件分为三种：idf官方组件， 第三方组件， 自定义组件，它们分别在“idf的frameworks库的components目录”， 工程的<code>managed_components</code>目录， 工程的<code>components</code>目录下，这里对这三个组件做个简单介绍</p>
-<p>​		第一种为：idf官方组件，它跟随idf的发布而更新，在idf的frameworks库的components目录下，比如5.1版本的官方组件都在如下目录中</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">frameworks\esp-idf-v5.1\components</span><br></pre></td></tr></table></figure>
-
-<p>​		第二种为：第三方组件：一般指的是在官方组件管理工具： <a href="https://components.espressif.com/">https://components.espressif.com/</a> 中可以搜索到的组件库，乐鑫有一个网络组件管理工具网站，在idf中也构建了组件管理工具。官方和某些第三方发布的组件可以在这里搜索到。它可以通过idf_component.yml来管理，一般情况下，在组件库的界面中会提供下载组件的方法如下图：</p>
-<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405111803465.png" alt="components"></p>
-<p>​		更新完成之后组件库会自动添加到工程的<code>managed_components</code>目录下方。该组件在每次编译的时候会自动同步，以确保组件内容没有被修改，所以一般不允许修改组件的内容。</p>
-<p>​		第三种为：自定义组件，自定义组件库，我们一般放在工程目录的<code>components</code>目录下，用户可以自行修改，另外如果我们要对一些第三方组件进行修改定制，可以线同步到&#96;&#96;managed_components<code>目录，然后我们在剪贴到</code>components&#96;&#96;&#96;目录下，再进行编辑使用。</p>
-<h4 id="4-组件配置文件idf-component-yml-和组件信息文件dependencies-lock"><a href="#4-组件配置文件idf-component-yml-和组件信息文件dependencies-lock" class="headerlink" title="(4). 组件配置文件idf_component.yml 和组件信息文件dependencies.lock"></a>(4). 组件配置文件idf_component.yml 和组件信息文件dependencies.lock</h4><p>​		<code>idf_component.yml</code>文件是一个YAML格式的文件，用于定义组件的元数据和依赖关系。这个文件通常位于组件的根目录下，作用包括：</p>
-<ul>
-<li><strong>定义依赖项</strong>：它列出了当前组件依赖的其他组件或库，包括这些依赖的版本信息。这有助于确保项目中使用的是兼容的组件版本。</li>
-<li><strong>指定组件属性</strong>：比如组件的描述、维护者信息、许可证信息等。</li>
-<li><strong>配置选项</strong>：提供对组件内部设置的配置，如使能或禁用特定的功能。</li>
-</ul>
-<p>​		<code>dependencies.lock</code>文件是一个自动生成的文件，通常在执行项目配置过程（如运行<code>idf.py reconfigure</code>或首次构建项目时）生成。它的主要作用是：</p>
-<ul>
-<li><strong>锁定依赖版本</strong>：文件中详细记录了项目解析依赖时所确定的具体版本号。这确保了项目的再现性，即不同的开发者或在不同的环境中构建项目时，都将使用相同版本的依赖，避免由于依赖版本变化导致的问题。</li>
-<li><strong>依赖解析的结果</strong>：这个文件是项目依赖解析过程的直接产物，它包含了所有必需的、已解析的依赖组件及其版本，确保了构建系统能够获取和使用正确的组件版本。</li>
-</ul>
-<p><code>idf_component.yml</code>和<code>dependencies.lock</code>的区别</p>
-<ul>
-<li><strong>用途差异</strong>：<code>idf_component.yml</code>用于声明依赖和组件配置，而<code>dependencies.lock</code>用于锁定这些依赖的具体版本，确保构建的一致性。</li>
-<li><strong>更新机制</strong>：<code>idf_component.yml</code>由开发者手动更新，以匹配组件需求和属性；<code>dependencies.lock</code>通常在依赖关系有变化或首次解析依赖时自动更新。</li>
-<li><strong>目标用户</strong>：<code>idf_component.yml</code>面向项目和组件开发者，他们需要在这个文件中指定和管理组件的依赖关系；而<code>dependencies.lock</code>主要是给构建系统使用，以保证项目的构建环境和条件的一致性。</li>
-</ul>
-<p>​		<code>idf_component.yml</code>文件内容大致如下：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dependencies:</span><br><span class="line">  espressif/esp_lcd_touch_ft5x06: <span class="string">&quot;^1.0.6&quot;</span></span><br><span class="line">  idf: <span class="string">&quot;&gt;=4.4&quot;</span></span><br><span class="line">  lvgl/lvgl: <span class="string">&quot;~8.3.0&quot;</span></span><br><span class="line">  espressif/zlib: <span class="string">&quot;^1.3.0&quot;</span></span><br><span class="line">  espressif/es8311: <span class="string">&quot;^1.0.0&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>​		<code>dependencies.lock</code>文件内容大致如下：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dependencies:</span><br><span class="line">  espressif/es8311:</span><br><span class="line">    component_hash: eacbe7cb7f6993eb0f439121a56663cdfbf95925e7ddf5d2ed5aa640bed476fd</span><br><span class="line">    <span class="built_in">source</span>:</span><br><span class="line">      service_url: https://api.components.espressif.com/</span><br><span class="line">      <span class="built_in">type</span>: service</span><br><span class="line">    version: 1.0.0</span><br><span class="line">  espressif/esp_lcd_touch:</span><br><span class="line">    component_hash: d4d8f2dc33205797169a97a02e0d89a8982f59fe0509129b54422052b8522f59</span><br><span class="line">    <span class="built_in">source</span>:</span><br><span class="line">      service_url: https://api.components.espressif.com/</span><br><span class="line">      <span class="built_in">type</span>: service</span><br><span class="line">    version: 1.1.1</span><br><span class="line">  espressif/esp_lcd_touch_ft5x06:</span><br><span class="line">    component_hash: 97759953d9436a365e9427078c5b04ecce4e6a50f50cf62c68cd6bfa229b812c</span><br><span class="line">    <span class="built_in">source</span>:</span><br><span class="line">      service_url: https://api.components.espressif.com/</span><br><span class="line">      <span class="built_in">type</span>: service</span><br><span class="line">    version: 1.0.6</span><br><span class="line">  espressif/zlib:</span><br><span class="line">    component_hash: 999ec50086ac1c82b8321d8f540dc9fd10f5622948b935558aa16b4b66e95d9d</span><br><span class="line">    <span class="built_in">source</span>:</span><br><span class="line">      service_url: https://api.components.espressif.com/</span><br><span class="line">      <span class="built_in">type</span>: service</span><br><span class="line">    version: 1.3.0</span><br><span class="line">  idf:</span><br><span class="line">    component_hash: null</span><br><span class="line">    <span class="built_in">source</span>:</span><br><span class="line">      <span class="built_in">type</span>: idf</span><br><span class="line">    version: 5.1.0</span><br><span class="line">  lvgl/lvgl:</span><br><span class="line">    component_hash: 948bff879a345149b83065535bbc4a026ce9f47498a22881e432a264b9098015</span><br><span class="line">    <span class="built_in">source</span>:</span><br><span class="line">      service_url: https://api.components.espressif.com/</span><br><span class="line">      <span class="built_in">type</span>: service</span><br><span class="line">    version: 8.3.11</span><br><span class="line">manifest_hash: b2c9ad493b01235aaa12d62f4d6922fb1ee3203b34b14257305de16c9838f577</span><br><span class="line">target: esp32c3</span><br><span class="line">version: 1.0.0</span><br></pre></td></tr></table></figure>
-
-<p>​		下面是几个常用的针对<code>idf_component.yml</code>组件描述符</p>
-<h5 id="1-Caret-允许版本在当前主版本号范围内更新。"><a href="#1-Caret-允许版本在当前主版本号范围内更新。" class="headerlink" title="1.  ^ (Caret): 允许版本在当前主版本号范围内更新。"></a>1.  <strong>^ (Caret)</strong>: 允许版本在当前主版本号范围内更新。</h5><blockquote>
-<p>​		例如，<code>^1.0.6</code>允许使用1.0.6以上到2.0.0以下的版本。</p>
-</blockquote>
-<h5 id="2-Tilde-允许次要版本的更新，如果指定了次版本，则只更新补丁版本。"><a href="#2-Tilde-允许次要版本的更新，如果指定了次版本，则只更新补丁版本。" class="headerlink" title="2. ~ (Tilde): 允许次要版本的更新，如果指定了次版本，则只更新补丁版本。"></a>2. <strong>~ (Tilde)</strong>: 允许次要版本的更新，如果指定了次版本，则只更新补丁版本。</h5><blockquote>
-<p>​		例如，<code>~8.3.0</code>可以更新到8.3.x的任何版本，但不超过8.4.0。</p>
-</blockquote>
-<h5 id="3-Greater-Than-or-Equal-To-指定版本必须大于或等于特定版本。"><a href="#3-Greater-Than-or-Equal-To-指定版本必须大于或等于特定版本。" class="headerlink" title="3. &gt;&#x3D; (Greater Than or Equal To): 指定版本必须大于或等于特定版本。"></a>3. <strong>&gt;&#x3D; (Greater Than or Equal To)</strong>: 指定版本必须大于或等于特定版本。</h5><blockquote>
-<p>​		例如，<code>&gt;=4.4</code>表示版本必须是4.4或更高。</p>
-</blockquote>
-<h4 id="5-idf中Cmake配置的一些关键词"><a href="#5-idf中Cmake配置的一些关键词" class="headerlink" title="(5). idf中Cmake配置的一些关键词"></a>(5). idf中Cmake配置的一些关键词</h4><h5 id="1-屏蔽一些不必要的警告"><a href="#1-屏蔽一些不必要的警告" class="headerlink" title="1. 屏蔽一些不必要的警告"></a>1. 屏蔽一些不必要的警告</h5><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">set</span>(CMAKE_C_FLAGS <span class="string">&quot;$&#123;CMAKE_C_FLAGS&#125; -Wno-char-subscripts -Wno-maybe-uninitialized&quot;</span>)</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<ol>
-<li><code>set</code>: 这是CMake的命令，用于设置或修改变量的值。</li>
-<li><code>CMAKE_C_FLAGS</code>: 这是一个CMake变量，代表用于C语言编译器的编译选项。</li>
-<li><code>&quot;$&#123;CMAKE_C_FLAGS&#125;&quot;</code>: 这部分是变量替换，意思是取出<code>CMAKE_C_FLAGS</code>变量当前的值。</li>
-<li><code>-Wno-char-subscripts</code> 和 <code>-Wno-maybe-uninitialized</code> 是具体添加到<code>CMAKE_C_FLAGS</code>变量中的编译器选项：<ul>
-<li><code>-Wno-char-subscripts</code>：这个选项用来禁止编译器发出警告，当数组下标是char类型时。通常这种情况下，char类型的下标会被隐式转换为整型，某些情况下可能会引发问题或警告。</li>
-<li><code>-Wno-maybe-uninitialized</code>：这个选项用来禁止编译器发出警告，当变量可能未初始化时。这可以防止编译器对可能未初始化的使用发出警告，尽管这样做有时可能隐藏实际的编程错误。</li>
-</ul>
-</li>
-</ol>
-</blockquote>
-<h5 id="2-自动扫描文件夹下的C文件自动添加（循环扫描目录以及子目录下的所有c文件）"><a href="#2-自动扫描文件夹下的C文件自动添加（循环扫描目录以及子目录下的所有c文件）" class="headerlink" title="2. 自动扫描文件夹下的C文件自动添加（循环扫描目录以及子目录下的所有c文件）"></a>2. 自动扫描文件夹下的C文件自动添加（循环扫描目录以及子目录下的所有c文件）</h5><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">file</span>(GLOB_RECURSE SOURCES *.c)</span><br><span class="line">idf_component_register(SRCS <span class="variable">$&#123;SOURCES&#125;</span>)</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>注意，这可能导致增加或者删除文件，但是cmake并没有发现，导致其没有被编译仅二进制文件的可能性，所以这种情况下，建议增加或者删除文件的时候，可以先clean一下项目，然后再重新编译。</p>
-<p>​		另一个常用的实践是尽量避免在配置文件中使用GLOB来指定源文件。可以考虑明确列出所有源文件，虽然这增加了维护成本，但可以提高项目的可预测性。</p>
-</blockquote>
-<h5 id="3-静态库编译到二进制系统中关键字：WHOLE-ARCHIVE"><a href="#3-静态库编译到二进制系统中关键字：WHOLE-ARCHIVE" class="headerlink" title="3. 静态库编译到二进制系统中关键字：WHOLE_ARCHIVE"></a>3. 静态库编译到二进制系统中关键字：WHOLE_ARCHIVE</h5><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">file</span>(GLOB_RECURSE SOURCES *.c)</span><br><span class="line">idf_component_register(SRCS <span class="variable">$&#123;SOURCES&#125;</span></span><br><span class="line">                    WHOLE_ARCHIVE</span><br><span class="line">                    INCLUDE_DIRS <span class="string">&quot;.&quot;</span>)</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>这个意思是，有些函数，即使没有被系统调用（比如被main函数，或者中断函数，或者其他函数调用），这些函数仍然需要被编译到二进制文件中，这样做的目的是，一些脚本解析器，本身系统不会调用该函数，但是系统会执行来自外部的命令，或者文件系统中的脚本代码，根据脚本代码的执行情况会产生调用函数的可能性，如果不包含此关键字可能导致，该函数并未被编译到二进制文件中，而导致系统执行失败。</p>
-</blockquote>
-<h5 id="4-组件依赖关键字：REQUIRES"><a href="#4-组件依赖关键字：REQUIRES" class="headerlink" title="4. 组件依赖关键字：REQUIRES"></a>4. 组件依赖关键字：REQUIRES</h5><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">file</span>(GLOB_RECURSE SOURCES *.c)</span><br><span class="line">idf_component_register(SRCS <span class="variable">$&#123;SOURCES&#125;</span></span><br><span class="line">                    WHOLE_ARCHIVE</span><br><span class="line">                    INCLUDE_DIRS <span class="string">&quot;.&quot;</span></span><br><span class="line">                    REQUIRES</span><br><span class="line">                	driver</span><br><span class="line">                	fatfs)</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>REQUIRES关键字描述的是代码对一些其他组件库的依赖关系，也就是说，这部分代码可能需要依赖一些其他组件库一起运行（包括官方组件，第三方组件，自定义组件）如果没有相关的组件，可能会导致编译失败，加上这个组件库之后，系统会把需要的组件库一起添加到系统的编译选项里面进行编译。</p>
-</blockquote>
-<h5 id="5-添加预处理器定义"><a href="#5-添加预处理器定义" class="headerlink" title="5. 添加预处理器定义"></a>5. 添加预处理器定义</h5><figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="comment"># add macro</span></span><br><span class="line">idf_build_set_property(</span><br><span class="line">    COMPILE_DEFINITIONS <span class="string">&quot;-DPIKA_CONFIG_ENABLE&quot;</span> APPEND)</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>这会将<code>PIKA_CONFIG_ENABLE</code>定义添加到当前目标的编译定义中。</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>嵌入式</category>
-        <category>ESP32学习笔记</category>
-      </categories>
-      <tags>
-        <tag>esp32</tag>
-        <tag>esp-idf</tag>
-        <tag>vscode</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>hexo博客搭建（一）：在PC上搭建Hexo博客系统，并设置博客主题</title>
-    <url>/articles/hexo_0001.html</url>
+    <url>/posts/hexo_0001.html</url>
     <content><![CDATA[<blockquote>
 <p>​		本文主要讲解如何搭建hexo博客网站，并直接部署在github上，实现通过<code>xxx.github.io</code>来访问博客，同时针对云服务器的用户，可以把Hexo博客同步部署到服务器上，通过宝塔Linux面板架设网站，并实现域名解析和绑定。针对没有云服务器的用户，也给出了直接部署在个人的Linux终端（比如：树莓派或者其他Linux开发板，软路由，NAS等）的方案和思路，并给出通过内网穿透方法实现通过自主域名访问博客的方法。最终实现可以通过<code>xxx.github.io</code>和自主域名访问博客网页。</p>
 <p>​		这里不对Hexo博客的特性做说明，详细的Hexo相关的内容，可以参考Hexo官方网站：<a href="https://hexo.io/zh-cn/">https://hexo.io/zh-cn/</a></p>
@@ -826,7 +734,7 @@
   </entry>
   <entry>
     <title>hexo博客搭建（三）：部署云端Linux服务器，搭建宝塔Linux面板，实现远程或域名访问。</title>
-    <url>/articles/hexo_0003.html</url>
+    <url>/posts/hexo_0003.html</url>
     <content><![CDATA[<blockquote>
 <p>​		本文主要讲解如何搭建hexo博客网站，并直接部署在github上，实现通过<code>xxx.github.io</code>来访问博客，同时针对云服务器的用户，可以把Hexo博客同步部署到服务器上，通过宝塔Linux面板架设网站，并实现域名解析和绑定。针对没有云服务器的用户，也给出了直接部署在个人的Linux终端（比如：树莓派或者其他Linux开发板，软路由，NAS等）的方案和思路，并给出通过内网穿透方法实现通过自主域名访问博客的方法。最终实现可以通过<code>xxx.github.io</code>和自主域名访问博客网页。</p>
 <p>​		这里不对Hexo博客的特性做说明，详细的Hexo相关的内容，可以参考Hexo官方网站：<a href="https://hexo.io/zh-cn/">https://hexo.io/zh-cn/</a></p>
@@ -1068,7 +976,7 @@
   </entry>
   <entry>
     <title>hexo博客搭建（二）：把hexo博客部署到github网页托管，实现通过类似xxx.github.io来访问博客</title>
-    <url>/articles/hexo_0002.html</url>
+    <url>/posts/hexo_0002.html</url>
     <content><![CDATA[<blockquote>
 <p>​		本文主要讲解如何搭建hexo博客网站，并直接部署在github上，实现通过<code>xxx.github.io</code>来访问博客，同时针对云服务器的用户，可以把Hexo博客同步部署到服务器上，通过宝塔Linux面板架设网站，并实现域名解析和绑定。针对没有云服务器的用户，也给出了直接部署在个人的Linux终端（比如：树莓派或者其他Linux开发板，软路由，NAS等）的方案和思路，并给出通过内网穿透方法实现通过自主域名访问博客的方法。最终实现可以通过<code>xxx.github.io</code>和自主域名访问博客网页。</p>
 <p>​		这里不对Hexo博客的特性做说明，详细的Hexo相关的内容，可以参考Hexo官方网站：<a href="https://hexo.io/zh-cn/">https://hexo.io/zh-cn/</a></p>
@@ -1144,13 +1052,13 @@
         <category>hexo博客系统</category>
       </categories>
       <tags>
-        <tag>github</tag>
         <tag>hexo</tag>
+        <tag>github</tag>
       </tags>
   </entry>
   <entry>
     <title>hexo博客搭建（四）：本地Linux系统部署，搭建宝塔Linux面板，通过内网传统实现域名访问</title>
-    <url>/articles/hexo_0004.html</url>
+    <url>/posts/hexo_0004.html</url>
     <content><![CDATA[<blockquote>
 <p>​		本文主要讲解如何搭建hexo博客网站，并直接部署在github上，实现通过<code>xxx.github.io</code>来访问博客，同时针对云服务器的用户，可以把Hexo博客同步部署到服务器上，通过宝塔Linux面板架设网站，并实现域名解析和绑定。针对没有云服务器的用户，也给出了直接部署在个人的Linux终端（比如：树莓派或者其他Linux开发板，软路由，NAS等）的方案和思路，并给出通过内网穿透方法实现通过自主域名访问博客的方法。最终实现可以通过<code>xxx.github.io</code>和自主域名访问博客网页。</p>
 <p>​		这里不对Hexo博客的特性做说明，详细的Hexo相关的内容，可以参考Hexo官方网站：<a href="https://hexo.io/zh-cn/">https://hexo.io/zh-cn/</a></p>
@@ -1257,6 +1165,98 @@
         <tag>Linux</tag>
         <tag>宝塔面板</tag>
         <tag>内网穿透</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>git学习笔记（一）：git客户端基本使用方法</title>
+    <url>/posts/3967.html</url>
+    <content><![CDATA[<h3 id="1、git的常用基本指令"><a href="#1、git的常用基本指令" class="headerlink" title="1、git的常用基本指令"></a>1、git的常用基本指令</h3><p>​		下面是一些git常用的基本指令集，这里只是简单罗列一下，方便参考：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">配置git基本信息</span></span><br><span class="line">git config --global user.name &quot;Your Name&quot;</span><br><span class="line">git config --global user.email &quot;youremail@example.com&quot;</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">git仓库初始化</span></span><br><span class="line">git init</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">git克隆仓库</span></span><br><span class="line">git clone https://gitee.com/SenySunny/pikapython.git</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">检查当前的工作目录状态（哪些文件被修改了但还没提交）</span></span><br><span class="line">git status</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">添加文件，用.表示添加所有文件</span></span><br><span class="line">git add filename</span><br><span class="line">git add .</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将暂存区的更改提交到本地仓库。通常附带一条消息说明这次提交的内容。</span></span><br><span class="line">git commit -m &quot;Commit message&quot;</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将本地的更改推送到远程仓库，如果是推送到主仓库可以直接用git push来推送</span></span><br><span class="line">git push origin main</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">从远程仓库获取最新版本并合并到本地仓库。</span></span><br><span class="line">git pull</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看提交历史，按上下键查看<span class="built_in">log</span>，按q退出<span class="built_in">log</span>模式，或者用git --no-pager <span class="built_in">log</span>直接一次打印所有<span class="built_in">log</span>(尽量少用)</span></span><br><span class="line">git log</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看未暂存的文件更新了哪些内容。</span></span><br><span class="line">git diff</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">如果你想查看系统、全局和本地仓库的所有配置，你可以使用以下命令</span></span><br><span class="line">git config --list</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看特定的配置项</span></span><br><span class="line">git config user.email</span><br><span class="line">git config user.name</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看系统级配置（对所有用户有效）：</span></span><br><span class="line">git config --system --list</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看全局级配置（对当前用户有效）：</span></span><br><span class="line">git config --global --list</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看本地级配置（只对当前仓库有效）：</span></span><br><span class="line">git config --local --list</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">同步更新仓库下的分仓库的内容</span></span><br><span class="line">git submodule update --init --recursive</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="2、git分支管理与版本维护总结"><a href="#2、git分支管理与版本维护总结" class="headerlink" title="2、git分支管理与版本维护总结"></a>2、git分支管理与版本维护总结</h3><p>​		这里需要特别说明一下；分支管理一般用于在允许你在主开发线上分离一个动态开发线路，主要用来进行新的功能开发，bug调试等工作，主要目的是为了在新功能开发，或者调试bug的同时，不影响主线。分支可以随着新的提交而更新。</p>
+<p>​		常用的分支管理指令如下：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git branch               		# 列出所有本地分支</span><br><span class="line">git branch -a            		# 列出所有分支（本地和远程）</span><br><span class="line">git branch new-branch    		# 创建新分支</span><br><span class="line">git checkout new-branch  		# 切换到新分支</span><br><span class="line">git checkout -b new-branch		# 创建并切换分支</span><br><span class="line">git checkout main				# 切换回主线进行开发</span><br></pre></td></tr></table></figure>
+
+<p>​		而版本管理，我们一般用tag指令来处理，Tag通常用来标记特定的点，可以理解为Tag是对某一时刻的提交（commit）的引用。一般用来做版本发布，当软件开发到一个特定节点时，我们可以用tag指令来发布版本。</p>
+<p>​		tag常用指令如下：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git tag -a v1.3 -m &quot;Release version 1.3&quot;</span><br><span class="line">git push origin v1.3</span><br></pre></td></tr></table></figure>
+
+<p>​		一般软件版本为x.x.x三组数据组成，第一个为主版本，第二个版本为功能更新版本，第三个为功能修复和完善的版本。也就是说正常情况下，我们发布1.3版本，后续我们回继续对1.3版本进行维护和优化，创建1.3.x版本。如果要增加或者改变功能，我们回同步创建1.4版本。这样就可以实现对多个版本的同步和维护（一般主版本会在产品有重大更新，或者比较大的重构，导致可能会出现兼容性问题的时候，会更新主版本）。</p>
+<p>​		我们现在假设，一款软件，我们已经开发到可以发布1.3版本了。我们会采用tag方式创建和发布1.3版本。一般这个时候，我们同步创建一个分支。用于后续修复和完善该版本。我们操作如下：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git checkout main							# 切换主线</span><br><span class="line">git tag -a v1.3 -m &quot;Release version 1.3&quot;	# 发布v1.3版本</span><br><span class="line">git push origin v1.3						# 推送v1.3版本到远程仓库</span><br><span class="line">git checkout -b release/v1.3 v1.3			# 从v1.3版本的节点创建分支，并切换到该分支</span><br></pre></td></tr></table></figure>
+
+<p>​		此时如果我们要同步更新主线分支和v1.3分支的话，可以如下操作</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git checkout main							# 切换主线</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">给主线分支开发新功能等操作</span></span><br><span class="line">git checkout release/v1.3					# 切换到v1.3的分支</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">此处可以进行修复和完善v1.3的代码</span></span><br></pre></td></tr></table></figure>
+
+<p>​		如果我们希望将对1.3版本的完善和修复同步到主线，有以下两种操作方法：</p>
+<ol>
+<li>从release&#x2F;v1.3的分支合并修复到main分支</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git checkout main							# 切换主线</span><br><span class="line">git merge release/v1.3						# 合并分支到主线分支</span><br></pre></td></tr></table></figure>
+
+<p>​		这种方法将把1.3维护分支的所有更改都合并到 <code>main</code> 分支，适用于所有更改都需要合并的情况。</p>
+<ol start="2">
+<li>Cherry-pick 特定的提交，如果我们只是希望把某个特定的修复合并到主线分支，则可以通过git log查看到该修复操作的哈希值内容。然后通过如下操作：</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git checkout main							# 切换主线</span><br><span class="line">git cherry-pick &lt;commit-hash&gt;				# 将特定的提交合并到主线</span><br></pre></td></tr></table></figure>
+
+<p>​		不管是那种操作，我们都需要使用push把它提交到远程仓库</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git push origin main						# 如果确定目前处于主线仓库，则直接用git push也可以</span><br></pre></td></tr></table></figure>
+
+<p>​		如果我们认为对1.3版本的修复和完善工作已经到了一个阶段，我们可以发布1.3.1版本，此时我们可以如下操作：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git checkout release/v1.3					# 切换到v1.3的分支,确保我们目前处在1.3分支当中</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">如果已经在1.3分支中，则不需要checkout命令</span></span><br><span class="line">git push origin release/v1.3				# 确保分支已经推送更新到远程仓库</span><br><span class="line">git tag -a v1.3.1 -m &quot;Release version 1.3.1&quot;# 发布v1.3.1版本 	</span><br><span class="line">git push origin v1.3.1						# 推送v1.3.1版本到远程仓库</span><br></pre></td></tr></table></figure>
+
+<p>​		当然我们也可以继续基于release&#x2F;v1.3的分支进行操作，后续可以发布1.3.2~1.3.x的版本。同时可以基于main分支，来发布1.4版本，或者发布1.4版本之后，继续创建release&#x2F;v1.4的分支内容，用来修复和维护1.4版本的内容。</p>
+<p>​		用如上操作，我们基本上可以使用git来维护软件的各个版本内容了。</p>
+<h3 id="3、git中关于二进制文件或者其他非文本类大文件处理方法参考"><a href="#3、git中关于二进制文件或者其他非文本类大文件处理方法参考" class="headerlink" title="3、git中关于二进制文件或者其他非文本类大文件处理方法参考"></a>3、git中关于二进制文件或者其他非文本类大文件处理方法参考</h3><ol>
+<li>直接用附件上传的方式，把二进制或者其他大文件压缩或者直接作为文件上传到gitee的附件当中去，点击gitee仓库的统计，下面有附件，点击添加附件，然后把“复制链接地址”，把地址或者地址的快捷方式作为文件提供到仓储当中，这样用户就可以通过地址或者快捷方式直接实现二进制或者大文件的下载。</li>
+</ol>
+<p><img src="https://gitee.com/SenySunny/picture/raw/master/img/202405131549940.png" alt="附件"></p>
+<ol start="2">
+<li><p>采用Git LFS，但是貌似目前并不是所有的git远程仓库都支持LFS功能，比如gitee的个人版本不支持，只有付费企业版本支持。貌似github&#x2F;gitlab&#x2F;bitbucket都是支持LFS的。所以在使用LFS的时候，请确保git的服务器是否支持GIT LFS，否则可能会导致LFS无效。这里对Git LFS做个简单的介绍</p>
+<blockquote>
+<p>在创建或者上传大文件时：</p>
+<ol>
+<li>在仓库中输入<code>git lfs install</code>初始化lfs,如果系统没有lfs插件，git会自动下载lfs插件，并进行初始化。</li>
+<li>在现有仓库中使用lfs，你需要指定哪些文件被作为大文件。如下操作：</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git init</span><br><span class="line">git lfs track &quot;*.psd&quot;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>为了确保仓库的lfs大文件已经被绑定，可以确保<code>.gitattributes</code> 文件被添加到仓库中</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git add .gitattributes</span><br><span class="line">git commit -m &quot;Set Git LFS for psd files&quot;</span><br></pre></td></tr></table></figure>
+
+<p>​		此时，Git LFS来跟踪所有的<code>.psd</code>文件。你可以指定任何文件类型或具体文件。这会创建或修改<code>.gitattributes</code>文件，包含关于哪些文件应由Git LFS跟踪的规则。</p>
+<ol start="4">
+<li>和正常一样使用git即可</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>克隆或者拉取具有lfs的仓库时，如下操作</p>
+<ol>
+<li>和正常一样下载<code>git clone &lt;repository-url&gt;</code>或者拉取<code>git pull origin main</code>文件即可。如果发现大文件没有被同步，可以尝试用<code>git lfs pull</code>单独拉取一下大文件。</li>
+<li>另外可以通过<code>git lfs ls-files</code>来查看哪些文件时由LFS管理的文件。<ol>
+<li>如果LFS的对象存储很大，可以尝试使用<code>git lfs prune</code>来同步和清理大文件，这将删除本地存储中的旧版本LFS对象，从而节省空间。</li>
+</ol>
+</li>
+</ol>
+</blockquote>
+<p>​		可以通过<code>git lfs track</code>来查看哪些文件类型被绑定到lfs大文件存储上了。通过<code>git lfs track &quot;*.psd&quot;</code>来取消某种类型文件的追踪（记得修改完成之后需要push）。</p>
+</li>
+<li><p>对于一些特别大的文件，或者不经常更改的大型二进制文件，考虑将它们存储在其他地方（如云存储服务），只在Git仓库中保存必要的链接或引用。这个方法和第一个方法基本相同，只是需要自己创建或者寻找第三方的云存储服务而已。</p>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>编程语言</category>
+        <category>git</category>
+      </categories>
+      <tags>
+        <tag>github</tag>
+        <tag>git</tag>
+        <tag>版本管理</tag>
       </tags>
   </entry>
 </search>
